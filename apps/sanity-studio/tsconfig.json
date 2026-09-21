@@ -1,0 +1,5 @@
+{
+  "extends": "sanity/typescript/tsconfig",
+  "include": ["./schemas/**/*.ts", "./sanity.config.ts"],
+  "exclude": ["node_modules"]
+}

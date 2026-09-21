@@ -1,0 +1,303 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+
+:root {
+  --bg-base: #ffffff;
+  --bg-base-hover: #f5f3ee;
+  --bg-base-pressed: #ebe7df;
+  --bg-component: #fbfaf7;
+  --bg-component-hover: #f3f0e9;
+  --bg-component-pressed: #e9e4da;
+  --bg-field: #fbfaf7;
+  --bg-field-component: #ffffff;
+  --bg-field-hover: #f5f3ee;
+  --bg-highlight: #f4ede0;
+  --bg-highlight-hover: #ece0ca;
+  --bg-interactive: #171714;
+  --bg-subtle: #f7f6f2;
+  --bg-subtle-hover: #eeece6;
+  --bg-subtle-pressed: #e5e1d8;
+  --border-base: #e6e1d8;
+  --border-strong: #d7d0c4;
+  --border-interactive: #9b772c;
+  --fg-base: #191916;
+  --fg-subtle: #5f5b54;
+  --fg-muted: #89837a;
+  --fg-interactive: #896a2b;
+  --fg-interactive-hover: #6f541f;
+  --borders-focus: 0 0 0 1px #fff, 0 0 0 3px rgba(155, 119, 44, 0.35);
+}
+
+body {
+  background: #f5f4f0;
+  color: #191916;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+body button,
+body input,
+body textarea,
+body select { font-family: inherit; }
+
+aside {
+  background: #f8f7f4;
+  border-color: #e8e4dc !important;
+}
+
+aside nav a,
+aside nav button { min-height: 34px; }
+
+main { background: #f5f4f0; }
+
+.leyros-topbar-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #5e584f;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.leyros-topbar-mark::before {
+  content: "L";
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid #ad8b45;
+  border-radius: 50%;
+  color: #8a6929;
+  font-family: Georgia, serif;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.leyros-admin-dashboard {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: 34px 34px 64px;
+}
+
+.leyros-dashboard-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.leyros-eyebrow {
+  margin: 0 0 8px;
+  color: #8a6929;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.leyros-dashboard-head h1 {
+  margin: 0;
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 500;
+  letter-spacing: -.04em;
+  line-height: 1.05;
+}
+
+.leyros-dashboard-head p:last-child {
+  margin: 10px 0 0;
+  color: #777168;
+  font-size: 14px;
+}
+
+.leyros-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid #ddd7cd;
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  color: #575249;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.leyros-live-pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #668a5f;
+  box-shadow: 0 0 0 4px rgba(102,138,95,.13);
+}
+
+.leyros-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.leyros-stat-card,
+.leyros-panel {
+  border: 1px solid #e4dfd6;
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 12px 32px rgba(36,31,23,.035);
+}
+
+.leyros-stat-card {
+  min-height: 142px;
+  padding: 19px;
+  border-radius: 14px;
+}
+
+.leyros-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #716b63;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.leyros-stat-index {
+  color: #a8843d;
+  font-size: 10px;
+}
+
+.leyros-stat-card strong {
+  display: block;
+  margin-top: 24px;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+
+.leyros-stat-card small {
+  display: block;
+  margin-top: 8px;
+  color: #928b81;
+  font-size: 11px;
+}
+
+.leyros-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, .45fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.leyros-panel { border-radius: 14px; overflow: hidden; }
+
+.leyros-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 68px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #ebe7df;
+}
+
+.leyros-panel-head h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.leyros-panel-head a {
+  color: #806225;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.leyros-order-row {
+  display: grid;
+  grid-template-columns: 72px minmax(150px, 1fr) 120px 120px;
+  align-items: center;
+  gap: 18px;
+  min-height: 68px;
+  padding: 13px 20px;
+  border-bottom: 1px solid #f0ede7;
+  color: inherit;
+  text-decoration: none;
+  transition: background .18s ease;
+}
+
+.leyros-order-row:last-child { border-bottom: 0; }
+.leyros-order-row:hover { background: #fbfaf7; }
+.leyros-order-row strong { font-size: 13px; font-weight: 600; }
+.leyros-order-row span { color: #6d675f; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.leyros-order-total { color: #1d1c19 !important; font-weight: 600; text-align: right; }
+
+.leyros-status {
+  justify-self: start;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #f2eee5;
+  color: #745a27 !important;
+  font-size: 10px !important;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.leyros-empty {
+  display: grid;
+  min-height: 275px;
+  place-items: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.leyros-empty-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  place-items: center;
+  border: 1px solid #ded8ce;
+  border-radius: 14px;
+  background: #f7f4ee;
+  color: #9a7833;
+  font-size: 20px;
+}
+
+.leyros-empty h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.leyros-empty p { max-width: 320px; margin: 8px auto 0; color: #878076; font-size: 12px; line-height: 1.55; }
+
+.leyros-actions { display: grid; gap: 2px; padding: 8px; }
+.leyros-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 54px;
+  padding: 12px;
+  border-radius: 10px;
+  color: #2d2a26;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.leyros-action:hover { background: #f5f2eb; }
+.leyros-action span { color: #a17c34; font-size: 17px; }
+
+.leyros-loading { opacity: .55; animation: leyros-pulse 1.2s ease-in-out infinite alternate; }
+@keyframes leyros-pulse { to { opacity: .9; } }
+
+@media (max-width: 1050px) {
+  .leyros-stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .leyros-dashboard-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .leyros-admin-dashboard { padding: 24px 18px 44px; }
+  .leyros-dashboard-head { align-items: flex-start; flex-direction: column; }
+  .leyros-stat-grid { grid-template-columns: 1fr; }
+  .leyros-order-row { grid-template-columns: 64px 1fr auto; }
+  .leyros-order-row > span:nth-child(3) { display: none; }
+}

@@ -255,7 +255,13 @@ export default function StoryPage() {
 
       <section className="legacy-about-signoff">
         <div className="legacy-about-container">
-          <h3>LEYROS</h3>
+          <Image
+            src="/leyros/leyros-logo-white.png"
+            alt="Leyros Essence"
+            width={1280}
+            height={1280}
+            className="legacy-about-signoff-logo"
+          />
           <p>Premium fragrances crafted for modern lifestyles — perfumes, attars, candles, car perfumes and gift packs.</p>
           <small>© 2026 Leyros Perfume. All Rights Reserved.</small>
         </div>

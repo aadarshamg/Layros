@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_PHONE, DEFAULT_BRAND_ADDRESS } from "@/lib/site-defaults";
 import { PinIcon, PhoneIcon, StarIcon, GoogleGIcon, FacebookIcon, InstagramIcon, YoutubeIcon } from "@/components/layout/FooterIcons";
@@ -77,7 +78,15 @@ export function Footer({
     <footer className="site-footer" id="concierge">
       <div className="footer-grid page-shell">
         <div className="footer-intro">
-          <Link href="/" className="footer-brand">LEYROS</Link>
+          <Link href="/" className="footer-brand" aria-label="LEYROS home">
+            <Image
+              src="/leyros/leyros-logo-white.png"
+              alt=""
+              width={1280}
+              height={1280}
+              className="footer-brand-logo"
+            />
+          </Link>
           <p>Expressive fragrances made in Kannauj for modern Indian routines, moods, and memories.</p>
 
           <div className="footer-contact-line"><PinIcon /><span>{address}</span></div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
@@ -102,8 +103,14 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
           </nav>
         </details>
         <Link href="/" className="wordmark" aria-label="LEYROS home">
-          <span className="wordmark-mark">L</span>
-          <span><b>LEYROS</b><small>PARIS · KANNAUJ</small></span>
+          <Image
+            src={isHome ? "/leyros/leyros-logo-white.png" : "/leyros/leyros-logo-dark.webp"}
+            alt=""
+            width={isHome ? 1280 : 128}
+            height={isHome ? 1280 : 128}
+            priority
+            className="wordmark-logo"
+          />
         </Link>
         <nav aria-label="Main navigation" className="desktop-nav">
           {links.map((link) =>

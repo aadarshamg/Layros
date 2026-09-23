@@ -54,7 +54,8 @@ h1, h2, h3, p { margin-top: 0; }
 .site-header { position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,.96); border-bottom: 1px solid rgba(222,217,207,.75); backdrop-filter: blur(14px); }
 .announcement { min-height: 27px; display: grid; place-items: center; padding: 6px 20px; background: var(--paper-warm); border-bottom: 1px solid #ebe7df; text-align: center; font-size: 8px; letter-spacing: .18em; text-transform: uppercase; color: #625e57; }
 .nav-shell { position: relative; width: min(100% - 48px, 1380px); min-height: 76px; margin-inline: auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 28px; }
-.wordmark { display: inline-flex; align-items: center; gap: 10px; width: max-content; }
+.wordmark { display: inline-flex; width: max-content; align-items: center; justify-content: center; }
+.wordmark-logo { display: block; width: 72px; height: 68px; object-fit: contain; }
 .wordmark-mark { width: 34px; height: 34px; border: 1px solid #a98331; border-radius: 50%; display: grid; place-items: center; color: var(--gold); font-family: var(--font-playfair); font-size: 19px; font-style: italic; }
 .wordmark b { display: block; font-family: var(--font-playfair); font-size: 17px; letter-spacing: .19em; line-height: 1; }
 .wordmark small { display: block; margin-top: 5px; font-size: 6px; letter-spacing: .27em; color: #77716a; }
@@ -397,6 +398,8 @@ body:has(.cinematic-home) .footer-bottom { background: #020202; border-top: 1px 
 .home-header .announcement { display: none; }
 .home-header .nav-shell { width: 100%; max-width: none; min-height: 64px; margin: 0; grid-template-columns: 1fr auto 1fr; background: transparent; }
 .home-header .wordmark { position: absolute; left: 50%; transform: translateX(-50%); color: white; }
+.home-header .wordmark-logo,
+body:has(.cinematic-home) .wordmark-logo { filter: none; opacity: 1; }
 .home-header .wordmark-mark { border-color: rgba(212,175,55,.65); color: #d4af37; }
 .home-header .wordmark small,
 .home-header .currency { color: #aaa; }
@@ -918,6 +921,7 @@ body:has(.cinematic-home) .footer-bottom { background: #020202; border-top: 1px 
 
 @media (max-width: 560px) {
   .announcement { font-size: 6px; letter-spacing: .12em; }
+  .wordmark-logo { width: 62px; height: 58px; }
   .wordmark-mark { width: 30px; height: 30px; }
   .wordmark b { font-size: 14px; }
   .wordmark small { font-size: 5px; }
@@ -1678,6 +1682,7 @@ body:not(:has(.cinematic-home)) .announcement span {
 body:not(:has(.cinematic-home)) .announcement span:nth-child(2) { background: #2f5c62; }
 body:not(:has(.cinematic-home)) .announcement span:last-child { border: 0; }
 body:not(:has(.cinematic-home)) .nav-shell { min-height: 78px; grid-template-columns: auto 1fr auto; gap: 42px; }
+body:not(:has(.cinematic-home)) .wordmark-logo { filter: none; opacity: 1; }
 body:not(:has(.cinematic-home)) .wordmark-mark { border-color: #f06455; color: #f06455; }
 body:not(:has(.cinematic-home)) .wordmark b { color: var(--ink); font-size: 21px; letter-spacing: .14em; }
 body:not(:has(.cinematic-home)) .wordmark small { color: #799094; font-size: 8px; }
@@ -1828,7 +1833,8 @@ body:not(:has(.cinematic-home)) .note-register { border-radius: 18px; background
    matching the real store's actual footer rather than the old two-theme split. */
 .site-footer { background: #0a0a0a; border: 0; color: #fff; }
 .footer-grid { grid-template-columns: 1.6fr repeat(4, 1fr); padding-block: 64px; }
-.footer-brand { display: block; margin-bottom: 16px; color: #fff; font-size: 26px; font-weight: 700; letter-spacing: .16em; }
+.footer-brand { display: block; width: max-content; margin-bottom: 16px; color: #fff; }
+.footer-brand-logo { display: block; width: 92px; height: 82px; object-fit: contain; }
 .site-footer h4 { color: #fff; font-size: 10px; }
 .site-footer p, .site-footer li { color: #a7a29a; font-size: 13px; }
 .site-footer li a:hover { color: #fff; }
@@ -2189,6 +2195,7 @@ body:not(:has(.cinematic-home)) .note-register { border-radius: 18px; background
   font-family: Georgia, "Times New Roman", serif;
   font-size: 24px;
 }
+.legacy-about-signoff-logo { display: block; width: 104px; height: 94px; margin: 0 auto 12px; object-fit: contain; }
 .legacy-about-signoff p { max-width: 700px; margin: 0 auto 12px; }
 .legacy-about-signoff small { color: #9f9270; font-size: 13px; }
 
@@ -3003,7 +3010,7 @@ body:not(:has(.cinematic-home)) .cart-step-secondary-button { font-size: 13px; }
 .cart-step-checkbox { gap: 10px; font-size: 13px; line-height: 1.45; }
 .cart-step-checkbox input { width: 17px; height: 17px; flex: 0 0 17px; margin-top: 1px; }
 .cart-step-textarea { padding: 12px 14px; }
-.cart-step-primary-button { min-height: 54px; margin-top: 7px; font-size: 13px; line-height: 1; }
+.cart-step-primary-button { display: flex; width: 100%; min-height: 54px; align-items: center; justify-content: center; margin-top: 7px; padding-inline: 20px; font-size: 13px; line-height: 1; }
 .cart-step-primary-button:disabled { background: #f5a095; color: #fff; opacity: 1; }
 .cart-step-secondary-button { min-height: 48px; font-size: 13px; }
 .cart-step-links button,

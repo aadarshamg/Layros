@@ -12,3 +12,6 @@ build/
 .DS_Store
 .medusa/
 .sanity/
+
+.vercel
+.env*

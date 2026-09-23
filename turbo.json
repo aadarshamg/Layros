@@ -8,7 +8,21 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["SANITY_API_TOKEN"]
+      "env": [
+        "SANITY_API_TOKEN",
+        "RAZORPAY_KEY_ID",
+        "RAZORPAY_KEY_SECRET",
+        "OTP_SIGNING_SECRET",
+        "SESSION_SIGNING_SECRET",
+        "OTP_HASH_PEPPER",
+        "OTP_CHANNEL_PRIMARY",
+        "MSG91_AUTH_KEY",
+        "MSG91_TEMPLATE_ID",
+        "MSG91_SENDER_ID",
+        "WHATSAPP_API_URL",
+        "WHATSAPP_API_TOKEN",
+        "WHATSAPP_AUTH_TEMPLATE_NAME"
+      ]
     },
     "lint": {
       "dependsOn": ["^build"]

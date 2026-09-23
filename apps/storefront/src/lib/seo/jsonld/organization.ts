@@ -1,6 +1,8 @@
+import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_PHONE } from "@/lib/site-defaults";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-export function organizationJsonLd() {
+export function organizationJsonLd(contact?: { email?: string; phone?: string }) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -10,9 +12,9 @@ export function organizationJsonLd() {
     logo: `${siteUrl}/favicon.ico`,
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+91-99150-82150",
+      telephone: contact?.phone || DEFAULT_CONTACT_PHONE,
       contactType: "customer service",
-      email: "uknowmusic12@gmail.com",
+      email: contact?.email || DEFAULT_CONTACT_EMAIL,
     },
   };
 }

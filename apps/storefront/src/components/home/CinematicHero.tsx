@@ -2,8 +2,9 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import { DEFAULT_TAGLINE, DEFAULT_HERO_VIDEO_URL, DEFAULT_HERO_POSTER_URL } from "@/lib/site-defaults";
 
-export function CinematicHero() {
+export function CinematicHero({ tagline, videoUrl, posterUrl }: { tagline?: string; videoUrl?: string; posterUrl?: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
 
@@ -24,14 +25,18 @@ export function CinematicHero() {
         loop
         muted={muted}
         playsInline
-        poster="/leyros/nuit-doree-hero.jpg"
+        poster={posterUrl || DEFAULT_HERO_POSTER_URL}
         preload="auto"
+        // key forces the <video> to remount (and reload the new source)
+        // when an admin swaps the hero video in Sanity, rather than the
+        // browser continuing to play whatever it already buffered.
+        key={videoUrl ?? DEFAULT_HERO_VIDEO_URL}
       >
-        <source src="/leyros/perfume-aroma-hero.mp4" type="video/mp4" />
+        <source src={videoUrl || DEFAULT_HERO_VIDEO_URL} type="video/mp4" />
       </video>
       <div className="cinematic-hero-overlay" />
       <div className="cinematic-hero-content">
-        <p>L’Art du Flacon · Édition 2026</p>
+        <p>{tagline || DEFAULT_TAGLINE}</p>
         <h1 className="sr-only">LEYROS Luxury Fragrance House</h1>
         <Link href="#cinematic-collection" className="cinematic-outline-button">Discover the collection</Link>
       </div>
@@ -39,7 +44,6 @@ export function CinematicHero() {
         <span className="audio-icon" aria-hidden="true">{muted ? "×" : "◖"}</span>
         <span>{muted ? "Audio experience" : "Sound on"}</span>
       </button>
-      <span className="scroll-cue">Scroll to enter <i /></span>
     </section>
   );
 }

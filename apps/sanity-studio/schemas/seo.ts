@@ -21,6 +21,7 @@ export default defineType({
     defineField({
       name: "ogImage",
       title: "Social share image",
+      description: "Shown when this page is shared on social media/search. Recommended: 1200×630px (the standard Open Graph size), JPG/PNG.",
       type: "image",
     }),
   ],

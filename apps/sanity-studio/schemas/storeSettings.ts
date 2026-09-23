@@ -1,0 +1,135 @@
+import { defineField, defineType } from "sanity";
+
+// A singleton — only ever one "storeSettings" document (fixed _id set in
+// sanity.config.ts's structure), edited in place rather than listed.
+export default defineType({
+  name: "storeSettings",
+  title: "Store Settings",
+  type: "document",
+  groups: [
+    { name: "homepage", title: "Homepage" },
+    { name: "contact", title: "Contact & brand" },
+    { name: "reviews", title: "Google reviews" },
+    { name: "rewards", title: "Cart rewards" },
+  ],
+  fields: [
+    defineField({
+      name: "announcementMessages",
+      title: "Header announcement bar",
+      description: "Short rotating messages shown in the strip above the logo, e.g. \"Free discovery sample on orders over ₹3,500\". Leave empty to keep the current default messages.",
+      type: "array",
+      of: [{ type: "string" }],
+      validation: (Rule) => Rule.max(5),
+      group: "homepage",
+    }),
+    defineField({
+      name: "tagline",
+      title: "Hero tagline",
+      description: 'Short line shown over the homepage hero video, e.g. "L’Art du Flacon · Édition 2026".',
+      type: "string",
+      group: "homepage",
+    }),
+    defineField({
+      name: "heroVideo",
+      title: "Hero video",
+      description: "Upload directly — replaces the homepage's background video. Recommended: landscape 1920×1080px (16:9) or larger, MP4 format, 10–30s, ideally under 20MB so it loads fast. Leave empty to keep the current default video.",
+      type: "file",
+      options: { accept: "video/*" },
+      group: "homepage",
+    }),
+    defineField({
+      name: "heroPoster",
+      title: "Hero poster image",
+      description: "Shown while the hero video loads (and to search engines/social previews). Recommended: landscape 1920×1080px (16:9), JPG or WebP. Leave empty to keep the current default image.",
+      type: "image",
+      options: { hotspot: true },
+      group: "homepage",
+    }),
+    defineField({
+      name: "contactEmail",
+      title: "Contact email",
+      type: "string",
+      validation: (Rule) => Rule.email(),
+      group: "contact",
+    }),
+    defineField({
+      name: "contactPhone",
+      title: "Contact phone",
+      description: 'Shown as-is, e.g. "+91 99150 83150".',
+      type: "string",
+      group: "contact",
+    }),
+    defineField({
+      name: "brandAddress",
+      title: "Brand address",
+      type: "text",
+      rows: 3,
+      group: "contact",
+    }),
+    defineField({
+      name: "whatsappNumber",
+      title: "WhatsApp number",
+      description: 'Digits only, with country code, e.g. "919915083150" — powers the footer\'s WhatsApp chat button. Leave blank to reuse the contact phone.',
+      type: "string",
+      group: "contact",
+    }),
+    defineField({
+      name: "whatsappSuggestedMessage",
+      title: "WhatsApp suggested question",
+      description: 'Shown as a speech-bubble prompt next to the floating WhatsApp button, e.g. "Which fragrance is best for me?" — tapping it opens WhatsApp with this message pre-filled. Leave blank to hide the bubble.',
+      type: "string",
+      group: "contact",
+    }),
+    defineField({
+      name: "googleRating",
+      title: "Google rating (out of 5)",
+      type: "number",
+      validation: (Rule) => Rule.min(0).max(5),
+      group: "reviews",
+    }),
+    defineField({
+      name: "googleReviewCount",
+      title: "Number of Google reviews",
+      type: "number",
+      validation: (Rule) => Rule.min(0).integer(),
+      group: "reviews",
+    }),
+    defineField({
+      name: "googleReviewsUrl",
+      title: "Link to your Google reviews",
+      description: "Where the footer's rating badge links to — your Google Business Profile's review page.",
+      type: "url",
+      group: "reviews",
+    }),
+    defineField({
+      name: "rewardEnabled",
+      title: "Show cart reward banner",
+      description: "Off by default — turn on to show a \"spend ₹X more to unlock a reward\" progress bar in the cart.",
+      type: "boolean",
+      initialValue: false,
+      group: "rewards",
+    }),
+    defineField({
+      name: "rewardThreshold",
+      title: "Reward unlocks at (INR cart subtotal)",
+      type: "number",
+      validation: (Rule) => Rule.min(0),
+      hidden: ({ document }) => !document?.rewardEnabled,
+      group: "rewards",
+    }),
+    defineField({
+      name: "rewardDescription",
+      title: "Reward description",
+      description: 'What they get, e.g. "Sample coffret + insured delivery across India".',
+      type: "string",
+      hidden: ({ document }) => !document?.rewardEnabled,
+      group: "rewards",
+    }),
+  ],
+  preview: {
+    select: { enabled: "rewardEnabled", threshold: "rewardThreshold" },
+    prepare({ enabled, threshold }) {
+      return { title: "Store Settings", subtitle: enabled ? `Reward active at ₹${threshold ?? "?"}` : "Reward banner off" };
+    },
+  },
+});

@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import { Nav } from "@/components/layout/Nav";
-import { Footer } from "@/components/layout/Footer";
-import { JsonLd } from "@/components/seo/JsonLd";
-import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld/organization";
-import "./globals.css";
 
 const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"] });
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -40,16 +35,16 @@ export const metadata: Metadata = {
   },
 };
 
+// Deliberately minimal — the storefront's providers, nav/footer chrome, and
+// globals.css live in (site)/layout.tsx instead of here, so the /admin
+// route (the embedded Sanity Studio) renders with none of that. Studio
+// needs full control of its own styling; the site's global CSS is written
+// with very broad selectors (body, button, input, h1-h6, …) that would
+// otherwise visually corrupt the Studio UI since both would share this <body>.
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${outfit.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <JsonLd data={organizationJsonLd()} />
-        <JsonLd data={websiteJsonLd()} />
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

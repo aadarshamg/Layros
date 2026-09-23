@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { PerfumeProduct } from "@leyros/types";
 import { formatInr } from "@/lib/format";
+import { CinematicQuickAddButton } from "@/components/home/CinematicQuickAddButton";
 
 export function CinematicProductGrid({
   eyebrow,
@@ -50,7 +51,7 @@ export function CinematicProductGrid({
                       .join(" · ")}
                   </p>
                   {cheapest && <strong>{formatInr(cheapest.price)}</strong>}
-                  <Link href={`/products/${product.handle}`}>Acquire flacon</Link>
+                  <CinematicQuickAddButton product={product} />
                 </div>
               </article>
             );

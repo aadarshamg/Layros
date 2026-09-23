@@ -11,10 +11,11 @@ export function CollectionFamilyGrid({ entries }: { entries: FamilyShowcaseEntry
       <div className="cinematic-shell">
         <div className="cinematic-section-title">
           <div>
-            <p>Explore by family</p>
             <h2>The Collection</h2>
           </div>
-          <span>Shop by fragrance family</span>
+          <div className="collection-title-meta">
+            <Link href="/collections/all">View all fragrances <i aria-hidden="true">→</i></Link>
+          </div>
         </div>
         <div className="cinematic-product-grid">
           {entries.map(({ family, product }) => (

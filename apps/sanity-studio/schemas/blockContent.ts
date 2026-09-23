@@ -30,6 +30,7 @@ export default defineType({
     }),
     defineArrayMember({
       type: "image",
+      description: "Recommended: at least 1600px wide, JPG/PNG/WebP.",
       options: { hotspot: true },
       fields: [{ name: "alt", type: "string", title: "Alt text" }],
     }),

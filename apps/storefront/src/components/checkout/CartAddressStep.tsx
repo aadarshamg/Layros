@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
+import { CartOrderSummaryMini } from "@/components/checkout/CartOrderSummaryMini";
+import { CouponWidget } from "@/components/checkout/CouponWidget";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 
 const INDIAN_STATES = [
@@ -124,6 +126,8 @@ export function CartAddressStep({
           <button type="button" onClick={onBack} className="cart-step-back">← Back to bag</button>
         </div>
         <h3 className="cart-step-title">Deliver to</h3>
+        <CartOrderSummaryMini />
+        <CouponWidget />
         <div className="cart-saved-address">
           <p><b>{savedAddress.fullName}</b></p>
           <p>{savedAddress.addressLine1}</p>
@@ -143,6 +147,8 @@ export function CartAddressStep({
         <button type="button" onClick={savedAddress ? () => setIsEditing(false) : onBack} className="cart-step-back">← Back</button>
       </div>
       <h3 className="cart-step-title">Delivery details</h3>
+      <CartOrderSummaryMini />
+      <CouponWidget />
       <form onSubmit={handleSubmit} className="cart-step-form">
         <label className="cart-step-field">
           <span>Email</span>

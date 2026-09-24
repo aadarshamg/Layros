@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
+import { CartOrderSummaryMini } from "@/components/checkout/CartOrderSummaryMini";
+import { CouponWidget } from "@/components/checkout/CouponWidget";
+import { TrustBadges } from "@/components/checkout/TrustBadges";
 
 type Step = "phone" | "code";
 
@@ -59,6 +62,9 @@ export function CartLoginStep({ onBack, onLoggedIn, onGuest }: { onBack: () => v
       <h3 className="cart-step-title">Log in to check out faster</h3>
       <p className="cart-step-subtitle">No password needed — we&apos;ll text you a one-time code.</p>
 
+      <CartOrderSummaryMini />
+      <CouponWidget />
+
       {step === "phone" && (
         <form onSubmit={handleRequestOtp} className="cart-step-form">
           <label className="cart-step-field">
@@ -114,6 +120,11 @@ export function CartLoginStep({ onBack, onLoggedIn, onGuest }: { onBack: () => v
 
       <div className="cart-step-divider"><span>or</span></div>
       <button type="button" onClick={onGuest} className="cart-step-secondary-button">Continue as guest</button>
+
+      <TrustBadges />
+      <p className="cart-step-terms">
+        By continuing, you agree to our <a href="/legal/terms" target="_blank" rel="noreferrer">Terms</a> &amp; <a href="/legal/privacy" target="_blank" rel="noreferrer">Privacy Policy</a>.
+      </p>
     </div>
   );
 }

@@ -6,10 +6,17 @@ export async function VideoShowcase() {
   if (videos.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-      <p className="text-center text-xs uppercase tracking-widest text-charcoal-soft/60">Shop from videos</p>
-      <h2 className="mt-2 text-center font-serif text-3xl">See What the Hype&rsquo;s About</h2>
-      <VideoShowcaseCarousel videos={videos} />
+    <section className="home-reels" aria-labelledby="home-reels-title">
+      <div className="cinematic-shell">
+        <header className="home-reels-heading">
+          <div>
+            <p>Seen in motion</p>
+            <h2 id="home-reels-title">The Leyros Reels</h2>
+          </div>
+          <span>Watch. Discover. Shop.</span>
+        </header>
+        <VideoShowcaseCarousel videos={videos} />
+      </div>
     </section>
   );
 }

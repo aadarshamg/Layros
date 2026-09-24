@@ -34,35 +34,37 @@ export default async function Home() {
 
       <CollectionFamilyGrid entries={familyShowcase} />
 
-      <section className="home-campaign" aria-label="Fresh Moments candle collection">
-        <Link
-          href="/collections/all?category=candles"
-          className="home-campaign-banner"
-          aria-label="Fresh Moments, Pure Calm — shop scented candles"
-        >
-          <span className="sr-only">Fresh Moments, Pure Calm. Shop scented candles.</span>
-        </Link>
-      </section>
-
-      <ShopByCategory entries={categoryShowcase} />
-
       <CinematicProductGrid
         eyebrow="Newly composed"
         heading="New Arrivals"
         note="Latest to the atelier"
         products={newArrivals}
+        variant="new-arrivals"
       />
 
-      <EditorialMarquee />
+      <ShopByCategory entries={categoryShowcase} />
 
       <CinematicProductGrid
         eyebrow="Most acquired"
         heading="Signature Scents"
         note="Hand-filled in small batches"
         products={bestSellers}
+        variant="signature-scents"
       />
 
       <VideoShowcase />
+
+      <section className="home-campaign" aria-label="Nuit Dorée candle collection">
+        <Link
+          href="/collections/all?category=candle"
+          className="home-campaign-banner"
+          aria-label="Discover the Nuit Dorée scented candle collection"
+        >
+          <span className="sr-only">Discover the Nuit Dorée scented candle collection.</span>
+        </Link>
+      </section>
+
+      <EditorialMarquee />
 
       <section className="cinematic-manifesto">
         <p>Leyros manifesto</p>

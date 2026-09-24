@@ -9,16 +9,18 @@ export function CinematicProductGrid({
   heading,
   note,
   products,
+  variant,
 }: {
   eyebrow: string;
   heading: string;
   note?: string;
   products: PerfumeProduct[];
+  variant?: "new-arrivals" | "signature-scents";
 }) {
   if (products.length === 0) return null;
 
   return (
-    <section className="cinematic-collection">
+    <section className={`cinematic-collection${variant ? ` home-${variant}` : ""}`}>
       <div className="cinematic-shell">
         <div className="cinematic-section-title">
           <div>

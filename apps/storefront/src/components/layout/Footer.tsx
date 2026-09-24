@@ -51,7 +51,22 @@ const COLLECTIONS_LINKS = [
 
 const MORE_LINKS = [{ label: "About Us", href: "/story" }];
 
-const PAYMENT_METHODS = ["Visa", "Mastercard", "GPay", "BHIM UPI", "Net Banking", "Wallet", "Cash on Delivery"];
+const PAYMENT_BRANDS = [
+  {
+    label: "Visa",
+    src: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Visa_Inc._logo_%282021%E2%80%93present%29.svg",
+  },
+  {
+    label: "Mastercard",
+    src: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg",
+  },
+  {
+    label: "UPI",
+    src: "https://upload.wikimedia.org/wikipedia/commons/6/6f/UPI_logo.svg",
+  },
+];
+
+const PAYMENT_SERVICES = ["Net Banking", "Wallet", "Cash on Delivery"];
 
 export function Footer({
   contactEmail,
@@ -160,7 +175,12 @@ export function Footer({
         <div className="page-shell footer-bottom-inner">
           <div className="footer-payment-methods">
             <span>We accept</span>
-            {PAYMENT_METHODS.map((method) => <span key={method} className="footer-payment-badge">{method}</span>)}
+            {PAYMENT_BRANDS.map((brand) => (
+              <span key={brand.label} className={`footer-payment-logo footer-payment-logo-${brand.label.toLowerCase()}`}>
+                <img src={brand.src} alt={brand.label} loading="lazy" decoding="async" />
+              </span>
+            ))}
+            {PAYMENT_SERVICES.map((method) => <span key={method} className="footer-payment-badge">{method}</span>)}
           </div>
           <span className="footer-copyright">
             © {new Date().getFullYear()} LEYROS · <Link href="/legal/privacy">Privacy</Link> · <Link href="/legal/terms">Terms</Link> · <Link href="/legal/shipping-returns">Shipping &amp; Returns</Link>

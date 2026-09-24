@@ -7,11 +7,12 @@ export function CollectionFamilyGrid({ entries }: { entries: FamilyShowcaseEntry
   if (entries.length === 0) return null;
 
   return (
-    <section className="cinematic-collection" id="cinematic-collection">
+    <section className="cinematic-collection home-signature-collection" id="cinematic-collection">
       <div className="cinematic-shell">
         <div className="cinematic-section-title">
           <div>
-            <h2>The Collection</h2>
+            <p>Explore by fragrance family</p>
+            <h2>Our Signature Collection</h2>
           </div>
           <div className="collection-title-meta">
             <Link href="/collections/all">View all fragrances <i aria-hidden="true">→</i></Link>

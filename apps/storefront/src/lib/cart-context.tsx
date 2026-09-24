@@ -57,6 +57,9 @@ interface CartContextValue {
   isApplyingCoupon: boolean;
   applyCoupon: (code: string) => Promise<void>;
   removeCoupon: () => void;
+  /** True right after a coupon is successfully applied — drives a brief celebration overlay, then dismiss. */
+  showCouponCelebration: boolean;
+  dismissCouponCelebration: () => void;
   /** True once the cart has hydrated from localStorage — use to avoid flashing an empty cart on first render. */
   isReady: boolean;
   addItem: (input: AddCartLineInput) => void;
@@ -91,6 +94,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
   const [couponError, setCouponError] = useState<string | null>(null);
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [showCouponCelebration, setShowCouponCelebration] = useState(false);
 
   // Hydrate from localStorage after mount only — localStorage doesn't exist
   // during server rendering, and reading it during render would desync the
@@ -166,6 +170,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setAppliedCoupon(null);
     setCouponError(null);
   }, []);
+  const dismissCouponCelebration = useCallback(() => setShowCouponCelebration(false), []);
 
   const itemCount = useMemo(() => items.reduce((sum, line) => sum + line.quantity, 0), [items]);
   const subtotal = useMemo(() => items.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0), [items]);
@@ -198,6 +203,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           return;
         }
         setAppliedCoupon(data.coupon);
+        setShowCouponCelebration(true);
       } catch {
         setCouponError("Could not apply that code. Please try again.");
       } finally {
@@ -221,6 +227,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       isApplyingCoupon,
       applyCoupon,
       removeCoupon,
+      showCouponCelebration,
+      dismissCouponCelebration,
       isReady,
       addItem,
       updateQuantity,
@@ -243,6 +251,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       isApplyingCoupon,
       applyCoupon,
       removeCoupon,
+      showCouponCelebration,
+      dismissCouponCelebration,
       isReady,
       addItem,
       updateQuantity,

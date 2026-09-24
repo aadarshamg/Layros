@@ -19,3 +19,5 @@ export const DEFAULT_ANNOUNCEMENT_MESSAGES = [
   "Freshly blended in small batches",
   "Complimentary delivery across India",
 ];
+export const DEFAULT_CART_PROMO_BANNER = "Get a Free Gift with Every Order";
+export const DEFAULT_TRUST_BADGE_TEXT = "Loved by over 50,000+ Customers";

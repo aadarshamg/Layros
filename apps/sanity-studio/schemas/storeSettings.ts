@@ -102,6 +102,20 @@ export default defineType({
       group: "reviews",
     }),
     defineField({
+      name: "cartPromoBanner",
+      title: "Cart promo banner",
+      description: 'Short line shown as a banner strip at the top of the cart, e.g. "Get a Free Gift with Every Order". Leave blank to hide it.',
+      type: "string",
+      group: "rewards",
+    }),
+    defineField({
+      name: "trustBadgeText",
+      title: "Trust badge text",
+      description: 'Scrolling banner shown near the bottom of the cart, e.g. "Loved by over 50,000+ Customers". Leave blank to hide it.',
+      type: "string",
+      group: "rewards",
+    }),
+    defineField({
       name: "rewardEnabled",
       title: "Show cart reward banner",
       description: "Off by default — turn on to show a \"spend ₹X more to unlock a reward\" progress bar in the cart.",

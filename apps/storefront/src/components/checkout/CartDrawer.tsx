@@ -9,7 +9,10 @@ import { formatInr, formatSize } from "@/lib/format";
 import { CartLoginStep } from "@/components/checkout/CartLoginStep";
 import { CartAddressStep } from "@/components/checkout/CartAddressStep";
 import { CartPaymentStep } from "@/components/checkout/CartPaymentStep";
+import { CouponWidget } from "@/components/checkout/CouponWidget";
+import { CouponCelebration } from "@/components/checkout/CouponCelebration";
 import { RECENT_PRODUCT_STORAGE_KEY } from "@/components/product/ProductInterestTracker";
+import { DEFAULT_CART_PROMO_BANNER, DEFAULT_TRUST_BADGE_TEXT } from "@/lib/site-defaults";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 
 interface SuggestedVariant {
@@ -38,6 +41,8 @@ interface StoreSettings {
   rewardEnabled: boolean;
   rewardThreshold?: number;
   rewardDescription?: string;
+  cartPromoBanner?: string;
+  trustBadgeText?: string;
 }
 
 export function CartDrawer() {
@@ -48,10 +53,6 @@ export function CartDrawer() {
     appliedCoupon,
     couponDiscount,
     total,
-    couponError,
-    isApplyingCoupon,
-    applyCoupon,
-    removeCoupon,
     isDrawerOpen,
     closeDrawer,
     updateQuantity,
@@ -60,7 +61,6 @@ export function CartDrawer() {
   } = useCart();
   const { isLoggedIn, customer } = useAuth();
   const [suggestions, setSuggestions] = useState<SuggestedProduct[]>([]);
-  const [couponInput, setCouponInput] = useState("");
   const [storeSettings, setStoreSettings] = useState<StoreSettings>({ rewardEnabled: false });
   type DrawerView = "cart" | "login" | "address" | "payment";
   const [view, setView] = useState<DrawerView>("cart");
@@ -138,12 +138,6 @@ export function CartDrawer() {
     });
   }
 
-  function handleApplyCoupon(event: React.FormEvent) {
-    event.preventDefault();
-    if (!couponInput.trim()) return;
-    applyCoupon(couponInput.trim());
-  }
-
   // Resumes wherever they left off: once delivery details exist (guest or
   // logged-in), skip straight back to payment rather than re-asking. A
   // logged-in customer with a saved address and email on file skips the
@@ -181,6 +175,7 @@ export function CartDrawer() {
         aria-modal="true"
         aria-labelledby="cart-drawer-title"
       >
+        <CouponCelebration />
         <header className="cart-drawer-header">
           <div>
             <h2 id="cart-drawer-title">
@@ -189,6 +184,10 @@ export function CartDrawer() {
           </div>
           <button type="button" onClick={closeDrawer} aria-label="Close cart" className="cart-close">×</button>
         </header>
+
+        {view === "cart" && items.length > 0 && (
+          <div className="cart-promo-banner">{storeSettings.cartPromoBanner || DEFAULT_CART_PROMO_BANNER}</div>
+        )}
 
         {view === "cart" && items.length > 0 && storeSettings.rewardEnabled && rewardTarget > 0 && (
           <section className={`cart-reward ${rewardRemaining === 0 ? "is-unlocked" : ""}`} aria-label="Order reward progress">
@@ -281,26 +280,7 @@ export function CartDrawer() {
                 })}
               </ul>
 
-              <details className="cart-coupon" open={Boolean(appliedCoupon)}>
-                <summary>
-                  <span><b>Enter coupon code</b><small>{appliedCoupon ? `${appliedCoupon.code} applied` : "View all offers"}</small></span>
-                  <span aria-hidden="true">+</span>
-                </summary>
-                <div className="cart-coupon-body">
-                  {appliedCoupon ? (
-                    <div className="cart-coupon-applied">
-                      <span><b>{appliedCoupon.code}</b> saved {formatInr(couponDiscount)}</span>
-                      <button type="button" onClick={removeCoupon}>Remove</button>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleApplyCoupon}>
-                      <input type="text" value={couponInput} onChange={(event) => setCouponInput(event.target.value)} placeholder="Enter coupon code" aria-label="Coupon code" />
-                      <button type="submit" disabled={isApplyingCoupon || !couponInput.trim()}>{isApplyingCoupon ? "Checking…" : "Apply"}</button>
-                    </form>
-                  )}
-                  {couponError && !appliedCoupon && <p className="cart-coupon-error">{couponError}</p>}
-                </div>
-              </details>
+              <CouponWidget />
 
               {crossSell.length > 0 && (
                 <section className="cart-recommendations" aria-labelledby="cart-recommendations-title">
@@ -328,6 +308,14 @@ export function CartDrawer() {
                   </div>
                 </section>
               )}
+
+              <div className="cart-trust-marquee" aria-hidden="true">
+                <div className="cart-trust-marquee-track">
+                  {Array.from({ length: 4 }, (_, i) => (
+                    <span key={i}>✦ {storeSettings.trustBadgeText || DEFAULT_TRUST_BADGE_TEXT}</span>
+                  ))}
+                </div>
+              </div>
             </>
           ))}
         </div>

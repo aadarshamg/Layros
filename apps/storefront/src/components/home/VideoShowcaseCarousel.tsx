@@ -20,7 +20,7 @@ export function VideoShowcaseCarousel({ videos }: { videos: ShoppableVideo[] }) 
 
   return (
     <>
-      <div className="mt-8 flex gap-4 overflow-x-auto pb-4 [scrollbar-width:thin] snap-x snap-mandatory">
+      <div className="home-reel-track">
         {videos.map((video) => (
           <VideoTile key={video.id} video={video} onExpand={() => setOpenVideo(video)} />
         ))}
@@ -35,6 +35,7 @@ function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () =>
   const variant = video.product.variants[0];
   const discount = variant ? discountPercent(variant.price, variant.compareAtPrice) : null;
   const [justAdded, setJustAdded] = useState(false);
+  const promoLabel = video.promoBadge && !/demo|replace/i.test(video.promoBadge) ? video.promoBadge : "Featured";
 
   function handleAddToCart(event: React.MouseEvent) {
     event.stopPropagation();
@@ -57,63 +58,47 @@ function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () =>
   }
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={onExpand}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          onExpand();
-        }
-      }}
-      className="group relative aspect-9/16 w-48 shrink-0 cursor-pointer snap-start overflow-hidden rounded-3xl bg-charcoal text-left sm:w-56"
-    >
-      <video
-        src={video.videoUrl}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-      <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-black/60 to-transparent p-2">
-        {video.creatorHandle && (
-          <div className="flex items-center gap-1.5">
-            {video.creatorAvatar && (
-              <Image src={video.creatorAvatar} alt="" width={20} height={20} className="rounded-full" />
-            )}
-            <span className="text-xs font-medium text-white drop-shadow">{video.creatorHandle}</span>
+    <article className="home-reel-card">
+      <button
+        type="button"
+        className="home-reel-preview"
+        onClick={onExpand}
+        aria-label={`Watch ${video.product.title}`}
+      >
+        <video src={video.videoUrl} autoPlay muted loop playsInline />
+        <span className="home-reel-shade" aria-hidden="true" />
+        <span className="home-reel-creator">
+          {video.creatorAvatar && <Image src={video.creatorAvatar} alt="" width={24} height={24} />}
+          <span>{video.creatorHandle || "@leyros"}</span>
+        </span>
+        <span className="home-reel-badge">{promoLabel}</span>
+        <span className="home-reel-play" aria-hidden="true"><i /></span>
+      </button>
+
+      <div className="home-reel-product">
+        <span className="home-reel-kicker">Shop the story</span>
+        <h3>{video.product.title}</h3>
+        {variant && (
+          <div className="home-reel-price">
+            <strong>{formatInr(variant.price)}</strong>
+            {variant.compareAtPrice && <s>{formatInr(variant.compareAtPrice)}</s>}
+            {discount && <span>{discount}% off</span>}
           </div>
         )}
-        {video.promoBadge && (
-          <span className="mt-1 inline-block rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-charcoal">
-            {video.promoBadge}
-          </span>
-        )}
+        <div className="home-reel-actions">
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className={`video-tile-add${justAdded ? " added" : ""}`}
+          >
+            <span className="video-tile-add-label">{justAdded ? "Added ✓" : "Add to bag"}</span>
+          </button>
+          <button type="button" className="home-reel-view" onClick={onExpand} aria-label={`View ${video.product.title}`}>
+            <span aria-hidden="true">↗</span>
+          </button>
+        </div>
       </div>
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white">
-        <p className="truncate text-sm font-medium">{video.product.title}</p>
-        {variant && (
-          <p className="mt-0.5 text-sm">
-            {formatInr(variant.price)}
-            {variant.compareAtPrice && (
-              <span className="ml-1.5 text-xs text-white/60 line-through">{formatInr(variant.compareAtPrice)}</span>
-            )}
-            {discount && <span className="ml-1.5 text-xs font-medium text-emerald-300">{discount}% off</span>}
-          </p>
-        )}
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          className={`video-tile-add mt-2 block w-full cursor-pointer rounded-full border border-white bg-white py-1.5 text-center text-xs uppercase tracking-widest active:scale-95 ${
-            justAdded ? "text-offwhite added" : "text-charcoal hover:text-offwhite"
-          }`}
-        >
-          <span className="video-tile-add-label">{justAdded ? "Added ✓" : "Add to cart"}</span>
-        </button>
-      </div>
-    </div>
+    </article>
   );
 }
 

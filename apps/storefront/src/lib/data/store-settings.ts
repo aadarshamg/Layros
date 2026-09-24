@@ -15,6 +15,8 @@ export interface StoreSettings {
   googleRating?: number;
   googleReviewCount?: number;
   googleReviewsUrl?: string;
+  cartPromoBanner?: string;
+  trustBadgeText?: string;
   rewardEnabled: boolean;
   rewardThreshold?: number;
   rewardDescription?: string;
@@ -33,6 +35,8 @@ interface RawStoreSettings {
   googleRating?: number | null;
   googleReviewCount?: number | null;
   googleReviewsUrl?: string | null;
+  cartPromoBanner?: string | null;
+  trustBadgeText?: string | null;
   rewardEnabled?: boolean | null;
   rewardThreshold?: number | null;
   rewardDescription?: string | null;
@@ -67,6 +71,8 @@ export async function getStoreSettings(): Promise<StoreSettings> {
         googleRating,
         googleReviewCount,
         googleReviewsUrl,
+        cartPromoBanner,
+        trustBadgeText,
         rewardEnabled,
         rewardThreshold,
         rewardDescription
@@ -95,6 +101,8 @@ export async function getStoreSettings(): Promise<StoreSettings> {
       googleRating: settings.googleRating ?? undefined,
       googleReviewCount: settings.googleReviewCount ?? undefined,
       googleReviewsUrl: settings.googleReviewsUrl ?? undefined,
+      cartPromoBanner: settings.cartPromoBanner ?? undefined,
+      trustBadgeText: settings.trustBadgeText ?? undefined,
       rewardEnabled: Boolean(settings.rewardEnabled && settings.rewardThreshold),
       rewardThreshold: settings.rewardThreshold ?? undefined,
       rewardDescription: settings.rewardDescription ?? undefined,

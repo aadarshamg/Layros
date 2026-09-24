@@ -17,7 +17,7 @@ export function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }
         <header className="home-category-heading">
           <div>
             <p>Find your kind of fragrance</p>
-            <h2 id="home-category-title">Shop by category</h2>
+            <h2 id="home-category-title">Shop By Category</h2>
           </div>
           <Link href="/collections/all">Explore everything <span aria-hidden="true">→</span></Link>
         </header>

@@ -23,8 +23,8 @@ export default async function Home() {
   const [familyShowcase, categoryShowcase, newArrivals, bestSellers, storeSettings] = await Promise.all([
     getFamilyShowcase(),
     getCategoryShowcase(),
-    getNewArrivals(4),
-    getBestSellers(4),
+    getNewArrivals(8),
+    getBestSellers(10),
     getStoreSettings(),
   ]);
 

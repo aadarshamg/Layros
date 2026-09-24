@@ -152,13 +152,13 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      className="video-modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
       <div
-        className="relative flex w-full max-w-3xl overflow-hidden rounded-3xl bg-offwhite shadow-2xl max-sm:flex-col"
+        className="video-modal-panel relative flex w-full max-w-3xl overflow-hidden rounded-3xl bg-offwhite shadow-2xl max-sm:flex-col"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -170,7 +170,7 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
           ✕
         </button>
 
-        <div className="relative aspect-9/16 w-full max-w-sm bg-charcoal sm:w-2/5">
+        <div className="video-modal-media relative aspect-9/16 w-full max-w-sm bg-charcoal sm:w-2/5">
           <video
             ref={videoRef}
             src={video.videoUrl}
@@ -178,7 +178,7 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
             muted={muted}
             loop
             playsInline
-            className="absolute inset-0 h-full w-full object-cover"
+            className="video-modal-video absolute inset-0 h-full w-full object-cover"
           />
           <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
             {video.creatorHandle ? (
@@ -207,9 +207,9 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
           )}
         </div>
 
-        <div className="flex flex-1 flex-col p-6">
+        <div className="video-modal-details flex flex-1 flex-col p-6">
           {video.product.images[0] && (
-            <div className="relative h-28 w-28 overflow-hidden rounded-2xl bg-ivory">
+            <div className="video-modal-product-image relative h-28 w-28 overflow-hidden rounded-2xl bg-ivory">
               <Image src={video.product.images[0]} alt={video.product.title} fill className="object-cover" />
             </div>
           )}
@@ -223,9 +223,9 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
               {discount && <span className="ml-2 text-sm font-medium text-emerald-700">{discount}% OFF</span>}
             </p>
           )}
-          <p className="mt-3 text-sm text-charcoal-soft/70">{video.product.description}</p>
+          <p className="video-modal-description mt-3 text-sm text-charcoal-soft/70">{video.product.description}</p>
 
-          <div className="mt-auto flex gap-3 pt-6">
+          <div className="video-modal-actions mt-auto flex gap-3 pt-6">
             <button
               type="button"
               onClick={handleAddToCart}

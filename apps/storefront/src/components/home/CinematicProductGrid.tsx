@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { PerfumeProduct } from "@leyros/types";
-import { formatInr } from "@/lib/format";
-import { CinematicQuickAddButton } from "@/components/home/CinematicQuickAddButton";
+import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurchasePanel";
+import { HorizontalProductShelf } from "@/components/home/HorizontalProductShelf";
 
 export function CinematicProductGrid({
   eyebrow,
@@ -29,9 +29,12 @@ export function CinematicProductGrid({
           </div>
           {note && <span>{note}</span>}
         </div>
-        <div className="cinematic-product-grid">
+        <HorizontalProductShelf label={heading}>
           {products.map((product) => {
-            const cheapest = [...product.variants].sort((a, b) => a.price - b.price)[0];
+            const tagline = [product.details.family, product.details.concentration, product.details.gender]
+              .filter(Boolean)
+              .join(" | ")
+              .toUpperCase();
             return (
               <article className="cinematic-product" key={product.id}>
                 <Link href={`/products/${product.handle}`} className="cinematic-product-image">
@@ -43,22 +46,21 @@ export function CinematicProductGrid({
                       sizes="(max-width: 700px) 90vw, (max-width: 1100px) 50vw, 25vw"
                     />
                   )}
-                  {product.tags[0] && <small className="cinematic-product-badge">{product.tags[0]}</small>}
+                  {product.tags[0] && (
+                    <small className="cinematic-product-badge">
+                      <span aria-hidden="true">↗</span> {product.tags[0]}
+                    </small>
+                  )}
                 </Link>
                 <div className="cinematic-product-copy">
                   <h3>{product.title}</h3>
-                  <p>
-                    {[product.details.notesTop[0], product.details.notesHeart[0], product.details.notesBase[0]]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </p>
-                  {cheapest && <strong>{formatInr(cheapest.price)}</strong>}
-                  <CinematicQuickAddButton product={product} />
+                  {tagline && <p>{tagline}</p>}
+                  <ProductCardPurchasePanel product={product} />
                 </div>
               </article>
             );
           })}
-        </div>
+        </HorizontalProductShelf>
       </div>
     </section>
   );

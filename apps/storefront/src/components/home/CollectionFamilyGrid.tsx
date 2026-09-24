@@ -18,23 +18,30 @@ export function CollectionFamilyGrid({ entries }: { entries: FamilyShowcaseEntry
             <Link href="/collections/all">View all fragrances <i aria-hidden="true">→</i></Link>
           </div>
         </div>
-        <div className="cinematic-product-grid">
+        <div className="home-family-grid">
           {entries.map(({ family, product }) => (
             <Link
               key={family}
               href={`/collections/all?family=${family}`}
-              className="cinematic-product-image"
-              style={{ display: "block" }}
+              className="home-family-card"
             >
-              {product.images[0] && (
-                <Image
-                  src={product.images[0]}
-                  alt={`${FAMILY_LABELS[family]} fragrances`}
-                  fill
-                  sizes="(max-width: 700px) 90vw, (max-width: 1100px) 50vw, 25vw"
-                />
-              )}
-              <small>{FAMILY_LABELS[family]}</small>
+              <span className="home-family-media">
+                {product.images[0] && (
+                  <Image
+                    src={product.images[0]}
+                    alt={`${FAMILY_LABELS[family]} fragrances`}
+                    fill
+                    sizes="(max-width: 700px) 84vw, (max-width: 1100px) 38vw, 280px"
+                  />
+                )}
+              </span>
+              <span className="home-family-copy">
+                <span>
+                  <small>Fragrance family</small>
+                  <strong>{FAMILY_LABELS[family]}</strong>
+                </span>
+                <i aria-hidden="true">→</i>
+              </span>
             </Link>
           ))}
         </div>

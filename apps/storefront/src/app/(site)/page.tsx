@@ -9,9 +9,8 @@ import { VideoShowcase } from "@/components/home/VideoShowcase";
 import { FaqSection } from "@/components/home/FaqSection";
 import { PressSection } from "@/components/home/PressSection";
 import { EditorialMarquee } from "@/components/home/EditorialMarquee";
-import { ProductOfMonth } from "@/components/home/ProductOfMonth";
 import { ShopByCategory } from "@/components/home/ShopByCategory";
-import { getBestSellers, getCategoryShowcase, getFamilyShowcase, getNewArrivals, getProductOfMonth } from "@/lib/data/products";
+import { getBestSellers, getCategoryShowcase, getFamilyShowcase, getNewArrivals } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 
 export const metadata: Metadata = buildMetadata({
@@ -21,17 +20,16 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function Home() {
-  const [familyShowcase, categoryShowcase, newArrivals, bestSellers, productOfMonth, storeSettings] = await Promise.all([
+  const [familyShowcase, categoryShowcase, newArrivals, bestSellers, storeSettings] = await Promise.all([
     getFamilyShowcase(),
     getCategoryShowcase(),
     getNewArrivals(4),
     getBestSellers(4),
-    getProductOfMonth(),
     getStoreSettings(),
   ]);
 
   return (
-    <div className="cinematic-home">
+    <div className="storefront-home">
       <CinematicHero tagline={storeSettings.tagline} videoUrl={storeSettings.heroVideoUrl} posterUrl={storeSettings.heroPosterUrl} />
 
       <CollectionFamilyGrid entries={familyShowcase} />
@@ -47,8 +45,6 @@ export default async function Home() {
       </section>
 
       <ShopByCategory entries={categoryShowcase} />
-
-      {productOfMonth && <ProductOfMonth {...productOfMonth} />}
 
       <CinematicProductGrid
         eyebrow="Newly composed"

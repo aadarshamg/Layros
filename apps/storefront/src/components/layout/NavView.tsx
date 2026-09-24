@@ -105,8 +105,15 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
   return (
     <header className={isHome ? `home-header${isScrolled ? " is-scrolled" : ""}` : "site-header"}>
       {!isHome && (
-        <div className="announcement">
-          {announcements.map((message) => <span key={message}>{message}</span>)}
+        <div className="announcement" aria-label="Store announcements">
+          <div className="announcement-track">
+            <div className="announcement-group">
+              {announcements.map((message) => <span key={message}>{message}</span>)}
+            </div>
+            <div className="announcement-group" aria-hidden="true">
+              {announcements.map((message) => <span key={`repeat-${message}`}>{message}</span>)}
+            </div>
+          </div>
         </div>
       )}
       <div className="nav-shell">

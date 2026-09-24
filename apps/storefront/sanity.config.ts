@@ -44,6 +44,20 @@ export default defineConfig({
               .child(S.documentList().title("Customers").filter('_type == "customer"').defaultOrdering([{ field: "_createdAt", direction: "desc" }])),
             S.documentTypeListItem("product").title("Products"),
             S.documentTypeListItem("shoppableVideo").title("Shoppable Videos"),
+            S.documentTypeListItem("trialSet")
+              .title("Trial Sets")
+              .child(S.documentList().title("Trial Sets").filter('_type == "trialSet"').defaultOrdering([{ field: "order", direction: "asc" }])),
+            S.listItem()
+              .title("Product Reviews")
+              .schemaType("productReview")
+              .child(
+                S.list()
+                  .title("Product Reviews")
+                  .items([
+                    S.listItem().title("Pending approval").child(S.documentList().title("Pending approval").schemaType("productReview").filter('_type == "productReview" && approved != true').defaultOrdering([{ field: "submittedAt", direction: "desc" }])),
+                    S.listItem().title("Approved").child(S.documentList().title("Approved").schemaType("productReview").filter('_type == "productReview" && approved == true').defaultOrdering([{ field: "submittedAt", direction: "desc" }])),
+                  ]),
+              ),
             S.documentTypeListItem("coupon").title("Coupons"),
             S.documentTypeListItem("review")
               .title("Google Reviews")

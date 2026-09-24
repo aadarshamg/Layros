@@ -7,6 +7,8 @@ export interface StoreSettings {
   tagline?: string;
   heroVideoUrl?: string;
   heroPosterUrl?: string;
+  trialSectionTitle?: string;
+  trialSectionSubtitle?: string;
   contactEmail?: string;
   contactPhone?: string;
   brandAddress?: string;
@@ -27,6 +29,8 @@ interface RawStoreSettings {
   tagline?: string | null;
   heroVideoUrl?: string | null;
   heroPoster?: SanityImageSource | null;
+  trialSectionTitle?: string | null;
+  trialSectionSubtitle?: string | null;
   contactEmail?: string | null;
   contactPhone?: string | null;
   brandAddress?: string | null;
@@ -63,6 +67,8 @@ export async function getStoreSettings(): Promise<StoreSettings> {
         tagline,
         "heroVideoUrl": heroVideo.asset->url,
         heroPoster,
+        trialSectionTitle,
+        trialSectionSubtitle,
         contactEmail,
         contactPhone,
         brandAddress,
@@ -93,6 +99,8 @@ export async function getStoreSettings(): Promise<StoreSettings> {
       tagline: settings.tagline ?? undefined,
       heroVideoUrl: settings.heroVideoUrl ?? undefined,
       heroPosterUrl,
+      trialSectionTitle: settings.trialSectionTitle ?? undefined,
+      trialSectionSubtitle: settings.trialSectionSubtitle ?? undefined,
       contactEmail: settings.contactEmail ?? undefined,
       contactPhone: settings.contactPhone ?? undefined,
       brandAddress: settings.brandAddress ?? undefined,

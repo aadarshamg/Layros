@@ -20,7 +20,7 @@ export interface PerfumeDetails {
 
 export interface PerfumeVariant {
   id: string;
-  sizeMl: 30 | 50 | 100;
+  sizeMl: number;
   /**
    * Free-text size/quantity label, e.g. "100ml", "645g", "10ml x 5" —
    * displayed instead of `sizeMl`+"ml" whenever present, since the catalog
@@ -66,6 +66,9 @@ export interface PerfumeProduct {
   details: PerfumeDetails;
   /** Real merchandising category, e.g. "Men Perfumes", "Fragrance Candles", "Car Perfumes". */
   category?: string;
+  /** Approved shopper reviews only; 0 / undefined until an admin approves one. */
+  reviewCount?: number;
+  reviewAverage?: number;
   createdAt: string;
 }
 

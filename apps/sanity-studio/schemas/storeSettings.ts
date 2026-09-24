@@ -46,6 +46,20 @@ export default defineType({
       group: "homepage",
     }),
     defineField({
+      name: "trialSectionTitle",
+      title: "Trial sets section heading",
+      description: 'Heading above the Trial Sets tiles on the homepage. Leave blank for "The Discovery Edit". The tiles themselves are managed under "Trial Sets".',
+      type: "string",
+      group: "homepage",
+    }),
+    defineField({
+      name: "trialSectionSubtitle",
+      title: "Trial sets section subtitle",
+      description: "Optional short line under the heading. Leave blank to hide.",
+      type: "string",
+      group: "homepage",
+    }),
+    defineField({
       name: "contactEmail",
       title: "Contact email",
       type: "string",

@@ -326,8 +326,21 @@ export function CartDrawer() {
             {/* Snapmint isn't wired up for real checkout yet — informational only until merchant details are shared. */}
             <p className="cart-snapmint">
               <span className="cart-snapmint-tag">NEW</span>
-              or Pay <b>{formatInr(Math.round(total / 3))}</b> now, rest later by <span className="cart-snapmint-brand">snapmint</span>
-              <span className="cart-snapmint-plans">View Plans</span>
+              <span className="cart-snapmint-copy">
+                or Pay <b className="cart-snapmint-amount">{formatInr(Math.round(total / 3))}</b> now, rest later by <span className="cart-snapmint-brand">snapmint</span>
+              </span>
+              <a
+                href="https://snapmint.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cart-snapmint-action"
+                aria-label="View Snapmint EMI plans on the official Snapmint website (opens in a new tab)"
+              >
+                <span className="cart-snapmint-plans">View Plans</span>
+                <span className="cart-snapmint-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 20 20"><path d="m8 5 5 5-5 5" /></svg>
+                </span>
+              </a>
             </p>
             <button type="button" onClick={startCheckout} className="cart-checkout">
               <span className="cart-checkout-copy"><b>Checkout</b><small>Cards, UPI &amp; secure payment</small></span>

@@ -18,6 +18,8 @@ export interface RawSanityProduct {
   videoUrl?: string | null;
   tags?: string[] | null;
   category?: string | null;
+  reviewCount?: number | null;
+  reviewAverage?: number | null;
   variants?:
     | {
         id: string;
@@ -61,6 +63,8 @@ export const PRODUCT_PROJECTION = `{
   videoUrl,
   tags,
   category,
+  "reviewCount": count(*[_type == "productReview" && approved == true && product._ref == ^._id]),
+  "reviewAverage": math::avg(*[_type == "productReview" && approved == true && product._ref == ^._id].rating),
   variants[]{
     "id": _key,
     sizeMl,
@@ -89,7 +93,7 @@ export const PRODUCT_PROJECTION = `{
 export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
   const variants: PerfumeVariant[] = (raw.variants ?? []).map((variant) => ({
     id: variant.id,
-    sizeMl: (variant.sizeMl ?? 50) as 30 | 50 | 100,
+    sizeMl: variant.sizeMl ?? 50,
     sizeLabel: variant.sizeLabel ?? undefined,
     sku: variant.sku ?? "",
     price: variant.price ?? 0,
@@ -121,6 +125,8 @@ export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
     variants,
     tags: raw.tags ?? [],
     category: raw.category ?? undefined,
+    reviewCount: raw.reviewCount ?? 0,
+    reviewAverage: raw.reviewAverage ?? undefined,
     createdAt: raw.createdAt,
     details: {
       concentration: raw.details?.concentration ?? "EDP",

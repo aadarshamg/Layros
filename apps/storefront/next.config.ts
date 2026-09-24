@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
   // schemas as the standalone apps/sanity-studio deployment rather than
   // duplicating them.
   transpilePackages: ["sanity-studio"],
+  // The cart and checkout live entirely in the cart drawer; old page URLs go home.
+  async redirects() {
+    return [
+      { source: "/cart", destination: "/", permanent: false },
+      { source: "/checkout/details", destination: "/", permanent: false },
+      { source: "/checkout/payment", destination: "/", permanent: false },
+    ];
+  },
   images: {
     remotePatterns: [
       // Demo/seed imagery (plan §9 Phase 1 verification) — replace with real

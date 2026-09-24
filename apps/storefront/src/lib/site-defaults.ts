@@ -21,3 +21,4 @@ export const DEFAULT_ANNOUNCEMENT_MESSAGES = [
 ];
 export const DEFAULT_CART_PROMO_BANNER = "Get a Free Gift with Every Order";
 export const DEFAULT_TRUST_BADGE_TEXT = "Loved by over 50,000+ Customers";
+export const DEFAULT_TRIAL_SECTION_TITLE = "The Discovery Edit";

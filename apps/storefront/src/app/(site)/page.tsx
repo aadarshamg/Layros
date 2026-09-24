@@ -10,6 +10,7 @@ import { FaqSection } from "@/components/home/FaqSection";
 import { PressSection } from "@/components/home/PressSection";
 import { EditorialMarquee } from "@/components/home/EditorialMarquee";
 import { ShopByCategory } from "@/components/home/ShopByCategory";
+import { TrialSetShowcase } from "@/components/home/TrialSetShowcase";
 import { getBestSellers, getCategoryShowcase, getFamilyShowcase, getNewArrivals } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 
@@ -51,6 +52,8 @@ export default async function Home() {
         products={bestSellers}
         variant="signature-scents"
       />
+
+      <TrialSetShowcase title={storeSettings.trialSectionTitle} subtitle={storeSettings.trialSectionSubtitle} />
 
       <VideoShowcase />
 

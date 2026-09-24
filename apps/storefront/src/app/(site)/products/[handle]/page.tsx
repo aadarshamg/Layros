@@ -9,6 +9,9 @@ import { getProductByHandle } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { ProductInterestTracker } from "@/components/product/ProductInterestTracker";
+import { ProductRatingLine } from "@/components/product/ProductRatingLine";
+import { ProductReviews } from "@/components/product/ProductReviews";
+import { genderLabel } from "@/lib/product-labels";
 import { formatInr } from "@/lib/format";
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
@@ -41,7 +44,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const hasFullDescription = product.description.length > shortDescription.length;
   const isFragrance = !product.category || /perfume|attar/i.test(product.category);
   const productAttributes = isFragrance
-    ? [details.gender, details.family, details.concentration]
+    ? [genderLabel(product) ?? details.gender, details.family, details.concentration]
     : [product.category, ...product.tags].filter((attribute): attribute is string => Boolean(attribute)).slice(0, 3);
   const productAccord = isFragrance
     ? [details.notesTop[0], details.notesHeart[0], details.notesBase[0]].filter(Boolean).join(" · ")
@@ -86,6 +89,9 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
 
           <div className="product-info">
             <h1 className={product.title.length > 52 ? "is-long" : undefined}>{product.title}</h1>
+            <div className="product-rating-row">
+              <ProductRatingLine handle={product.handle} count={product.reviewCount} average={product.reviewAverage} />
+            </div>
             <div className="product-attributes" aria-label="Product attributes">
               {productAttributes.map((attribute) => <span key={attribute}>{attribute}</span>)}
             </div>
@@ -146,6 +152,8 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
           </div>
         </div>
       </section>
+
+      <ProductReviews productId={product.id} count={product.reviewCount} average={product.reviewAverage} />
 
       <section className="olfactory-section">
         <div className="page-shell olfactory-grid">

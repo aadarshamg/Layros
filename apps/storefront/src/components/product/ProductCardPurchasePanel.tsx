@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import type { PerfumeProduct } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatInr, formatSize } from "@/lib/format";
@@ -12,7 +11,6 @@ import { formatInr, formatSize } from "@/lib/format";
  * placeholder (price split into 3) until a real financing partner is wired in.
  */
 export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct }) {
-  const router = useRouter();
   const { addItem, openDrawer } = useCart();
   const sortedVariants = [...product.variants].sort((a, b) => a.price - b.price);
   const [selectedId, setSelectedId] = useState(sortedVariants[0]?.id);
@@ -27,7 +25,7 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
     ? Math.round((1 - variant.price / compareAt) * 100)
     : null;
 
-  function addSelectedVariant() {
+  function handleQuickAdd() {
     addItem({
       productId: product.id,
       handle: product.handle,
@@ -41,18 +39,9 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
       compareAtPrice: variant.compareAtPrice,
       quantity: 1,
     });
-  }
-
-  function handleQuickAdd() {
-    addSelectedVariant();
     setJustAdded(true);
     openDrawer();
     window.setTimeout(() => setJustAdded(false), 1500);
-  }
-
-  function handleBuyNow() {
-    addSelectedVariant();
-    router.push("/checkout/details");
   }
 
   return (
@@ -79,14 +68,9 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
           ))}
         </div>
       )}
-      <div className="product-card-actions">
       <button type="button" onClick={handleQuickAdd} className="product-card-quick-add">
         {justAdded ? "Added ✓" : "Add to cart"}
       </button>
-        <button type="button" onClick={handleBuyNow} className="product-card-buy-now">
-          Buy now
-        </button>
-      </div>
     </div>
   );
 }

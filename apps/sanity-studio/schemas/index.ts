@@ -5,6 +5,8 @@ import seo from "./seo";
 import blockContent from "./blockContent";
 import product from "./product";
 import shoppableVideo from "./shoppableVideo";
+import trialSet from "./trialSet";
+import productReview from "./productReview";
 import order from "./order";
 import coupon from "./coupon";
 import storeSettings from "./storeSettings";
@@ -20,6 +22,8 @@ export const schemaTypes = [
   blockContent,
   product,
   shoppableVideo,
+  trialSet,
+  productReview,
   order,
   coupon,
   storeSettings,

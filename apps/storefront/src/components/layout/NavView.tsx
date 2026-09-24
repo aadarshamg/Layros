@@ -148,7 +148,10 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
           ) : (
             <button type="button" aria-label="Search fragrances" className="nav-search-trigger" onClick={() => setIsSearchOpen(true)}><span>Search</span><span aria-hidden="true">⌕</span></button>
           )}
-          <Link href={accountHref} aria-label={accountLabel} className="nav-account-link">{accountLabel}</Link>
+          <Link href={accountHref} aria-label={accountLabel} className="nav-account-link">
+            <span className="nav-account-icon" aria-hidden="true" />
+            <span className="nav-account-text">{accountLabel}</span>
+          </Link>
           <button type="button" onClick={openDrawer} aria-label={`Shopping bag, ${bagCount} item${bagCount === 1 ? "" : "s"}`} className="bag-link cursor-pointer">
             <span className="bag-outline" aria-hidden="true" /><span className="bag-text">Bag</span><span className="bag-count">{bagCount}</span>
           </button>

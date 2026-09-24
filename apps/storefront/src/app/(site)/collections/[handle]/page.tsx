@@ -29,7 +29,7 @@ export default async function CollectionPage({
   const requestedSort = typeof query.sort === "string" ? query.sort : "recommended";
   const sort = (["recommended", "new", "price-asc", "price-desc"] as const).find((value) => value === requestedSort) ?? "recommended";
   const isNewLaunch = sort === "new";
-  const { products, count } = await listProducts({
+  const { products } = await listProducts({
     q: typeof query.q === "string" ? query.q : undefined,
     category: activeCategory || undefined,
     family: activeFamily || undefined,
@@ -47,10 +47,9 @@ export default async function CollectionPage({
             <h1>{isNewLaunch ? "New Launch" : handle === "all" ? "Shop All" : handle.replace(/-/g, " ")}</h1>
             <p>Long-lasting perfumes, concentrated attars, and scent-led gifts—made for the way you actually live.</p>
           </div>
-          <div className="collection-intro-stat"><strong>{count}</strong><span>scents to explore</span></div>
         </header>
 
-        <CollectionControls count={count} />
+        <CollectionControls />
 
         {products.length ? (
           <div className="collection-product-grid">

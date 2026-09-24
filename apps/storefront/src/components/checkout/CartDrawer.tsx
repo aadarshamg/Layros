@@ -11,6 +11,7 @@ import { CartAddressStep } from "@/components/checkout/CartAddressStep";
 import { CartPaymentStep } from "@/components/checkout/CartPaymentStep";
 import { CouponWidget } from "@/components/checkout/CouponWidget";
 import { CouponCelebration } from "@/components/checkout/CouponCelebration";
+import { CartRecommendationSlider } from "@/components/checkout/CartRecommendationSlider";
 import { RECENT_PRODUCT_STORAGE_KEY } from "@/components/product/ProductInterestTracker";
 import { DEFAULT_CART_PROMO_BANNER, DEFAULT_TRUST_BADGE_TEXT } from "@/lib/site-defaults";
 import type { CheckoutDetailsFormData } from "@leyros/types";
@@ -182,6 +183,7 @@ export function CartDrawer() {
               {view === "cart" ? <>Your Cart <small>({totalItemCount} {totalItemCount === 1 ? "item" : "items"})</small></> : "Checkout"}
             </h2>
           </div>
+          {view !== "cart" && <strong className="cart-checkout-header-total">{formatInr(total)}</strong>}
           <button type="button" onClick={closeDrawer} aria-label="Close cart" className="cart-close">×</button>
         </header>
 
@@ -284,10 +286,7 @@ export function CartDrawer() {
 
               {crossSell.length > 0 && (
                 <section className="cart-recommendations" aria-labelledby="cart-recommendations-title">
-                  <div className="cart-section-heading">
-                    <h3 id="cart-recommendations-title">You Might Also Like</h3>
-                  </div>
-                  <div className="cart-recommendation-track">
+                  <CartRecommendationSlider>
                     {crossSell.map((product) => {
                       const discount = product.variant ? discountPercent(product.variant.price, product.variant.compareAtPrice) : null;
                       return (
@@ -305,7 +304,7 @@ export function CartDrawer() {
                         </article>
                       );
                     })}
-                  </div>
+                  </CartRecommendationSlider>
                 </section>
               )}
 
@@ -333,9 +332,15 @@ export function CartDrawer() {
             <button type="button" onClick={startCheckout} className="cart-checkout">
               <span className="cart-checkout-copy"><b>Checkout</b><small>Cards, UPI &amp; secure payment</small></span>
               <span className="cart-checkout-payment-icons" aria-hidden="true">
-                <span className="pay-chip pay-chip-gpay">G Pay</span>
-                <span className="pay-chip pay-chip-phonepe">PhonePe</span>
-                <span className="pay-chip pay-chip-paytm">Paytm</span>
+                <span className="payment-brand payment-brand-gpay">
+                  <Image src="/google-pay-mark.svg" alt="" width={42} height={29} />
+                </span>
+                <span className="payment-brand payment-brand-phonepe">
+                  <Image src="/phonepe-logo.svg" alt="" width={52} height={19} />
+                </span>
+                <span className="payment-brand payment-brand-paytm">
+                  <Image src="/paytm-logo.svg" alt="" width={43} height={14} />
+                </span>
               </span>
               <span className="cart-checkout-arrow" aria-hidden="true">→</span>
             </button>

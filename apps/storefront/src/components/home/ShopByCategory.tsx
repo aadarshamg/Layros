@@ -23,7 +23,7 @@ export function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }
         </header>
 
         <div className="home-category-track">
-          {entries.map((entry, index) => (
+          {entries.map((entry) => (
             <Link
               key={entry.value}
               href={`/collections/all?category=${encodeURIComponent(entry.value)}`}
@@ -31,16 +31,18 @@ export function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }
             >
               <div className="home-category-image">
                 <Image src={entry.image} alt="" fill sizes="(max-width: 700px) 75vw, (max-width: 1100px) 33vw, 20vw" />
-                <span>{String(index + 1).padStart(2, "0")}</span>
               </div>
               <div className="home-category-copy">
                 <div>
                   <h3>{entry.label}</h3>
                   <p>{CATEGORY_COPY[entry.value]}</p>
                 </div>
-                <span className="home-category-arrow" aria-hidden="true"><span>→</span></span>
+                <span className="home-category-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M5 12h13m-5-5 5 5-5 5" />
+                  </svg>
+                </span>
               </div>
-              {entry.productCount > 0 && <small>{entry.productCount} products</small>}
             </Link>
           ))}
         </div>

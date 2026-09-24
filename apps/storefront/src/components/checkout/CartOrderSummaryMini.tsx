@@ -11,10 +11,14 @@ export function CartOrderSummaryMini() {
   return (
     <details className="order-summary-mini">
       <summary>
-        <span className="order-summary-mini-icon" aria-hidden="true">🛍</span>
+        <span className="order-summary-mini-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 5h2l1.5 10h11.8l1.7-7H6" /><circle cx="9" cy="19" r="1.3" /><circle cx="17" cy="19" r="1.3" /></svg>
+        </span>
         <span>Order summary</span>
         <small>{itemCount} {itemCount === 1 ? "item" : "items"}</small>
-        <strong>{formatInr(total)}</strong>
+        <span className="order-summary-mini-chevron" aria-hidden="true">
+          <svg viewBox="0 0 20 20"><path d="m5.5 7.5 4.5 4.5 4.5-4.5" /></svg>
+        </span>
       </summary>
       <div className="order-summary-mini-body">
         <ul>

@@ -72,7 +72,6 @@ function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () =>
           <span>{video.creatorHandle || "@leyros"}</span>
         </span>
         <span className="home-reel-badge">{promoLabel}</span>
-        <span className="home-reel-play" aria-hidden="true"><i /></span>
       </button>
 
       <div className="home-reel-product">

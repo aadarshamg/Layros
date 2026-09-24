@@ -7,7 +7,7 @@ import { CATEGORY_FILTER_OPTIONS } from "@/lib/data/categories";
 const families = ["floral", "woody", "oriental", "fresh", "gourmand"];
 const genders = ["unisex", "feminine", "masculine"];
 
-export function CollectionControls({ count }: { count: number }) {
+export function CollectionControls() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,7 +38,6 @@ export function CollectionControls({ count }: { count: number }) {
   return (
     <div className="collection-controls">
       <div className="collection-controls-bar">
-        <span className="collection-result-count">{count} products</span>
         <div className="collection-control-actions">
           <button
             type="button"

@@ -31,10 +31,9 @@ export function CinematicProductGrid({
         </div>
         <HorizontalProductShelf label={heading}>
           {products.map((product) => {
-            const tagline = [product.details.family, product.details.concentration, product.details.gender]
-              .filter(Boolean)
-              .join(" | ")
-              .toUpperCase();
+            const attributes = [product.details.family, product.details.concentration, product.details.gender]
+              .filter(Boolean);
+            const isInStock = product.variants.some((item) => item.inventoryQuantity > 0);
             return (
               <article className="cinematic-product" key={product.id}>
                 <Link href={`/products/${product.handle}`} className="cinematic-product-image">
@@ -54,7 +53,14 @@ export function CinematicProductGrid({
                 </Link>
                 <div className="cinematic-product-copy">
                   <h3>{product.title}</h3>
-                  {tagline && <p>{tagline}</p>}
+                  {attributes.length > 0 && (
+                    <div className="cinematic-product-meta" aria-label="Product attributes">
+                      {attributes.map((attribute) => <span key={attribute}>{attribute}</span>)}
+                    </div>
+                  )}
+                  <div className={`cinematic-product-stock${isInStock ? " is-available" : ""}`}>
+                    <span aria-hidden="true" /> {isInStock ? "In stock" : "Currently unavailable"}
+                  </div>
                   <ProductCardPurchasePanel product={product} />
                 </div>
               </article>

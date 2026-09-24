@@ -66,7 +66,11 @@ const PAYMENT_BRANDS = [
   },
 ];
 
-const PAYMENT_SERVICES = ["Net Banking", "Wallet", "Cash on Delivery"];
+const PAYMENT_SERVICES = [
+  { label: "Net Banking", src: "/payment-netbanking.svg" },
+  { label: "Wallet", src: "/payment-wallet.svg" },
+  { label: "Cash on Delivery", src: "/payment-cod.svg" },
+];
 
 export function Footer({
   contactEmail,
@@ -180,7 +184,12 @@ export function Footer({
                 <img src={brand.src} alt={brand.label} loading="lazy" decoding="async" />
               </span>
             ))}
-            {PAYMENT_SERVICES.map((method) => <span key={method} className="footer-payment-badge">{method}</span>)}
+            {PAYMENT_SERVICES.map((method) => (
+              <span key={method.label} className="footer-payment-badge">
+                <img src={method.src} alt="" loading="lazy" decoding="async" />
+                {method.label}
+              </span>
+            ))}
           </div>
           <span className="footer-copyright">
             © {new Date().getFullYear()} LEYROS · <Link href="/legal/privacy">Privacy</Link> · <Link href="/legal/terms">Terms</Link> · <Link href="/legal/shipping-returns">Shipping &amp; Returns</Link>

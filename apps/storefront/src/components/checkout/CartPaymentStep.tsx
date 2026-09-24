@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
-import { formatSize, formatInr } from "@/lib/format";
+import { formatInr } from "@/lib/format";
+import { CartOrderSummaryMini } from "@/components/checkout/CartOrderSummaryMini";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 
 declare global {
@@ -29,7 +30,7 @@ export function CartPaymentStep({
 }) {
   const router = useRouter();
   const { isLoggedIn } = useAuth();
-  const { items, subtotal, mrpSavings, appliedCoupon, couponDiscount, total, clearCart } = useCart();
+  const { items, appliedCoupon, total, clearCart } = useCart();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("razorpay");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -151,25 +152,7 @@ export function CartPaymentStep({
         <p>{details.shippingAddress.city}, {details.shippingAddress.state} {details.shippingAddress.postalCode}</p>
       </div>
 
-      <div className="cart-saved-address">
-        <b>Order summary</b>
-        <ul className="cart-step-summary-list">
-          {items.map((item) => (
-            <li key={item.id}>
-              <span>{item.title} ({formatSize(item.sizeMl, item.sizeLabel)}) × {item.quantity}</span>
-              <span>{formatInr(item.unitPrice * item.quantity)}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="cart-step-summary-totals">
-          <div><span>Subtotal</span><span>{formatInr(subtotal)}</span></div>
-          {mrpSavings > 0 && <div className="is-discount"><span>MRP savings</span><span>−{formatInr(mrpSavings)}</span></div>}
-          {appliedCoupon && couponDiscount > 0 && (
-            <div className="is-discount"><span>Coupon ({appliedCoupon.code})</span><span>−{formatInr(couponDiscount)}</span></div>
-          )}
-          <div className="is-total"><span>Total</span><span>{formatInr(total)}</span></div>
-        </div>
-      </div>
+      <CartOrderSummaryMini />
 
       <div className="cart-saved-address">
         <b>Payment method</b>

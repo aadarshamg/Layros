@@ -49,10 +49,14 @@ export function HorizontalProductShelf({
       <div className="home-product-shelf-controls" aria-label={`${label} carousel controls`}>
         <span>Slide products</span>
         <button type="button" disabled={!canMoveBack} onClick={() => move(-1)} aria-label={`Previous ${label} product`}>
-          ←
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="m12.5 4.5-5.5 5.5 5.5 5.5" />
+          </svg>
         </button>
         <button type="button" disabled={!canMoveForward} onClick={() => move(1)} aria-label={`Next ${label} product`}>
-          →
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="m7.5 4.5 5.5 5.5-5.5 5.5" />
+          </svg>
         </button>
       </div>
       <div className="cinematic-product-grid" ref={trackRef} tabIndex={0} aria-label={`${label} products`}>

@@ -22,7 +22,10 @@ export default async function CollectionPage({
   const activeCategory = typeof query.category === "string" ? query.category : "";
   const activeFamily = typeof query.family === "string" ? query.family : "";
   const activeGender = typeof query.gender === "string" ? query.gender : "";
-  const inStock = query.inStock !== "0";
+  // Defaults off: the migrated catalog never had per-variant inventory
+  // tracked (every product is 0), so an on-by-default "in stock" filter
+  // silently hid the entire catalog. Only apply it if explicitly requested.
+  const inStock = query.inStock === "1";
   const requestedSort = typeof query.sort === "string" ? query.sort : "recommended";
   const sort = (["recommended", "new", "price-asc", "price-desc"] as const).find((value) => value === requestedSort) ?? "recommended";
   const isNewLaunch = sort === "new";

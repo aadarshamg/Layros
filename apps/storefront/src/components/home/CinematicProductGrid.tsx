@@ -41,7 +41,7 @@ export function CinematicProductGrid({
                       sizes="(max-width: 700px) 90vw, (max-width: 1100px) 50vw, 25vw"
                     />
                   )}
-                  {product.tags[0] && <small>{product.tags[0]}</small>}
+                  {product.tags[0] && <small className="cinematic-product-badge">{product.tags[0]}</small>}
                 </Link>
                 <div className="cinematic-product-copy">
                   <h3>{product.title}</h3>

@@ -86,9 +86,11 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
 
   return (
     <header className={isHome ? `home-header${isScrolled ? " is-scrolled" : ""}` : "site-header"}>
-      <div className="announcement">
-        {announcements.map((message) => <span key={message}>{message}</span>)}
-      </div>
+      {!isHome && (
+        <div className="announcement">
+          {announcements.map((message) => <span key={message}>{message}</span>)}
+        </div>
+      )}
       <div className="nav-shell">
         <details className="home-menu">
           <summary aria-label="Open menu"><span aria-hidden="true">☰</span> Menu</summary>
@@ -104,10 +106,10 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
         </details>
         <Link href="/" className="wordmark" aria-label="LEYROS home">
           <Image
-            src={isHome ? "/leyros/leyros-logo-white.png" : "/leyros/leyros-logo-dark.webp"}
+            src="/leyros/leyros-logo-white.png"
             alt=""
-            width={isHome ? 1280 : 128}
-            height={isHome ? 1280 : 128}
+            width={1280}
+            height={1280}
             priority
             className="wordmark-logo"
           />

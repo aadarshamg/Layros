@@ -324,8 +324,19 @@ export function CartDrawer() {
           <footer className="cart-drawer-footer">
             {totalSavings > 0 && <div className="cart-savings">You save {formatInr(totalSavings)} on this order</div>}
             <div className="cart-total-row"><span><b>Estimated total</b><small>Taxes included</small></span><strong>{formatInr(total)}</strong></div>
+            {/* Snapmint isn't wired up for real checkout yet — informational only until merchant details are shared. */}
+            <p className="cart-snapmint">
+              <span className="cart-snapmint-tag">NEW</span>
+              or Pay <b>{formatInr(Math.round(total / 3))}</b> now, rest later by <span className="cart-snapmint-brand">snapmint</span>
+              <span className="cart-snapmint-plans">View Plans</span>
+            </p>
             <button type="button" onClick={startCheckout} className="cart-checkout">
               <span className="cart-checkout-copy"><b>Checkout</b><small>Cards, UPI &amp; secure payment</small></span>
+              <span className="cart-checkout-payment-icons" aria-hidden="true">
+                <span className="pay-chip pay-chip-gpay">G Pay</span>
+                <span className="pay-chip pay-chip-phonepe">PhonePe</span>
+                <span className="pay-chip pay-chip-paytm">Paytm</span>
+              </span>
               <span className="cart-checkout-arrow" aria-hidden="true">→</span>
             </button>
           </footer>

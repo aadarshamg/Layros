@@ -11,7 +11,7 @@ export function CartOrderSummaryMini() {
   return (
     <details className="order-summary-mini">
       <summary>
-        <span aria-hidden="true">🛍</span>
+        <span className="order-summary-mini-icon" aria-hidden="true">🛍</span>
         <span>Order summary</span>
         <small>{itemCount} {itemCount === 1 ? "item" : "items"}</small>
         <strong>{formatInr(total)}</strong>

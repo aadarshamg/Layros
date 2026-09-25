@@ -63,6 +63,14 @@ export async function getSessionCustomerId(): Promise<string | null> {
   return payload.customerId;
 }
 
+/** The OTP-verified 10-digit phone from the session cookie, or null when logged out. */
+export async function getSessionPhone(): Promise<string | null> {
+  const store = await cookies();
+  const payload = verifyPayload<SessionPayload>(store.get(SESSION_COOKIE)?.value, getSecret());
+  if (!payload || Date.now() > payload.expiresAt) return null;
+  return payload.phone;
+}
+
 /**
  * Verifies the session cookie and fetches the full profile, checking
  * tokenVersion against Sanity so "log out everywhere" (which bumps it)

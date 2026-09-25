@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { CartOrderSummaryMini } from "@/components/checkout/CartOrderSummaryMini";
 import { CouponWidget } from "@/components/checkout/CouponWidget";
+import { WhatsAppOptIn } from "@/components/checkout/WhatsAppOptIn";
+import { setGuestContact } from "@/lib/cart-recovery/client";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 
 const INDIAN_STATES = [
@@ -116,6 +118,7 @@ export function CartAddressStep({
         setIsSavingProfile(false);
       }
     }
+    if (!isLoggedIn) setGuestContact(phone || undefined, fullName || undefined);
     onContinue(buildDetails(address, email, phone));
   }
 
@@ -214,6 +217,7 @@ export function CartAddressStep({
           <input type="checkbox" checked={newsletterOptIn} onChange={(e) => setNewsletterOptIn(e.target.checked)} />
           <span>Keep me updated on new releases and private sales</span>
         </label>
+        {!isLoggedIn && <WhatsAppOptIn />}
 
         <button type="submit" disabled={isSavingProfile} className="cart-step-primary-button">
           {isSavingProfile ? "Saving…" : "Continue to payment"}

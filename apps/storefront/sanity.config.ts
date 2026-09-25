@@ -58,6 +58,18 @@ export default defineConfig({
                     S.listItem().title("Approved").child(S.documentList().title("Approved").schemaType("productReview").filter('_type == "productReview" && approved == true').defaultOrdering([{ field: "submittedAt", direction: "desc" }])),
                   ]),
               ),
+            S.listItem()
+              .title("Abandoned Carts")
+              .schemaType("abandonedCart")
+              .child(
+                S.list()
+                  .title("Abandoned Carts")
+                  .items([
+                    S.listItem().title("Waiting").child(S.documentList().title("Waiting").schemaType("abandonedCart").filter('_type == "abandonedCart" && status == "active"').defaultOrdering([{ field: "updatedAt", direction: "desc" }])),
+                    S.listItem().title("Recovered").child(S.documentList().title("Recovered").schemaType("abandonedCart").filter('_type == "abandonedCart" && status == "converted"').defaultOrdering([{ field: "updatedAt", direction: "desc" }])),
+                    S.listItem().title("All carts").child(S.documentList().title("All carts").schemaType("abandonedCart").filter('_type == "abandonedCart"').defaultOrdering([{ field: "updatedAt", direction: "desc" }])),
+                  ]),
+              ),
             S.documentTypeListItem("coupon").title("Coupons"),
             S.documentTypeListItem("review")
               .title("Google Reviews")

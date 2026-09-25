@@ -20,6 +20,9 @@ export interface StoreSettings {
   cartPromoBanner?: string;
   trustBadgeText?: string;
   rewardEnabled: boolean;
+  dispatchDays?: number;
+  deliveryDaysMin?: number;
+  deliveryDaysMax?: number;
   rewardThreshold?: number;
   rewardDescription?: string;
 }
@@ -42,6 +45,9 @@ interface RawStoreSettings {
   cartPromoBanner?: string | null;
   trustBadgeText?: string | null;
   rewardEnabled?: boolean | null;
+  dispatchDays?: number | null;
+  deliveryDaysMin?: number | null;
+  deliveryDaysMax?: number | null;
   rewardThreshold?: number | null;
   rewardDescription?: string | null;
 }
@@ -80,6 +86,9 @@ export async function getStoreSettings(): Promise<StoreSettings> {
         cartPromoBanner,
         trustBadgeText,
         rewardEnabled,
+        dispatchDays,
+        deliveryDaysMin,
+        deliveryDaysMax,
         rewardThreshold,
         rewardDescription
       }`,
@@ -111,6 +120,9 @@ export async function getStoreSettings(): Promise<StoreSettings> {
       googleReviewsUrl: settings.googleReviewsUrl ?? undefined,
       cartPromoBanner: settings.cartPromoBanner ?? undefined,
       trustBadgeText: settings.trustBadgeText ?? undefined,
+      dispatchDays: settings.dispatchDays ?? undefined,
+      deliveryDaysMin: settings.deliveryDaysMin ?? undefined,
+      deliveryDaysMax: settings.deliveryDaysMax ?? undefined,
       rewardEnabled: Boolean(settings.rewardEnabled && settings.rewardThreshold),
       rewardThreshold: settings.rewardThreshold ?? undefined,
       rewardDescription: settings.rewardDescription ?? undefined,

@@ -7,6 +7,7 @@ import product from "./product";
 import shoppableVideo from "./shoppableVideo";
 import trialSet from "./trialSet";
 import productReview from "./productReview";
+import abandonedCart from "./abandonedCart";
 import order from "./order";
 import coupon from "./coupon";
 import storeSettings from "./storeSettings";
@@ -24,6 +25,7 @@ export const schemaTypes = [
   shoppableVideo,
   trialSet,
   productReview,
+  abandonedCart,
   order,
   coupon,
   storeSettings,

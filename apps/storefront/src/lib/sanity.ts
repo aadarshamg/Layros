@@ -10,11 +10,17 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 export const sanityConfigured = !!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 
+// Server-side only (no "use client" file imports this). The token lets it
+// keep reading once the dataset is private, which keeps customer/order/cart
+// documents out of the public API; "published" stops a token from also
+// returning unpublished drafts.
 export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion: "2025-01-01",
   useCdn: true,
+  token: process.env.SANITY_API_TOKEN,
+  perspective: "published",
 });
 
 // Passed as the third argument to every sanityClient.fetch() call in

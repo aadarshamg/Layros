@@ -12,6 +12,8 @@ import { ProductInterestTracker } from "@/components/product/ProductInterestTrac
 import { ProductRatingLine } from "@/components/product/ProductRatingLine";
 import { ProductReviews } from "@/components/product/ProductReviews";
 import { genderLabel } from "@/lib/product-labels";
+import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
+import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr } from "@/lib/format";
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
@@ -104,6 +106,11 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               title={product.title}
               image={gallery[0]}
               variants={product.variants}
+            />
+            <DeliveryTimeline
+              dispatchDays={rewardSettings.dispatchDays ?? DEFAULT_DISPATCH_DAYS}
+              deliveryDaysMin={rewardSettings.deliveryDaysMin ?? DEFAULT_DELIVERY_DAYS_MIN}
+              deliveryDaysMax={rewardSettings.deliveryDaysMax ?? DEFAULT_DELIVERY_DAYS_MAX}
             />
             {rewardSettings.rewardEnabled && rewardSettings.rewardThreshold && (
               <section className="product-offers" aria-labelledby="product-offers-heading">

@@ -2,6 +2,7 @@ import "server-only";
 import { createClient } from "next-sanity";
 import type { PricedItem } from "@/lib/checkout/pricing";
 import type { CheckoutDetailsFormData } from "@leyros/types";
+import { markCartConverted } from "@/lib/cart-recovery/store";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -76,6 +77,8 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
       discountAmount: input.discountAmount,
       totalAmount: input.totalAmount,
     });
+    // Customer ids are `customer-<phone>`, so a logged-in order covers both numbers.
+    await markCartConverted([input.details.phone, input.customerId?.replace(/^customer-/, "")], input.orderNumber);
     return true;
   } catch (error) {
     console.error("Failed to save order to Sanity:", input.orderNumber, error);

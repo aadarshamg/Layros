@@ -76,7 +76,6 @@ export function AddToCartForm({ productId, handle, title, image, variants }: Add
           </span>
         </button>
       </div>
-      <p className="delivery-note">* Dispatches within 24–48 hours of ordering.</p>
       {justAdded && <p className="form-message success">Added to your boutique bag.</p>}
     </form>
   );

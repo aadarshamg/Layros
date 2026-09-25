@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld/organization";
 import { CartProvider } from "@/lib/cart-context";
 import { CartDrawer } from "@/components/checkout/CartDrawer";
+import { CartRecoverySync } from "@/components/checkout/CartRecoverySync";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { AuthProvider } from "@/lib/auth-context";
 import { getCurrentCustomer } from "@/lib/auth/session";
@@ -31,6 +32,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
             googleReviewsUrl={storeSettings.googleReviewsUrl}
           />
           <CartDrawer />
+          <CartRecoverySync />
         </CartProvider>
       </AuthProvider>
       <WhatsAppButton number={storeSettings.whatsappNumber} suggestedMessage={storeSettings.whatsappSuggestedMessage} />

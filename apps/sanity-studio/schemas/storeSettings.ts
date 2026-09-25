@@ -11,8 +11,76 @@ export default defineType({
     { name: "contact", title: "Contact & brand" },
     { name: "reviews", title: "Google reviews" },
     { name: "rewards", title: "Cart rewards" },
+    { name: "shipping", title: "Shipping estimate" },
+    { name: "cartRecovery", title: "WhatsApp cart reminders" },
   ],
   fields: [
+    defineField({
+      name: "cartRecoveryEnabled",
+      title: "Send WhatsApp cart reminders",
+      description: "Off by default. When on, shoppers who entered their phone at checkout, agreed to WhatsApp messages, and didn't buy get a reminder. Until a WhatsApp provider is connected (WHATSAPP_API_* env vars) reminders are only logged, not sent.",
+      type: "boolean",
+      initialValue: false,
+      group: "cartRecovery",
+    }),
+    defineField({
+      name: "cartReminderDelayMinutes",
+      title: "First reminder after (minutes)",
+      description: "How long a cart must sit unbought before the first reminder. Leave blank for 60.",
+      type: "number",
+      validation: (Rule) => Rule.integer().min(15).max(1440),
+      group: "cartRecovery",
+    }),
+    defineField({
+      name: "cartSecondReminderHours",
+      title: "Second reminder after (hours)",
+      description: "Hours after the first reminder. Leave blank for 24. Set 0 to send only one reminder.",
+      type: "number",
+      validation: (Rule) => Rule.integer().min(0).max(168),
+      group: "cartRecovery",
+    }),
+    defineField({
+      name: "cartReminderCoupon1",
+      title: "Coupon in first reminder",
+      description: "Optional — must be an active code under Coupons. Leave blank for no coupon.",
+      type: "string",
+      group: "cartRecovery",
+    }),
+    defineField({
+      name: "cartReminderCoupon2",
+      title: "Coupon in second reminder",
+      description: "Optional, e.g. a slightly bigger incentive for the last nudge. Leave blank for no coupon.",
+      type: "string",
+      group: "cartRecovery",
+    }),
+    defineField({
+      name: "dispatchDays",
+      title: "Dispatch within (business days)",
+      description: "How many business days (Mon–Sat) after ordering an order ships. Shown as the \"Shipped\" date on product pages. Leave blank for 2 (the site's \"24–48 hours\" promise).",
+      type: "number",
+      validation: (Rule) => Rule.integer().min(0).max(30),
+      group: "shipping",
+    }),
+    defineField({
+      name: "deliveryDaysMin",
+      title: "Delivery after dispatch — fastest (business days)",
+      description: "Leave blank for 3 (matches \"Standard delivery arrives in 3–5 business days\").",
+      type: "number",
+      validation: (Rule) => Rule.integer().min(0).max(30),
+      group: "shipping",
+    }),
+    defineField({
+      name: "deliveryDaysMax",
+      title: "Delivery after dispatch — slowest (business days)",
+      description: "Leave blank for 5.",
+      type: "number",
+      validation: (Rule) =>
+        Rule.integer().min(0).max(30).custom((value, context) => {
+          const min = (context.document as { deliveryDaysMin?: number } | undefined)?.deliveryDaysMin;
+          return value == null || min == null || value >= min ? true : "Must be at least the fastest delivery days.";
+        }),
+      group: "shipping",
+    }),
     defineField({
       name: "announcementMessages",
       title: "Header announcement bar",

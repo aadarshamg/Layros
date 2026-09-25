@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth-context";
 import { CartOrderSummaryMini } from "@/components/checkout/CartOrderSummaryMini";
 import { CouponWidget } from "@/components/checkout/CouponWidget";
 import { TrustBadges } from "@/components/checkout/TrustBadges";
+import { WhatsAppOptIn } from "@/components/checkout/WhatsAppOptIn";
 
 type Step = "phone" | "code";
 
@@ -83,6 +84,7 @@ export function CartLoginStep({ onBack, onLoggedIn, onGuest }: { onBack: () => v
               />
             </div>
           </label>
+          <WhatsAppOptIn />
           {error && <p className="cart-step-error">{error}</p>}
           <button type="submit" disabled={isLoading} className="cart-step-primary-button">
             {isLoading ? "Sending…" : "Send code"}

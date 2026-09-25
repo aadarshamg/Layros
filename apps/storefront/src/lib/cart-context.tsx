@@ -74,7 +74,8 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-const STORAGE_KEY = "leyros_cart";
+export const CART_STORAGE_KEY = "leyros_cart";
+const STORAGE_KEY = CART_STORAGE_KEY;
 const COUPON_STORAGE_KEY = "leyros_coupon";
 
 function calculateCouponDiscount(coupon: AppliedCoupon, subtotal: number): number {
@@ -109,6 +110,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
       // Corrupt or inaccessible storage (private browsing, quota) — start with an empty cart.
     } finally {
       setIsReady(true);
+    }
+    // Links like WhatsApp cart reminders land on "/?cart=open" to show the bag straight away.
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("cart") === "open") {
+      setIsDrawerOpen(true);
+      url.searchParams.delete("cart");
+      window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }, []);
 

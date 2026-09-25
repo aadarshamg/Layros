@@ -8147,3 +8147,30 @@ body .product-rating-row .product-rating { font-size: 14px; }
   body .product-gender-badge { left: 8px; bottom: 8px; padding: 5px 9px; font-size: 9px; }
   body .product-rating { font-size: 12px; }
 }
+
+/* Product page delivery estimate: Order → Shipped → Delivery. */
+.delivery-timeline { margin: 18px 0 4px; padding: 16px 18px 14px; border: 1px solid rgba(62, 39, 35, .14); border-radius: 18px; background: #fff; box-shadow: 0 10px 26px rgba(62, 39, 35, .06); color: #3e2723; }
+.delivery-timeline-note { margin: 0 0 14px; color: #52463f; font-size: 13px; font-weight: 600; line-height: 1.4; }
+.delivery-timeline-track { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+.delivery-timeline-step { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.delivery-timeline-step + .delivery-timeline-step::before {
+  content: "";
+  position: absolute;
+  top: 19px;
+  left: calc(-50% + 26px);
+  right: calc(50% + 26px);
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #b8860b, #0b1d2a);
+}
+.delivery-timeline-icon { display: grid; width: 40px; height: 40px; margin-bottom: 4px; place-items: center; border-radius: 50%; background: #0b1d2a; color: #fff; }
+.delivery-timeline-step:first-child .delivery-timeline-icon { background: #b8860b; }
+.delivery-timeline-label { color: #6f625b; font-size: 12px; }
+.delivery-timeline-date { min-height: 1.3em; color: #3e2723; font-size: 14px; font-weight: 700; line-height: 1.3; }
+.delivery-timeline-fineprint { margin: 12px 0 0; color: #8a7b72; font-size: 11px; text-align: center; }
+
+@media (max-width: 420px) {
+  .delivery-timeline { padding: 14px 12px 12px; }
+  .delivery-timeline-date { font-size: 12.5px; }
+  .delivery-timeline-step + .delivery-timeline-step::before { left: calc(-50% + 23px); right: calc(50% + 23px); }
+}

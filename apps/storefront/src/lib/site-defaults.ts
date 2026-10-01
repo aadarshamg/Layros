@@ -3,7 +3,7 @@
  * (Store Settings) — kept in one place so, unlike before, a missing config
  * value can never silently drift out of sync across multiple pages again.
  */
-export const DEFAULT_CONTACT_EMAIL = "uknowmusic12@gmail.com";
+export const DEFAULT_CONTACT_EMAIL = "support@leyros.in";
 // Confirmed via the real WhatsApp link (wa.me/919915083150) — the "82150"
 // that had spread across most pages before this file existed was the wrong
 // one; this is the one real number.

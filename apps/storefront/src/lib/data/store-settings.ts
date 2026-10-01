@@ -2,6 +2,14 @@ import "server-only";
 import { sanityClient, sanityConfigured, urlForImage, SANITY_FETCH_OPTIONS } from "@/lib/sanity";
 import type { SanityImageSource } from "@sanity/image-url";
 
+export interface GoogleReviewHighlight {
+  reviewerName: string;
+  rating: number;
+  reviewText: string;
+  reviewDate?: string;
+  reviewUrl?: string;
+}
+
 export interface StoreSettings {
   announcementMessages?: string[];
   tagline?: string;
@@ -17,6 +25,7 @@ export interface StoreSettings {
   googleRating?: number;
   googleReviewCount?: number;
   googleReviewsUrl?: string;
+  googleReviewHighlights?: GoogleReviewHighlight[];
   cartPromoBanner?: string;
   trustBadgeText?: string;
   rewardEnabled: boolean;
@@ -42,6 +51,7 @@ interface RawStoreSettings {
   googleRating?: number | null;
   googleReviewCount?: number | null;
   googleReviewsUrl?: string | null;
+  googleReviewHighlights?: GoogleReviewHighlight[] | null;
   cartPromoBanner?: string | null;
   trustBadgeText?: string | null;
   rewardEnabled?: boolean | null;
@@ -83,6 +93,7 @@ export async function getStoreSettings(): Promise<StoreSettings> {
         googleRating,
         googleReviewCount,
         googleReviewsUrl,
+        googleReviewHighlights[]{reviewerName, rating, reviewText, reviewDate, reviewUrl},
         cartPromoBanner,
         trustBadgeText,
         rewardEnabled,
@@ -118,6 +129,9 @@ export async function getStoreSettings(): Promise<StoreSettings> {
       googleRating: settings.googleRating ?? undefined,
       googleReviewCount: settings.googleReviewCount ?? undefined,
       googleReviewsUrl: settings.googleReviewsUrl ?? undefined,
+      googleReviewHighlights: (settings.googleReviewHighlights ?? []).filter(
+        (review) => review.reviewerName?.trim() && review.reviewText?.trim() && typeof review.rating === "number",
+      ),
       cartPromoBanner: settings.cartPromoBanner ?? undefined,
       trustBadgeText: settings.trustBadgeText ?? undefined,
       dispatchDays: settings.dispatchDays ?? undefined,

@@ -82,7 +82,15 @@ export default defineType({
     defineField({ name: "couponCode", title: "Coupon code used", type: "string" }),
     defineField({ name: "discountAmount", title: "Discount applied (INR)", type: "number" }),
     defineField({ name: "totalAmount", title: "Total (INR)", type: "number", validation: (Rule) => Rule.required().min(0) }),
+    defineField({ name: "giftWrap", title: "Gift wrap requested", type: "boolean", description: "The shopper ticked complimentary gift wrap at checkout." }),
     defineField({ name: "giftWrapMessage", title: "Gift wrap message", type: "text", rows: 2 }),
+    defineField({
+      name: "confirmedBy",
+      title: "Confirmed by",
+      type: "string",
+      readOnly: true,
+      description: "browser = the shopper's checkout page confirmed the payment · webhook = Razorpay confirmed it directly (e.g. the shopper closed the page right after paying).",
+    }),
   ],
   preview: {
     select: { orderNumber: "orderNumber", status: "paymentStatus", amount: "totalAmount", method: "paymentMethod" },

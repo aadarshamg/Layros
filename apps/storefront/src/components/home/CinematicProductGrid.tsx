@@ -3,8 +3,8 @@ import Image from "next/image";
 import type { PerfumeProduct } from "@leyros/types";
 import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurchasePanel";
 import { HorizontalProductShelf } from "@/components/home/HorizontalProductShelf";
-import { ProductRatingLine } from "@/components/product/ProductRatingLine";
-import { genderLabel } from "@/lib/product-labels";
+import { genderLabel, productCardTitle } from "@/lib/product-labels";
+import { getProductBadge } from "@/lib/product-badge";
 
 export function CinematicProductGrid({
   eyebrow,
@@ -33,9 +33,9 @@ export function CinematicProductGrid({
         </div>
         <HorizontalProductShelf label={heading}>
           {products.map((product) => {
-            const attributes = [product.details.family, product.details.concentration].filter(Boolean);
             const gender = genderLabel(product);
-            const isInStock = product.variants.some((item) => item.inventoryQuantity > 0);
+            const displayTitle = productCardTitle(product);
+            const badge = getProductBadge(product);
             return (
               <article className="cinematic-product" key={product.id}>
                 <Link href={`/products/${product.handle}`} className="cinematic-product-image">
@@ -47,24 +47,15 @@ export function CinematicProductGrid({
                       sizes="(max-width: 700px) 90vw, (max-width: 1100px) 50vw, 25vw"
                     />
                   )}
-                  {product.tags[0] && (
-                    <small className="cinematic-product-badge">
-                      <span aria-hidden="true">↗</span> {product.tags[0]}
+                  {badge && (
+                    <small className={`cinematic-product-badge product-badge-${badge.tone}`}>
+                      <span aria-hidden="true">↗</span> {badge.label}
                     </small>
                   )}
                   {gender && <span className="product-gender-badge">{gender}</span>}
                 </Link>
                 <div className="cinematic-product-copy">
-                  <h3>{product.title}</h3>
-                  <ProductRatingLine handle={product.handle} count={product.reviewCount} average={product.reviewAverage} />
-                  {attributes.length > 0 && (
-                    <div className="cinematic-product-meta" aria-label="Product attributes">
-                      {attributes.map((attribute) => <span key={attribute}>{attribute}</span>)}
-                    </div>
-                  )}
-                  <div className={`cinematic-product-stock${isInStock ? " is-available" : ""}`}>
-                    <span aria-hidden="true" /> {isInStock ? "In stock" : "Currently unavailable"}
-                  </div>
+                  <h3 title={product.title}>{displayTitle}</h3>
                   <ProductCardPurchasePanel product={product} />
                 </div>
               </article>

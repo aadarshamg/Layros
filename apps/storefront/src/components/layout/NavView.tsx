@@ -26,6 +26,7 @@ const links: NavLink[] = [
     label: "Fragrance",
     children: [
       { href: "/collections/all?category=collections", label: "All Fragrances" },
+      { href: "/private-blends", label: "Private Blends" },
       { href: `/collections/all?category=${encodeURIComponent("fresh, citrus & marine")}`, label: "Fresh, Citrus & Marine" },
       { href: `/collections/all?category=${encodeURIComponent("ambry")}`, label: "Ambry" },
       { href: `/collections/all?category=${encodeURIComponent("floral & fruity")}`, label: "Floral & Fruity" },
@@ -38,7 +39,7 @@ const links: NavLink[] = [
   { href: `/collections/all?category=${encodeURIComponent("gift pack")}`, label: "Luxury Gift Pack" },
   { href: `/collections/all?category=${encodeURIComponent("car perfume")}`, label: "Car Perfumes" },
   { href: "/collections/all?sort=new", label: "New Launch" },
-  { href: "/collections/all?category=candle", label: "Candles" },
+  { href: "/candles", label: "Candles" },
   { href: "/story", label: "About Us" },
 ];
 

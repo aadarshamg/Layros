@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSessionCustomerId } from "@/lib/auth/session";
 import { sanityClient } from "@/lib/sanity";
 import { formatInr } from "@/lib/format";
+import { OrderTrackingStatus } from "@/components/checkout/OrderTrackingStatus";
 
 interface CustomerOrder {
   _id: string;
@@ -57,6 +58,7 @@ export default async function OrdersPage() {
             </span>
             <span className="font-medium">{formatInr(order.totalAmount)}</span>
           </div>
+          <OrderTrackingStatus status={order.fulfillmentStatus} />
         </li>
       ))}
     </ul>

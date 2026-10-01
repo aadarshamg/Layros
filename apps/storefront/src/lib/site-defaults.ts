@@ -17,7 +17,7 @@ export const DEFAULT_BRAND_ADDRESS = "Ludhiana, Punjab, 141116";
 export const DEFAULT_ANNOUNCEMENT_MESSAGES = [
   "Free discovery sample on orders over ₹3,500",
   "Freshly blended in small batches",
-  "Complimentary delivery across India",
+  "Free shipping across India on orders over ₹999",
 ];
 export const DEFAULT_CART_PROMO_BANNER = "Get a Free Gift with Every Order";
 export const DEFAULT_TRUST_BADGE_TEXT = "Loved by over 50,000+ Customers";

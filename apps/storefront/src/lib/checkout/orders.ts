@@ -33,6 +33,9 @@ export interface SaveOrderInput {
   totalAmount: number;
   /** Set only when the order was placed while logged in — derived server-side from the session cookie, never trust a client-submitted id. */
   customerId?: string;
+  /** Fixed document id — lets the browser confirmation and the Razorpay webhook both save the same order without creating a duplicate. */
+  documentId?: string;
+  confirmedBy?: "browser" | "webhook" | "cod";
 }
 
 /**
@@ -50,7 +53,7 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
     return false;
   }
   try {
-    await writeClient.create({
+    const doc = {
       _type: "order",
       orderNumber: input.orderNumber,
       paymentMethod: input.paymentMethod,
@@ -62,7 +65,9 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
       customerEmail: input.details.email,
       customerPhone: input.details.phone,
       shippingAddress: input.details.shippingAddress,
+      giftWrap: Boolean(input.details.giftWrap?.enabled),
       giftWrapMessage: input.details.giftWrap?.enabled ? input.details.giftWrap.message : undefined,
+      confirmedBy: input.confirmedBy,
       items: input.items.map((item, index) => ({
         _type: "orderItem",
         _key: `${input.orderNumber}-item-${index}`,
@@ -76,7 +81,9 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
       couponCode: input.couponCode,
       discountAmount: input.discountAmount,
       totalAmount: input.totalAmount,
-    });
+    };
+    if (input.documentId) await writeClient.createIfNotExists({ _id: input.documentId, ...doc });
+    else await writeClient.create(doc);
     // Customer ids are `customer-<phone>`, so a logged-in order covers both numbers.
     await markCartConverted([input.details.phone, input.customerId?.replace(/^customer-/, "")], input.orderNumber);
     return true;

@@ -43,6 +43,9 @@ export default defineConfig({
               .title("Customers")
               .child(S.documentList().title("Customers").filter('_type == "customer"').defaultOrdering([{ field: "_createdAt", direction: "desc" }])),
             S.documentTypeListItem("product").title("Products"),
+            S.documentTypeListItem("productHighlight")
+              .title("Product Highlights")
+              .child(S.documentList().title("Product Highlights").filter('_type == "productHighlight"').defaultOrdering([{ field: "order", direction: "asc" }])),
             S.documentTypeListItem("shoppableVideo").title("Shoppable Videos"),
             S.documentTypeListItem("trialSet")
               .title("Trial Sets")

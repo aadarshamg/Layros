@@ -1,5 +1,7 @@
 "use client";
 
+import { FREE_SHIPPING_THRESHOLD } from "@/lib/shipping";
+
 import { useEffect, useState } from "react";
 
 interface TrustBadgeSettings {
@@ -48,7 +50,7 @@ export function TrustBadges() {
       )}
       <div className="trust-badge"><span className="trust-badge-icon"><TrustIcon type="place" /></span><span>Made in Kannauj, India</span></div>
       <div className="trust-badge"><span className="trust-badge-icon"><TrustIcon type="secure" /></span><span>Secure checkout · Razorpay encrypted</span></div>
-      <div className="trust-badge"><span className="trust-badge-icon"><TrustIcon type="delivery" /></span><span>Complimentary delivery across India</span></div>
+      <div className="trust-badge"><span className="trust-badge-icon"><TrustIcon type="delivery" /></span><span>Free shipping over ₹{FREE_SHIPPING_THRESHOLD}</span></div>
     </div>
   );
 }

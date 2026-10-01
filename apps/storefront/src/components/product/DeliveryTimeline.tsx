@@ -49,13 +49,14 @@ export function DeliveryTimeline({ dispatchDays, deliveryDaysMin, deliveryDaysMa
   }, [dispatchDays, deliveryDaysMin, deliveryDaysMax]);
 
   const steps = [
-    { label: "Order today", value: dates?.order, icon: <BagIcon /> },
-    { label: "Shipped by", value: dates?.shipped, icon: <TruckIcon /> },
-    { label: "Delivery", value: dates?.delivery, icon: <PinIcon /> },
+    { label: "Order placed", value: dates?.order, icon: <BagIcon /> },
+    { label: "Dispatched", value: dates?.shipped, icon: <TruckIcon /> },
+    { label: "Delivered", value: dates?.delivery, icon: <PinIcon /> },
   ];
 
   return (
     <section className="delivery-timeline" aria-label="Estimated delivery">
+      <header className="delivery-timeline-heading"><span>Order tracking</span><strong>From the Leyros atelier to your door</strong></header>
       <p className="delivery-timeline-note">
         Ships within {dispatchDays} business {dispatchDays === 1 ? "day" : "days"} · delivered {deliveryDaysMin}–{deliveryDaysMax} business days after dispatch
       </p>

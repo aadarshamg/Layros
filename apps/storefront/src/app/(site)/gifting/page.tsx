@@ -23,11 +23,12 @@ export default async function GiftingPage() {
       </div>
       <p className="content-page-copy" style={{ maxWidth: 640, color: "var(--ink-soft)", fontFamily: "var(--font-playfair)", fontSize: 17, lineHeight: 1.65, marginBottom: 40 }}>
         Every Leyros bottle can be finished with our signature wax-sealed box wrap and a handwritten
-        card — a small ceremony that makes the gift feel considered, not rushed. Add it to any bottle
-        from its product page, or ask our concierge to help you choose.
+        card — a small ceremony that makes the gift feel considered, not rushed. Add it to any order
+        at checkout by ticking &ldquo;Add complimentary gift wrap&rdquo; and writing your card message,
+        or ask our concierge to help you choose.
       </p>
       <div className="button-row">
-        <Link href="/products/gift-wrap" className="button button-dark">Add gift wrap to an order</Link>
+        <Link href={`/collections/all?category=${encodeURIComponent("gift pack")}`} className="button button-dark">Shop gift-ready fragrances</Link>
         <a href={`mailto:${email}?subject=Gifting%20enquiry`} className="button button-light">
           Ask for gifting advice
         </a>

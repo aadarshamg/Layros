@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { CartOrderSummaryMini } from "@/components/checkout/CartOrderSummaryMini";
 import { CouponWidget } from "@/components/checkout/CouponWidget";
+import { CheckoutBenefits } from "@/components/checkout/CheckoutBenefits";
 import { WhatsAppOptIn } from "@/components/checkout/WhatsAppOptIn";
 import { setGuestContact } from "@/lib/cart-recovery/client";
 import type { CheckoutDetailsFormData } from "@leyros/types";
@@ -129,6 +130,7 @@ export function CartAddressStep({
           <button type="button" onClick={onBack} className="cart-step-back">← Back to bag</button>
         </div>
         <h3 className="cart-step-title">Deliver to</h3>
+        <CheckoutBenefits compact />
         <CartOrderSummaryMini />
         <CouponWidget />
         <div className="cart-saved-address">
@@ -150,6 +152,7 @@ export function CartAddressStep({
         <button type="button" onClick={savedAddress ? () => setIsEditing(false) : onBack} className="cart-step-back">← Back</button>
       </div>
       <h3 className="cart-step-title">Delivery details</h3>
+      <CheckoutBenefits compact />
       <CartOrderSummaryMini />
       <CouponWidget />
       <form onSubmit={handleSubmit} className="cart-step-form">

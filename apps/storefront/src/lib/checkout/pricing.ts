@@ -14,6 +14,7 @@ export interface PricedItem {
   sizeLabel?: string;
   quantity: number;
   unitPrice: number;
+  category?: string;
 }
 
 export interface PricingResult {
@@ -22,14 +23,14 @@ export interface PricingResult {
 }
 
 /** Builds a sku -> current price map straight from Sanity — never trust a price the client sends. */
-async function fetchPriceBySku(): Promise<Map<string, number>> {
-  const products = await sanityClient.fetch<{ variants: { sku?: string; price?: number }[] }[]>(
-    `*[_type == "product"]{ variants[]{sku, price} }`,
+async function fetchPriceBySku(): Promise<Map<string, { price: number; category?: string; title: string }>> {
+  const products = await sanityClient.fetch<{ title: string; category?: string; variants: { sku?: string; price?: number }[] }[]>(
+    `*[_type == "product"]{ title, category, variants[]{sku, price} }`,
   );
-  const priceBySku = new Map<string, number>();
+  const priceBySku = new Map<string, { price: number; category?: string; title: string }>();
   for (const product of products) {
     for (const variant of product.variants ?? []) {
-      if (variant.sku) priceBySku.set(variant.sku, variant.price ?? 0);
+      if (variant.sku) priceBySku.set(variant.sku, { price: variant.price ?? 0, category: product.category, title: product.title });
     }
   }
   return priceBySku;
@@ -50,13 +51,13 @@ export async function priceItems(items: IncomingItem[]): Promise<PricingResult> 
   const priced: PricedItem[] = [];
   let amountInr = 0;
   for (const item of items) {
-    const price = priceBySku.get(item.sku);
-    if (price === undefined) {
+    const pricedVariant = priceBySku.get(item.sku);
+    if (pricedVariant === undefined) {
       throw new Error(`"${item.title}" is no longer available.`);
     }
     const quantity = Math.max(1, Math.min(10, Math.floor(item.quantity)));
-    amountInr += price * quantity;
-    priced.push({ sku: item.sku, title: item.title, sizeLabel: item.sizeLabel, quantity, unitPrice: price });
+    amountInr += pricedVariant.price * quantity;
+    priced.push({ sku: item.sku, title: pricedVariant.title, sizeLabel: item.sizeLabel, quantity, unitPrice: pricedVariant.price, category: pricedVariant.category });
   }
 
   if (amountInr <= 0) {

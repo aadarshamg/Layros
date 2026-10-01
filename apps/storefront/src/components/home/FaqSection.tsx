@@ -10,7 +10,7 @@ const faqs: FaqItem[] = [
   {
     question: "Do you ship internationally?",
     answer:
-      "Not yet — we currently ship within India only. Standard delivery arrives in 3–5 business days, Express the next business day, and orders over ₹3,500 include complimentary white-glove shipping.",
+      "Not yet — we currently ship within India only. Standard delivery arrives in 3–5 business days, and orders of ₹999 or more qualify for free standard shipping.",
   },
   {
     question: "Can I try a fragrance before buying a full bottle?",

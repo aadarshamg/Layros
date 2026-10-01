@@ -17,9 +17,9 @@ export default async function ShippingReturnsPage() {
   return (
     <LegalPageLayout title="Shipping & Returns" path="/legal/shipping-returns" updated="20 September 2026">
       <p>
-        We currently ship within India only. Standard delivery arrives in 3&ndash;5 business days;
-        Express arrives the next business day. Orders over ₹3,500 include complimentary white-glove
-        shipping — the exact rate for your order is shown at checkout before you pay.
+        We currently ship within India only. Standard delivery usually arrives in 3&ndash;5 business days.
+        Standard shipping costs ₹99 for orders below ₹999 and is free when the product subtotal reaches ₹999.
+        The applicable shipping charge and final payable amount are shown before payment.
       </p>
       <p>
         Because each bottle is hand-finished to order, we accept returns only for items that arrive

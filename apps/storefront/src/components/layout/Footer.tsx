@@ -21,7 +21,7 @@ const HELP_LINKS = [
 ];
 
 const TOP_CATEGORY_LINKS = [
-  { label: "Fragrance Candles", href: "/collections/all?category=candle" },
+  { label: "Fragrance Candles", href: "/candles" },
   { label: "Gift Pack (Celeb Perfumes)", href: `/collections/all?category=${encodeURIComponent("gift pack")}` },
   { label: "Attar Fragrances", href: "/collections/all?category=attar" },
   { label: "The Fresh, Citrus & Marine Collections", href: `/collections/all?category=${encodeURIComponent("fresh, citrus & marine")}` },
@@ -39,13 +39,13 @@ const TOP_CATEGORY_LINKS = [
 // title/category-verified subsets.
 const COLLECTIONS_LINKS = [
   { label: "All Perfumes", href: "/collections/all?category=collections" },
-  { label: "Soy-Gel Wax Candle Collection", href: "/collections/all?category=candle" },
+  { label: "Soy-Gel Wax Candle Collection", href: "/candles" },
   { label: "New Launch Perfumes 2026", href: "/collections/all?category=collections&sort=new" },
   { label: "Unisex Perfumes Collection", href: "/collections/all?category=collections" },
   { label: "Festival Gift Sets", href: `/collections/all?category=${encodeURIComponent("gift pack")}` },
   { label: "Summer Perfumes Collection", href: "/collections/all?category=collections" },
   { label: "Men Perfumes Collection", href: "/collections/all?category=collections" },
-  { label: "Concrete Candle Collection", href: `/collections/all?category=candle&q=${encodeURIComponent("concrete")}` },
+  { label: "Concrete Candle Collection", href: "/candles?type=concrete#candle-products" },
   { label: "Women Perfumes Collection", href: "/collections/all?category=collections" },
 ];
 

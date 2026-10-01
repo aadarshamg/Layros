@@ -10,6 +10,7 @@ import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { AuthProvider } from "@/lib/auth-context";
 import { getCurrentCustomer } from "@/lib/auth/session";
 import { getStoreSettings } from "@/lib/data/store-settings";
+import { WelcomeOfferPopup } from "@/components/layout/WelcomeOfferPopup";
 import "../globals.css";
 
 export default async function SiteLayout({ children }: LayoutProps<"/">) {
@@ -22,6 +23,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
         <CartProvider>
           <SiteMotion />
           <NavView announcementMessages={storeSettings.announcementMessages} />
+          <WelcomeOfferPopup />
           <main className="flex-1">{children}</main>
           <Footer
             contactEmail={storeSettings.contactEmail}

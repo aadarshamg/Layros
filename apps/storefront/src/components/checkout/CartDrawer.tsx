@@ -15,6 +15,7 @@ import { CartRecommendationSlider } from "@/components/checkout/CartRecommendati
 import { RECENT_PRODUCT_STORAGE_KEY } from "@/components/product/ProductInterestTracker";
 import { DEFAULT_CART_PROMO_BANNER, DEFAULT_TRUST_BADGE_TEXT } from "@/lib/site-defaults";
 import type { CheckoutDetailsFormData } from "@leyros/types";
+import { CheckoutBenefits } from "@/components/checkout/CheckoutBenefits";
 
 interface SuggestedVariant {
   id: string;
@@ -29,6 +30,7 @@ interface SuggestedProduct {
   id: string;
   handle: string;
   title: string;
+  category?: string;
   image?: string;
   variant: SuggestedVariant | null;
 }
@@ -53,6 +55,8 @@ export function CartDrawer() {
     mrpSavings,
     appliedCoupon,
     couponDiscount,
+    buyTwoGetOneDiscount,
+    buyTwoGetOneFreeItems,
     total,
     isDrawerOpen,
     closeDrawer,
@@ -120,7 +124,7 @@ export function CartDrawer() {
   const rewardTarget = storeSettings.rewardThreshold ?? 0;
   const rewardRemaining = Math.max(0, rewardTarget - subtotal);
   const rewardProgress = rewardTarget > 0 ? Math.min(100, (subtotal / rewardTarget) * 100) : 0;
-  const totalSavings = mrpSavings + couponDiscount;
+  const totalSavings = mrpSavings + couponDiscount + buyTwoGetOneDiscount;
 
   function handleQuickAdd(product: SuggestedProduct) {
     if (!product.variant) return;
@@ -129,6 +133,7 @@ export function CartDrawer() {
       handle: product.handle,
       variantId: product.variant.id,
       title: product.title,
+      category: product.category,
       image: product.image,
       sizeMl: product.variant.sizeMl,
       sizeLabel: product.variant.sizeLabel,
@@ -190,6 +195,8 @@ export function CartDrawer() {
         {view === "cart" && items.length > 0 && (
           <div className="cart-promo-banner">{storeSettings.cartPromoBanner || DEFAULT_CART_PROMO_BANNER}</div>
         )}
+
+        {view === "cart" && items.length > 0 && <CheckoutBenefits compact />}
 
         {view === "cart" && items.length > 0 && storeSettings.rewardEnabled && rewardTarget > 0 && (
           <section className={`cart-reward ${rewardRemaining === 0 ? "is-unlocked" : ""}`} aria-label="Order reward progress">
@@ -321,8 +328,14 @@ export function CartDrawer() {
 
         {view === "cart" && items.length > 0 && (
           <footer className="cart-drawer-footer">
+            {buyTwoGetOneDiscount > 0 && (
+              <div className="cart-b2g1-summary">
+                <span><b>Buy 2 Get 1 Free</b><small>{buyTwoGetOneFreeItems} eligible {buyTwoGetOneFreeItems === 1 ? "perfume" : "perfumes"} free</small></span>
+                <strong>−{formatInr(buyTwoGetOneDiscount)}</strong>
+              </div>
+            )}
             {totalSavings > 0 && <div className="cart-savings">You save {formatInr(totalSavings)} on this order</div>}
-            <div className="cart-total-row"><span><b>Estimated total</b><small>Taxes included</small></span><strong>{formatInr(total)}</strong></div>
+            <div className="cart-total-row"><span><b>Final payable amount</b><small>Taxes included · after discounts</small></span><strong>{formatInr(total)}</strong></div>
             {/* Snapmint isn't wired up for real checkout yet — informational only until merchant details are shared. */}
             <p className="cart-snapmint">
               <span className="cart-snapmint-tag">NEW</span>

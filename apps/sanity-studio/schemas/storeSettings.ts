@@ -179,9 +179,34 @@ export default defineType({
     defineField({
       name: "googleReviewsUrl",
       title: "Link to your Google reviews",
-      description: "Where the footer's rating badge links to — your Google Business Profile's review page.",
+      description: "Where the footer and homepage review section link — your Google Business Profile's review page.",
       type: "url",
       group: "reviews",
+    }),
+    defineField({
+      name: "googleReviewHighlights",
+      title: "Google review highlights",
+      description: "Only add genuine reviews copied from your Google Business Profile. These appear on the homepage; each original-review link is optional but recommended.",
+      type: "array",
+      group: "reviews",
+      validation: (Rule) => Rule.max(6),
+      of: [
+        {
+          type: "object",
+          name: "googleReviewHighlight",
+          title: "Google review",
+          fields: [
+            defineField({ name: "reviewerName", title: "Reviewer name", type: "string", validation: (Rule) => Rule.required() }),
+            defineField({ name: "rating", title: "Star rating", type: "number", validation: (Rule) => Rule.required().integer().min(1).max(5) }),
+            defineField({ name: "reviewText", title: "Review text", type: "text", rows: 4, validation: (Rule) => Rule.required().min(10).max(600) }),
+            defineField({ name: "reviewDate", title: "Review date", type: "date" }),
+            defineField({ name: "reviewUrl", title: "Original Google review link", type: "url" }),
+          ],
+          preview: {
+            select: { title: "reviewerName", subtitle: "reviewText" },
+          },
+        },
+      ],
     }),
     defineField({
       name: "cartPromoBanner",

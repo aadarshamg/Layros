@@ -7,11 +7,13 @@ export function buildMetadata({
   description,
   path,
   image,
+  keywords,
 }: {
   title: string;
   description: string;
   path: string;
   image?: string;
+  keywords?: string[];
 }): Metadata {
   const url = `${siteUrl}${path}`;
   const socialImage = image || "/og.png";
@@ -19,6 +21,7 @@ export function buildMetadata({
   return {
     title: { absolute: fullTitle },
     description,
+    keywords,
     alternates: { canonical: url },
     openGraph: {
       title: fullTitle,

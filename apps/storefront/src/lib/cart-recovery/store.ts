@@ -41,6 +41,7 @@ export interface ResolvedCartLine {
   handle: string;
   variantId: string;
   title: string;
+  category?: string;
   image?: string;
   sizeMl: number;
   sizeLabel?: string;
@@ -53,6 +54,7 @@ export interface ResolvedCartLine {
 interface RawProduct {
   _id: string;
   title: string;
+  category?: string | null;
   handle?: string | null;
   image?: SanityImageSource | null;
   variants?: { id: string; sizeMl?: number | null; sizeLabel?: string | null; sku?: string | null; price?: number | null; compareAtPrice?: number | null }[] | null;
@@ -71,7 +73,7 @@ export async function resolveCartLines(lines: IncomingCartLine[]): Promise<Resol
   if (valid.length === 0) return [];
   const products = await recoveryClient.fetch<RawProduct[]>(
     `*[_type == "product" && _id in $ids]{
-      _id, title, "handle": slug.current, "image": images[_type == "image"][0],
+      _id, title, category, "handle": slug.current, "image": images[_type == "image"][0],
       variants[]{ "id": _key, sizeMl, sizeLabel, sku, price, compareAtPrice }
     }`,
     { ids: [...new Set(valid.map((line) => line.productId))] },
@@ -94,6 +96,7 @@ export async function resolveCartLines(lines: IncomingCartLine[]): Promise<Resol
       handle: product.handle ?? product._id,
       variantId: line.variantId,
       title: product.title,
+      category: product.category ?? undefined,
       image,
       sizeMl: variant.sizeMl ?? 50,
       sizeLabel: variant.sizeLabel ?? undefined,

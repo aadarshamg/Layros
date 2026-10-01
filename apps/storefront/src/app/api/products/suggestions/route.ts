@@ -12,6 +12,7 @@ async function respondWith(cartProductIds: string[], interestProductIds: string[
       id: product.id,
       handle: product.handle,
       title: product.title,
+      category: product.category,
       image: product.images[0],
       variant: product.variants[0]
         ? {

@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
-import { priceItems, type IncomingItem } from "@/lib/checkout/pricing";
-import { validateCoupon, calculateDiscount } from "@/lib/checkout/coupons";
-import { generateOrderNumber, saveOrder } from "@/lib/checkout/orders";
+import type { IncomingItem } from "@/lib/checkout/pricing";
+import { finalizeRazorpayOrder, findRecordedOrderNumber, getCheckoutSession, razorpayOrderNumber, type CheckoutSession } from "@/lib/checkout/finalize";
 import { getSessionCustomerId } from "@/lib/auth/session";
-import { patchDefaultAddress } from "@/lib/auth/customers";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 
 interface VerifyPayload {
@@ -48,45 +46,32 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid payment signature." }, { status: 400 });
   }
 
-  const orderNumber = generateOrderNumber();
-  const customerId = await getSessionCustomerId();
+  const sessionCustomerId = await getSessionCustomerId();
+  const saved = await getCheckoutSession(razorpay_order_id);
+  // Prefer what this page sent; fall back to the copy saved when payment started.
+  const session: CheckoutSession | null =
+    items?.length && details
+      ? { items, details, couponCode, customerId: sessionCustomerId ?? saved?.customerId }
+      : saved;
 
-  // The payment itself is already secured (the amount was locked in at
-  // create-order time from Sanity's real prices) — items/details here are
-  // only for the order *record*, so a re-priced total is still used rather
-  // than trusting the client's numbers outright.
-  if (items?.length && details) {
+  let orderNumber = (await findRecordedOrderNumber(razorpay_order_id)) ?? razorpayOrderNumber(razorpay_order_id);
+  if (session) {
     try {
-      const { items: pricedItems, amountInr } = await priceItems(items);
-      let discountAmount = 0;
-      if (couponCode) {
-        const couponResult = await validateCoupon(couponCode, amountInr);
-        if (couponResult.valid && couponResult.coupon) {
-          discountAmount = calculateDiscount(couponResult.coupon, amountInr);
-        }
-      }
-      await saveOrder({
-        orderNumber,
-        paymentMethod: "razorpay",
-        paymentStatus: "paid",
+      // The payment itself is already secured (the amount was fixed at
+      // create-order time from catalog prices) — this only writes the order record.
+      ({ orderNumber } = await finalizeRazorpayOrder({
         razorpayOrderId: razorpay_order_id,
         razorpayPaymentId: razorpay_payment_id,
-        details,
-        items: pricedItems,
-        subtotalAmount: amountInr,
-        couponCode: couponCode || undefined,
-        discountAmount: discountAmount || undefined,
-        totalAmount: Math.max(0, amountInr - discountAmount),
-        customerId: customerId ?? undefined,
-      });
-      if (customerId) await patchDefaultAddress(customerId, details.shippingAddress);
+        session,
+        confirmedBy: "browser",
+      }));
     } catch (error) {
       // Payment already succeeded — never fail the customer's checkout over
-      // a record-keeping problem, just log it for manual follow-up.
+      // record-keeping; the Razorpay webhook retries saving the order.
       console.error("Order record-keeping failed after successful payment:", razorpay_payment_id, error);
     }
   } else {
-    console.warn("Verified payment without order details — nothing saved:", razorpay_payment_id);
+    console.warn("Verified payment without order details — left for the webhook:", razorpay_payment_id);
   }
 
   return NextResponse.json({ verified: true, paymentId: razorpay_payment_id, orderNumber });

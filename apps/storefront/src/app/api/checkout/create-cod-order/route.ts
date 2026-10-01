@@ -5,6 +5,8 @@ import { generateOrderNumber, saveOrder } from "@/lib/checkout/orders";
 import { getSessionCustomerId } from "@/lib/auth/session";
 import { patchDefaultAddress } from "@/lib/auth/customers";
 import type { CheckoutDetailsFormData } from "@leyros/types";
+import { calculateBuyTwoGetOne } from "@/lib/promotions";
+import { shippingFeeFor } from "@/lib/shipping";
 
 export async function POST(request: NextRequest) {
   let body: { items?: IncomingItem[]; details?: CheckoutDetailsFormData; couponCode?: string };
@@ -36,12 +38,14 @@ export async function POST(request: NextRequest) {
 
   let discountAmount = 0;
   if (body.couponCode) {
-    const couponResult = await validateCoupon(body.couponCode, pricing.amountInr);
+    const couponResult = await validateCoupon(body.couponCode, pricing.amountInr, pricing.items);
     if (couponResult.valid && couponResult.coupon) {
-      discountAmount = calculateDiscount(couponResult.coupon, pricing.amountInr);
+      discountAmount = calculateDiscount(couponResult.coupon, pricing.amountInr, pricing.items);
     }
   }
-  const totalAmount = Math.max(0, pricing.amountInr - discountAmount);
+  const offerDiscount = calculateBuyTwoGetOne(pricing.items).discountAmount;
+  const shippingFee = shippingFeeFor(pricing.amountInr);
+  const totalAmount = Math.max(0, pricing.amountInr - offerDiscount - discountAmount + shippingFee);
 
   const orderNumber = generateOrderNumber();
   const saved = await saveOrder({
@@ -52,7 +56,7 @@ export async function POST(request: NextRequest) {
     items: pricing.items,
     subtotalAmount: pricing.amountInr,
     couponCode: body.couponCode || undefined,
-    discountAmount: discountAmount || undefined,
+    discountAmount: discountAmount + offerDiscount || undefined,
     totalAmount,
     customerId: sessionCustomerId,
   });

@@ -4,6 +4,7 @@ import type { FamilyShowcaseEntry } from "@/lib/data/products";
 import { FAMILY_LABELS } from "@/lib/data/families";
 import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurchasePanel";
 import { HorizontalProductShelf } from "@/components/home/HorizontalProductShelf";
+import { productCardTitle } from "@/lib/product-labels";
 
 export function CollectionFamilyGrid({ entries }: { entries: FamilyShowcaseEntry[] }) {
   if (entries.length === 0) return null;
@@ -22,9 +23,6 @@ export function CollectionFamilyGrid({ entries }: { entries: FamilyShowcaseEntry
         </div>
         <HorizontalProductShelf label="Our Signature Collection">
           {entries.map(({ family, product }) => {
-            const attributes = [FAMILY_LABELS[family], product.details.concentration, product.details.gender].filter(Boolean);
-            const isInStock = product.variants.some((variant) => variant.inventoryQuantity > 0);
-
             return (
               <article className="cinematic-product" key={family}>
                 <Link href={`/products/${product.handle}`} className="cinematic-product-image">
@@ -39,13 +37,7 @@ export function CollectionFamilyGrid({ entries }: { entries: FamilyShowcaseEntry
                   <small className="cinematic-product-badge">{FAMILY_LABELS[family]}</small>
                 </Link>
                 <div className="cinematic-product-copy">
-                  <h3><Link href={`/products/${product.handle}`}>{product.title}</Link></h3>
-                  <div className="cinematic-product-meta" aria-label="Product attributes">
-                    {attributes.map((attribute) => <span key={attribute}>{attribute}</span>)}
-                  </div>
-                  <div className={`cinematic-product-stock${isInStock ? " is-available" : ""}`}>
-                    <span aria-hidden="true" /> {isInStock ? "In stock" : "Currently unavailable"}
-                  </div>
+                  <h3><Link href={`/products/${product.handle}`} aria-label={product.title} title={product.title}>{productCardTitle(product)}</Link></h3>
                   <ProductCardPurchasePanel product={product} />
                 </div>
               </article>

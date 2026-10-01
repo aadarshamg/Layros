@@ -18,6 +18,7 @@ export interface RawSanityProduct {
   videoUrl?: string | null;
   tags?: string[] | null;
   category?: string | null;
+  highlights?: ({ title?: string | null; icon?: string | null; order?: number | null } | null)[] | null;
   reviewCount?: number | null;
   reviewAverage?: number | null;
   variants?:
@@ -63,6 +64,7 @@ export const PRODUCT_PROJECTION = `{
   videoUrl,
   tags,
   category,
+  "highlights": highlights[]->{title, icon, order},
   "reviewCount": count(*[_type == "productReview" && approved == true && product._ref == ^._id]),
   "reviewAverage": math::avg(*[_type == "productReview" && approved == true && product._ref == ^._id].rating),
   variants[]{
@@ -89,6 +91,19 @@ export const PRODUCT_PROJECTION = `{
     "sampleOfProductId": sampleOfProduct._ref
   }
 }`;
+
+function resolvedGender(raw: RawSanityProduct): "feminine" | "masculine" | "unisex" {
+  const configured = raw.details?.gender;
+  if (configured === "feminine" || configured === "masculine") return configured;
+
+  // The imported legacy catalogue defaulted every item to "unisex". Preserve
+  // that fallback, but honour obvious audience wording already present in the
+  // product title/category so the Men and Women filters are useful immediately.
+  const searchable = [raw.title, raw.category, ...(raw.tags ?? [])].filter(Boolean).join(" ").toLowerCase();
+  if (/\b(women|woman|female|feminine|femme|ladies|for her)\b/.test(searchable)) return "feminine";
+  if (/\b(men|man|male|masculine|gentleman|gentlemen|for him)\b/.test(searchable)) return "masculine";
+  return "unisex";
+}
 
 export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
   const variants: PerfumeVariant[] = (raw.variants ?? []).map((variant) => ({
@@ -125,13 +140,17 @@ export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
     variants,
     tags: raw.tags ?? [],
     category: raw.category ?? undefined,
+    highlights: (raw.highlights ?? [])
+      .filter((h): h is { title: string; icon?: string | null; order?: number | null } => !!h?.title)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      .map((h) => ({ title: h.title, icon: h.icon ?? undefined })),
     reviewCount: raw.reviewCount ?? 0,
     reviewAverage: raw.reviewAverage ?? undefined,
     createdAt: raw.createdAt,
     details: {
       concentration: raw.details?.concentration ?? "EDP",
       family: raw.details?.family ?? "floral",
-      gender: raw.details?.gender ?? "unisex",
+      gender: resolvedGender(raw),
       intensity: raw.details?.intensity ?? "moderate",
       notesTop: raw.details?.notesTop ?? [],
       notesHeart: raw.details?.notesHeart ?? [],

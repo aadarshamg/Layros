@@ -1,6 +1,8 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { calculateBuyTwoGetOne, getCouponOfferCategory, type CouponOfferCategory } from "@/lib/promotions";
+import { FREE_SHIPPING_THRESHOLD, shippingFeeFor } from "@/lib/shipping";
 
 export interface CartLine {
   /** Unique per cart line, keyed by variant — adding the same variant again stacks quantity onto this line. */
@@ -9,6 +11,7 @@ export interface CartLine {
   handle: string;
   variantId: string;
   title: string;
+  category?: string;
   image?: string;
   sizeMl: number;
   sizeLabel?: string;
@@ -24,6 +27,7 @@ export interface AddCartLineInput {
   handle: string;
   variantId: string;
   title: string;
+  category?: string;
   image?: string;
   sizeMl: number;
   sizeLabel?: string;
@@ -38,6 +42,7 @@ export interface AppliedCoupon {
   discountType: "percent" | "flat";
   discountValue: number;
   minOrderAmount?: number;
+  eligibleCategories?: CouponOfferCategory[];
 }
 
 interface CartContextValue {
@@ -51,7 +56,12 @@ interface CartContextValue {
   appliedCoupon: AppliedCoupon | null;
   /** Coupon discount recomputed live from the current subtotal — stays correct as items are added/removed, never a stale frozen number. */
   couponDiscount: number;
-  /** subtotal - couponDiscount — what checkout actually charges. */
+  buyTwoGetOneDiscount: number;
+  buyTwoGetOneFreeItems: number;
+  shippingFee: number;
+  amountUntilFreeShipping: number;
+  hasFreeShipping: boolean;
+  /** Subtotal minus all applicable promotion and coupon discounts. */
   total: number;
   couponError: string | null;
   isApplyingCoupon: boolean;
@@ -78,9 +88,18 @@ export const CART_STORAGE_KEY = "leyros_cart";
 const STORAGE_KEY = CART_STORAGE_KEY;
 const COUPON_STORAGE_KEY = "leyros_coupon";
 
-function calculateCouponDiscount(coupon: AppliedCoupon, subtotal: number): number {
-  const raw = coupon.discountType === "percent" ? (subtotal * coupon.discountValue) / 100 : coupon.discountValue;
-  return Math.min(Math.round(raw), subtotal);
+function calculateCouponDiscount(coupon: AppliedCoupon, subtotal: number, items: CartLine[]): number {
+  const eligibleSubtotal = coupon.eligibleCategories?.length
+    ? items.reduce((sum, item) => {
+        const category = getCouponOfferCategory(item.category, item.title);
+        return category && coupon.eligibleCategories?.includes(category)
+          ? sum + item.unitPrice * item.quantity
+          : sum;
+      }, 0)
+    : subtotal;
+  if (coupon.minOrderAmount && eligibleSubtotal < coupon.minOrderAmount) return 0;
+  const raw = coupon.discountType === "percent" ? (eligibleSubtotal * coupon.discountValue) / 100 : coupon.discountValue;
+  return Math.min(Math.round(raw), eligibleSubtotal);
 }
 
 // Same variant is the same line — quantity stacks rather than creating a duplicate row.
@@ -190,10 +209,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const couponDiscount = useMemo(() => {
     if (!appliedCoupon) return 0;
-    if (appliedCoupon.minOrderAmount && subtotal < appliedCoupon.minOrderAmount) return 0;
-    return calculateCouponDiscount(appliedCoupon, subtotal);
-  }, [appliedCoupon, subtotal]);
-  const total = Math.max(0, subtotal - couponDiscount);
+    return calculateCouponDiscount(appliedCoupon, subtotal, items);
+  }, [appliedCoupon, subtotal, items]);
+  const buyTwoGetOne = useMemo(() => calculateBuyTwoGetOne(items), [items]);
+  const buyTwoGetOneDiscount = buyTwoGetOne.discountAmount;
+  const buyTwoGetOneFreeItems = buyTwoGetOne.freeItemCount;
+  const shippingFee = shippingFeeFor(subtotal);
+  const amountUntilFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+  const hasFreeShipping = shippingFee === 0;
+  const total = Math.max(0, subtotal - buyTwoGetOneDiscount - couponDiscount + shippingFee);
 
   const applyCoupon = useCallback(
     async (code: string) => {
@@ -203,7 +227,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const response = await fetch("/api/checkout/apply-coupon", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, subtotal }),
+          body: JSON.stringify({
+            code,
+            items: items.map(({ sku, title, sizeLabel, quantity }) => ({ sku, title, sizeLabel, quantity })),
+          }),
         });
         const data = await response.json();
         if (!data.valid || !data.coupon) {
@@ -218,7 +245,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setIsApplyingCoupon(false);
       }
     },
-    [subtotal],
+    [items],
   );
 
   const value = useMemo(
@@ -230,6 +257,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       mrpSavings,
       appliedCoupon,
       couponDiscount,
+      buyTwoGetOneDiscount,
+      buyTwoGetOneFreeItems,
+      shippingFee,
+      amountUntilFreeShipping,
+      hasFreeShipping,
       total,
       couponError,
       isApplyingCoupon,
@@ -254,6 +286,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       mrpSavings,
       appliedCoupon,
       couponDiscount,
+      buyTwoGetOneDiscount,
+      buyTwoGetOneFreeItems,
+      shippingFee,
+      amountUntilFreeShipping,
+      hasFreeShipping,
       total,
       couponError,
       isApplyingCoupon,

@@ -75,6 +75,14 @@ export default defineType({
       options: { layout: "tags" },
     }),
     defineField({
+      name: "highlights",
+      title: "Highlights (when to wear)",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "productHighlight" }] }],
+      description: 'Rotate under the product on shop cards, e.g. "Daily Wear", "Office Wear", "Long Lasting". Manage the list of labels under "Product Highlights".',
+      validation: (Rule) => Rule.unique().max(6),
+    }),
+    defineField({
       name: "variants",
       title: "Variants (bottle sizes)",
       type: "array",

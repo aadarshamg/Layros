@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { OrderTrackingStatus } from "@/components/checkout/OrderTrackingStatus";
 
 export const metadata: Metadata = buildMetadata({
   title: "Order Confirmed",
@@ -25,6 +26,7 @@ export default async function CheckoutConfirmationPage({
           : "Your order has been placed. A confirmation will be sent to your email shortly."}
       </p>
       {order && <p className="mt-2 text-xs text-charcoal-soft/50">Order reference: {order}</p>}
+      <OrderTrackingStatus status="Processing" />
       <Link
         href="/collections/all"
         className="mt-8 inline-block rounded-full border border-charcoal px-8 py-3 text-sm uppercase tracking-widest hover:bg-charcoal hover:text-offwhite"

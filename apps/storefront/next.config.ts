@@ -24,6 +24,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
       // Sanity's image CDN — product photos now live here (see lib/data/products.ts).
       { protocol: "https", hostname: "cdn.sanity.io" },
+      // Instagram feed images (lib/data/instagram.ts).
+      { protocol: "https", hostname: "**.cdninstagram.com" },
+      { protocol: "https", hostname: "**.fbcdn.net" },
     ],
   },
 };

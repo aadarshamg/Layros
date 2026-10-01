@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { priceItems, type IncomingItem } from "@/lib/checkout/pricing";
 import { validateCoupon, calculateDiscount } from "@/lib/checkout/coupons";
+import { calculateBuyTwoGetOne } from "@/lib/promotions";
+import { shippingFeeFor } from "@/lib/shipping";
+import { saveCheckoutSession } from "@/lib/checkout/finalize";
+import { getSessionCustomerId } from "@/lib/auth/session";
+import type { CheckoutDetailsFormData } from "@leyros/types";
 
 export async function POST(request: NextRequest) {
   let body: {
     items?: IncomingItem[];
-    details?: { email?: string; shippingAddress?: { city?: string } };
+    details?: CheckoutDetailsFormData;
     couponCode?: string;
   };
   try {
@@ -14,9 +19,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Malformed request." }, { status: 400 });
   }
 
-  let amountInr: number;
+  let pricing;
   try {
-    ({ amountInr } = await priceItems(body.items ?? []));
+    pricing = await priceItems(body.items ?? []);
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Invalid cart." }, { status: 400 });
   }
@@ -25,12 +30,14 @@ export async function POST(request: NextRequest) {
   // never trust a discount amount the client computed itself.
   let discountAmount = 0;
   if (body.couponCode) {
-    const result = await validateCoupon(body.couponCode, amountInr);
+    const result = await validateCoupon(body.couponCode, pricing.amountInr, pricing.items);
     if (result.valid && result.coupon) {
-      discountAmount = calculateDiscount(result.coupon, amountInr);
+      discountAmount = calculateDiscount(result.coupon, pricing.amountInr, pricing.items);
     }
   }
-  const chargeAmount = Math.max(0, amountInr - discountAmount);
+  const offerDiscount = calculateBuyTwoGetOne(pricing.items).discountAmount;
+  const shippingFee = shippingFeeFor(pricing.amountInr);
+  const chargeAmount = Math.max(0, pricing.amountInr - offerDiscount - discountAmount + shippingFee);
 
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -55,6 +62,8 @@ export async function POST(request: NextRequest) {
           email: body.details?.email ?? "",
           city: body.details?.shippingAddress?.city ?? "",
           couponCode: body.couponCode ?? "",
+          buyTwoGetOneDiscount: String(offerDiscount),
+          shippingFee: String(shippingFee),
         },
       }),
     });
@@ -70,5 +79,14 @@ export async function POST(request: NextRequest) {
   }
 
   const order = await razorpayResponse.json();
+  // Lets the Razorpay webhook record the order even if the shopper closes the page right after paying.
+  if (body.details && body.items?.length) {
+    await saveCheckoutSession(order.id, {
+      items: body.items,
+      details: body.details,
+      couponCode: body.couponCode,
+      customerId: (await getSessionCustomerId()) ?? undefined,
+    });
+  }
   return NextResponse.json({ orderId: order.id, amount: order.amount, currency: order.currency, keyId });
 }

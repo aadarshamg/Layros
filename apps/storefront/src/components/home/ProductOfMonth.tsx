@@ -32,6 +32,7 @@ export function ProductOfMonth({
       handle: product.handle,
       variantId: selected.id,
       title: product.title,
+      category: product.category,
       image: product.images[0],
       sizeMl: selected.sizeMl,
       sizeLabel: selected.sizeLabel,

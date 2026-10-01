@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth-context";
 import { formatInr } from "@/lib/format";
 import { CartOrderSummaryMini } from "@/components/checkout/CartOrderSummaryMini";
 import type { CheckoutDetailsFormData } from "@leyros/types";
+import { CheckoutBenefits } from "@/components/checkout/CheckoutBenefits";
 
 declare global {
   interface Window {
@@ -140,6 +141,8 @@ export function CartPaymentStep({
         <button type="button" onClick={onBack} className="cart-step-back">← Back</button>
       </div>
       <h3 className="cart-step-title">Choose how you&apos;ll pay</h3>
+
+      <CheckoutBenefits compact />
 
       <div className="cart-saved-address">
         <div className="cart-step-field-row" style={{ alignItems: "baseline", justifyContent: "space-between" }}>

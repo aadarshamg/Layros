@@ -8,12 +8,14 @@ export function TrialSetAddButton({
   productId,
   handle,
   title,
+  category,
   image,
   variant,
 }: {
   productId: string;
   handle: string;
   title: string;
+  category?: string;
   image?: string;
   variant: PerfumeVariant;
 }) {
@@ -26,6 +28,7 @@ export function TrialSetAddButton({
       handle,
       variantId: variant.id,
       title,
+      category,
       image,
       sizeMl: variant.sizeMl,
       sizeLabel: variant.sizeLabel,

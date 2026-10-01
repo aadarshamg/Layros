@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import type { PerfumeProduct } from "@leyros/types";
+import { ProductCard } from "@/components/product/ProductCard";
 
 const FAMILY_STEP = {
   question: "Which family draws you in?",
@@ -37,10 +37,6 @@ const OCCASION_STEP = {
 };
 
 type Answers = { family?: string; intensity?: string; occasion?: string };
-
-function formatInr(amount: number) {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
-}
 
 function scoreProduct(product: PerfumeProduct, answers: Answers): number {
   let score = 0;
@@ -96,20 +92,7 @@ export function FragranceFinderQuiz({ products }: { products: PerfumeProduct[] }
           </p>
         ) : (
           <div style={{ display: "grid", gap: 28, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
-            {results.map((product) => {
-              const price = [...product.variants].sort((a, b) => a.price - b.price)[0];
-              return (
-                <Link key={product.id} href={`/products/${product.handle}`} style={{ display: "block" }}>
-                  <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", marginBottom: 12 }}>
-                    {product.images[0] && (
-                      <Image src={product.images[0]} alt={product.title} fill sizes="(max-width: 700px) 50vw, 25vw" style={{ objectFit: "cover" }} />
-                    )}
-                  </div>
-                  <p style={{ fontFamily: "var(--font-playfair)", fontSize: 18, marginBottom: 4 }}>{product.title}</p>
-                  {price && <p style={{ color: "var(--ink-soft)", fontSize: 13 }}>{formatInr(price.price)}</p>}
-                </Link>
-              );
-            })}
+            {results.map((product) => <ProductCard key={product.id} product={product} />)}
           </div>
         )}
         <button type="button" onClick={retake} className="button button-light" style={{ marginTop: 32 }}>

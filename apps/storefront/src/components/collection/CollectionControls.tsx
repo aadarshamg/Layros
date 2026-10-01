@@ -17,7 +17,8 @@ export function CollectionControls() {
   const activeCategory = searchParams.get("category") ?? "";
   const activeFamily = searchParams.get("family") ?? "";
   const activeGender = searchParams.get("gender") ?? "";
-  const activeFilterCount = Number(inStock) + Number(Boolean(activeCategory)) + Number(Boolean(activeFamily)) + Number(Boolean(activeGender));
+  const activeMaxPrice = searchParams.get("maxPrice") ?? "";
+  const activeFilterCount = Number(inStock) + Number(Boolean(activeCategory)) + Number(Boolean(activeFamily)) + Number(Boolean(activeGender)) + Number(Boolean(activeMaxPrice));
 
   function updateParam(key: string, value?: string) {
     const next = new URLSearchParams(searchParams.toString());
@@ -31,6 +32,9 @@ export function CollectionControls() {
     next.delete("category");
     next.delete("family");
     next.delete("gender");
+    next.delete("maxPrice");
+    next.delete("benefit");
+    next.delete("occasion");
     next.set("inStock", "0");
     router.push(`${pathname}${next.size ? `?${next.toString()}` : ""}`, { scroll: false });
   }

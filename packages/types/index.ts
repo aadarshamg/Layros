@@ -66,6 +66,8 @@ export interface PerfumeProduct {
   details: PerfumeDetails;
   /** Real merchandising category, e.g. "Men Perfumes", "Fragrance Candles", "Car Perfumes". */
   category?: string;
+  /** "When to wear it" labels picked in admin, e.g. "Daily Wear", in display order. */
+  highlights?: { title: string; icon?: string }[];
   /** Approved shopper reviews only; 0 / undefined until an admin approves one. */
   reviewCount?: number;
   reviewAverage?: number;

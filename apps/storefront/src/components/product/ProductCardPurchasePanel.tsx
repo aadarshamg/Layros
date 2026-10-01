@@ -4,26 +4,29 @@ import { useState } from "react";
 import type { PerfumeProduct } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatInr, formatSize } from "@/lib/format";
+import { genderLabel, productCardCategoryLabel } from "@/lib/product-labels";
 
-/**
- * Price + size picker + quick-add, shared by the collections grid and the
- * homepage cinematic grid so both stay in sync. The EMI line is a display-only
- * placeholder (price split into 3) until a real financing partner is wired in.
- */
 export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct }) {
   const { addItem, openDrawer } = useCart();
   const sortedVariants = [...product.variants].sort((a, b) => a.price - b.price);
   const [selectedId, setSelectedId] = useState(sortedVariants[0]?.id);
   const [justAdded, setJustAdded] = useState(false);
-  const variant = sortedVariants.find((v) => v.id === selectedId) ?? sortedVariants[0];
+  const variant = sortedVariants.find((item) => item.id === selectedId) ?? sortedVariants[0];
 
   if (!variant) return null;
 
-  const compareAt = variant.compareAtPrice;
-  const emiMonthly = Math.round(variant.price / 3);
-  const discount = compareAt && compareAt > variant.price
+  const compareAt = variant.compareAtPrice && variant.compareAtPrice > variant.price
+    ? variant.compareAtPrice
+    : variant.price;
+  const discount = compareAt > variant.price
     ? Math.round((1 - variant.price / compareAt) * 100)
-    : null;
+    : 0;
+  const gender = genderLabel(product);
+  const classification = gender ?? productCardCategoryLabel(product);
+  const notes = [...product.details.notesTop, ...product.details.notesHeart, ...product.details.notesBase]
+    .filter((note, index, all) => note && all.indexOf(note) === index)
+    .slice(0, 3);
+  const notesLabel = notes.length ? notes.join(" • ") : product.details.family;
 
   function handleQuickAdd() {
     addItem({
@@ -31,6 +34,7 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
       handle: product.handle,
       variantId: variant.id,
       title: product.title,
+      category: product.category,
       image: product.images[0],
       sizeMl: variant.sizeMl,
       sizeLabel: variant.sizeLabel,
@@ -46,28 +50,44 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
 
   return (
     <div className="product-card-purchase">
-      <p className="product-card-price">
-        <strong>{formatInr(variant.price)}</strong>
-        {compareAt && compareAt > variant.price && <s>{formatInr(compareAt)}</s>}
-        {discount && <span className="product-card-discount">Save {discount}%</span>}
-      </p>
-      <p className="product-card-emi">
-        or {formatInr(emiMonthly)}/Month <span className="product-card-emi-badge">Buy on EMI</span>
-      </p>
-      {sortedVariants.length > 0 && (
-        <div className="product-card-sizes">
-          {sortedVariants.map((v) => (
+      <div className="product-card-info-group product-card-size-group">
+        <span className="product-card-info-label">ML / Size</span>
+        <div className="product-card-sizes" aria-label="Choose product size">
+          {sortedVariants.map((item) => (
             <button
-              key={v.id}
+              key={item.id}
               type="button"
-              onClick={() => setSelectedId(v.id)}
-              className={`product-card-size${v.id === variant.id ? " is-selected" : ""}`}
+              onClick={() => setSelectedId(item.id)}
+              className={`product-card-size${item.id === variant.id ? " is-selected" : ""}`}
             >
-              {formatSize(v.sizeMl, v.sizeLabel)}
+              {formatSize(item.sizeMl, item.sizeLabel)}
             </button>
           ))}
         </div>
-      )}
+      </div>
+
+      <p className="product-card-notes">
+        <span className="product-card-info-label">{gender ? "Perfume Notes" : "Fragrance Profile"}</span>
+        <strong>{notesLabel}</strong>
+      </p>
+
+      <div className="product-card-pricing" aria-label="Product pricing">
+        <p className="product-card-info-row product-card-selling-price">
+          <span>Selling Price</span><strong>{formatInr(variant.price)}</strong>
+        </p>
+        <p className="product-card-info-row product-card-mrp">
+          <span>MRP</span><s>{formatInr(compareAt)}</s>
+        </p>
+        <p className="product-card-info-row product-card-total-discount">
+          <span>Total Discount</span><strong>{discount}% OFF</strong>
+        </p>
+      </div>
+
+      <div className="product-card-classification" aria-label={gender ? "Perfume classification" : "Product classification"}>
+        <span>{gender ? "30% Concentration" : "Product Type"}</span>
+        <strong>{classification}</strong>
+      </div>
+
       <button type="button" onClick={handleQuickAdd} className="product-card-quick-add">
         {justAdded ? "Added ✓" : "Add to cart"}
       </button>

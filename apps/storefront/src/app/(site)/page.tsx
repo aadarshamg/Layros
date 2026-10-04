@@ -45,6 +45,8 @@ export default async function Home() {
 
       <ShopByCategory entries={categoryShowcase} />
 
+      <VideoShowcase />
+
       <ShopByBudget />
 
       <PrivateBlendSection products={bestSellers} />
@@ -65,8 +67,6 @@ export default async function Home() {
       />
 
       <TrialSetShowcase title={storeSettings.trialSectionTitle} subtitle={storeSettings.trialSectionSubtitle} />
-
-      <VideoShowcase />
 
       <InstagramSection products={bestSellers} />
 

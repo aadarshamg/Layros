@@ -124,8 +124,6 @@ export function CartDrawer() {
   const crossSell = suggestions.filter((product) => !cartProductIds.has(product.id)).slice(0, 10);
   const totalItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const rewardTarget = storeSettings.rewardThreshold ?? 0;
-  const rewardRemaining = Math.max(0, rewardTarget - subtotal);
-  const rewardProgress = rewardTarget > 0 ? Math.min(100, (subtotal / rewardTarget) * 100) : 0;
   // Promo and trust lines are built from real settings (reward threshold, Google rating), never fixed claims.
   const promoText =
     storeSettings.cartPromoBanner ||
@@ -208,19 +206,6 @@ export function CartDrawer() {
         )}
 
         {view === "cart" && items.length > 0 && <CheckoutBenefits compact />}
-
-        {view === "cart" && items.length > 0 && storeSettings.rewardEnabled && rewardTarget > 0 && (
-          <section className={`cart-reward ${rewardRemaining === 0 ? "is-unlocked" : ""}`} aria-label="Order reward progress">
-            <div className="cart-reward-copy">
-              <b>{rewardRemaining > 0 ? `${formatInr(rewardRemaining)} away from your complimentary rewards` : "Your complimentary rewards are unlocked"}</b>
-            </div>
-            <div className="cart-progress" aria-hidden="true"><span style={{ width: `${rewardProgress}%` }} /></div>
-            <div className="cart-reward-scale">
-              <span>{rewardRemaining === 0 ? "Reward unlocked" : `${formatInr(subtotal)} in your bag`}</span>
-              <span>{formatInr(rewardTarget)} goal</span>
-            </div>
-          </section>
-        )}
 
         <div className="cart-drawer-scroll">
           {view === "login" && (

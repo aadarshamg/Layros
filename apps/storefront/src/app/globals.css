@@ -11573,12 +11573,17 @@ html body .cart-overlay > aside.cart-drawer .cart-promo-banner {
 html body .cart-overlay > aside.cart-drawer .checkout-benefits.is-compact {
   display: grid;
   gap: 8px;
-  margin: 10px var(--cd-gutter) 0;
+  /* Inside checkout steps: full width, same 12px gap as the cards below. */
+  margin: 0 0 12px;
   padding: 12px 14px;
   border: 1px solid var(--cd-line);
   border-radius: var(--cd-radius);
   background: var(--cd-card);
   box-shadow: none;
+}
+/* The one pinned under the cart header sits inside the drawer gutter. */
+html body .cart-overlay > aside.cart-drawer > .checkout-benefits.is-compact {
+  margin: 10px var(--cd-gutter) 0;
 }
 html body .cart-overlay > aside.cart-drawer .checkout-benefits.is-compact:has(+ .cart-reward) {
   border-bottom: 0;

@@ -84,7 +84,7 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
       </div>
 
       <div className="product-card-classification" aria-label={gender ? "Perfume classification" : "Product classification"}>
-        <span>{gender ? "30% Concentration" : "Product Type"}</span>
+        <span>{gender ? "Gender" : "Product Type"}</span>
         <strong>{classification}</strong>
       </div>
 

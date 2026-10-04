@@ -13,7 +13,7 @@ import { CouponWidget } from "@/components/checkout/CouponWidget";
 import { CouponCelebration } from "@/components/checkout/CouponCelebration";
 import { CartRecommendationSlider } from "@/components/checkout/CartRecommendationSlider";
 import { RECENT_PRODUCT_STORAGE_KEY } from "@/components/product/ProductInterestTracker";
-import { DEFAULT_CART_PROMO_BANNER, DEFAULT_TRUST_BADGE_TEXT } from "@/lib/site-defaults";
+import { DEFAULT_TRUST_BADGE_TEXT } from "@/lib/site-defaults";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 import { CheckoutBenefits } from "@/components/checkout/CheckoutBenefits";
 
@@ -46,6 +46,8 @@ interface StoreSettings {
   rewardDescription?: string;
   cartPromoBanner?: string;
   trustBadgeText?: string;
+  googleRating?: number;
+  googleReviewCount?: number;
 }
 
 export function CartDrawer() {
@@ -124,6 +126,15 @@ export function CartDrawer() {
   const rewardTarget = storeSettings.rewardThreshold ?? 0;
   const rewardRemaining = Math.max(0, rewardTarget - subtotal);
   const rewardProgress = rewardTarget > 0 ? Math.min(100, (subtotal / rewardTarget) * 100) : 0;
+  // Promo and trust lines are built from real settings (reward threshold, Google rating), never fixed claims.
+  const promoText =
+    storeSettings.cartPromoBanner ||
+    (storeSettings.rewardEnabled && rewardTarget > 0 ? `Free gift on orders over ${formatInr(rewardTarget)}` : "");
+  const ratingText =
+    storeSettings.googleRating && storeSettings.googleReviewCount
+      ? `Rated ${storeSettings.googleRating.toFixed(1)} by ${storeSettings.googleReviewCount}+ customers on Google`
+      : "";
+  const trustLines = [storeSettings.trustBadgeText || DEFAULT_TRUST_BADGE_TEXT, ratingText].filter(Boolean);
   const totalSavings = mrpSavings + couponDiscount + buyTwoGetOneDiscount;
 
   function handleQuickAdd(product: SuggestedProduct) {
@@ -193,7 +204,7 @@ export function CartDrawer() {
         </header>
 
         {view === "cart" && items.length > 0 && (
-          <div className="cart-promo-banner">{storeSettings.cartPromoBanner || DEFAULT_CART_PROMO_BANNER}</div>
+          promoText && <div className="cart-promo-banner">{promoText}</div>
         )}
 
         {view === "cart" && items.length > 0 && <CheckoutBenefits compact />}
@@ -318,7 +329,7 @@ export function CartDrawer() {
               <div className="cart-trust-marquee" aria-hidden="true">
                 <div className="cart-trust-marquee-track">
                   {Array.from({ length: 4 }, (_, i) => (
-                    <span key={i}>✦ {storeSettings.trustBadgeText || DEFAULT_TRUST_BADGE_TEXT}</span>
+                    <span key={i}>✦ {trustLines[i % trustLines.length]}</span>
                   ))}
                 </div>
               </div>

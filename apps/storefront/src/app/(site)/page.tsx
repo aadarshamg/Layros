@@ -70,22 +70,13 @@ export default async function Home() {
 
       <InstagramSection products={bestSellers} />
 
-      <section className="home-campaign" aria-label="Nuit Dorée candle collection">
-        <Link
-          href="/candles"
-          className="home-campaign-banner"
-          aria-label="Discover the Nuit Dorée scented candle collection"
-        >
-          <span className="sr-only">Discover the Nuit Dorée scented candle collection.</span>
-        </Link>
-      </section>
 
       <EditorialMarquee />
 
       <section className="cinematic-manifesto">
         <p>Leyros manifesto</p>
         <h2>The Chosen One</h2>
-        <span>Forged through age-old hydro-distillation in Kannauj and calibrated in Grasse. An indelible olfactory sovereignty.</span>
+        <span>Forged through age-old hydro-distillation in Kannauj. An indelible olfactory sovereignty.</span>
       </section>
 
       <FaqSection />

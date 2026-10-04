@@ -19,8 +19,7 @@ export const DEFAULT_ANNOUNCEMENT_MESSAGES = [
   "Freshly blended in small batches",
   "Free shipping across India on orders over ₹999",
 ];
-export const DEFAULT_CART_PROMO_BANNER = "Get a Free Gift with Every Order";
-export const DEFAULT_TRUST_BADGE_TEXT = "Loved by over 50,000+ Customers";
+export const DEFAULT_TRUST_BADGE_TEXT = "Loved by over 10,000+ Customers";
 export const DEFAULT_TRIAL_SECTION_TITLE = "The Discovery Edit";
 // Match the site's existing copy: "Dispatches within 24–48 hours" and
 // "Standard delivery arrives in 3–5 business days".

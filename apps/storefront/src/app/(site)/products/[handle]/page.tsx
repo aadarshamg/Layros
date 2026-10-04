@@ -135,7 +135,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                       <p>{rewardSettings.rewardDescription || "A complimentary gift"} on orders over {formatInr(rewardSettings.rewardThreshold)}.</p>
                       <small>Added automatically at checkout</small>
                     </div>
-                    <div className="offer-image"><Image src="/leyros/atomizer.jpg" alt="Leyros miniature perfume atomizer" fill sizes="110px" /></div>
+                    <div className="offer-image"><Image src="/leyros/about-old/premium-attar.webp" alt="Leyros attar in a wooden gift box" fill sizes="110px" /></div>
                   </article>
                   <article className="product-offer-card">
                     <span className="offer-rail">Delivery · Included</span>
@@ -144,7 +144,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                       <p>On orders of {formatInr(FREE_SHIPPING_THRESHOLD)} or more — {formatInr(STANDARD_SHIPPING_FEE)} below that.</p>
                       <small>Applied automatically</small>
                     </div>
-                    <div className="offer-image"><Image src="/leyros/coffret.jpg" alt="Leyros presentation coffret" fill sizes="110px" /></div>
+                    <div className="offer-image"><Image src="/leyros/about-old/premium-perfume.webp" alt="Leyros eau de parfum in its presentation box" fill sizes="110px" /></div>
                   </article>
                 </div>
               </section>

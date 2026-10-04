@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { CANDLE_COLLECTIONS, isCandleCollectionSlug } from "@/lib/data/candle-collections";
-import { listProducts } from "@/lib/data/products";
+import { getCandleShowcaseImages, listProducts } from "@/lib/data/products";
 import { ProductCard } from "@/components/product/ProductCard";
 
 export const metadata: Metadata = buildMetadata({
@@ -30,11 +30,11 @@ export default async function CandlesPage({
     uses: "Home décor, slow evenings, celebrations, housewarmings, hosting, and gifting.",
     features: ["Atmosphere-led fragrance", "Décor-ready design", "Thoughtful gifting"],
   };
-  const { products } = await listProducts({
+  const [{ products }, candleImages] = await Promise.all([listProducts({
     category: "candle",
     q: activeType || undefined,
     limit: 100,
-  });
+  }), getCandleShowcaseImages()]);
   const visibleProducts = (maxPrice
     ? products.filter((product) => product.variants.some((variant) => variant.price <= maxPrice))
     : products
@@ -56,7 +56,7 @@ export default async function CandlesPage({
             <a href="#candle-categories">Explore candle styles <span aria-hidden="true">↓</span></a>
           </div>
           <div className="candles-page-hero-image">
-            <Image src="/leyros/candle.jpg" alt="Leyros scented candle glowing in a warm interior" fill priority sizes="(max-width: 850px) 92vw, 46vw" />
+            <Image src={candleImages.hero ?? "/leyros/about-old/scented-candle.webp"} alt="Leyros scented candle" fill priority sizes="(max-width: 850px) 92vw, 46vw" />
           </div>
         </div>
       </section>
@@ -77,7 +77,7 @@ export default async function CandlesPage({
                 className={`candles-page-category-card${activeType === collection.slug ? " is-active" : ""}`}
               >
                 <div className="candles-page-category-image">
-                  <Image src={collection.image} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
+                  <Image src={candleImages[collection.slug] ?? collection.image} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
                 </div>
                 <div>
                   <h3>{collection.label}</h3>

@@ -2,6 +2,7 @@ import "server-only";
 import { sanityClient, sanityConfigured, urlForImage, SANITY_FETCH_OPTIONS } from "@/lib/sanity";
 import type { FragranceFamily, PerfumeProduct, PerfumeVariant } from "@leyros/types";
 import { editorialProducts } from "@/lib/data/editorial-products";
+import { CANDLE_COLLECTIONS, type CandleCollectionSlug } from "@/lib/data/candle-collections";
 import type { SanityImageSource } from "@sanity/image-url";
 
 /** Raw shape returned by the GROQ projection below — mirrors the `product` schema. */
@@ -99,9 +100,13 @@ function resolvedGender(raw: RawSanityProduct): "feminine" | "masculine" | "unis
   // The imported legacy catalogue defaulted every item to "unisex". Preserve
   // that fallback, but honour obvious audience wording already present in the
   // product title/category so the Men and Women filters are useful immediately.
+  // Titles that name both ("… (For Men & Women)") are unisex, not women's.
   const searchable = [raw.title, raw.category, ...(raw.tags ?? [])].filter(Boolean).join(" ").toLowerCase();
-  if (/\b(women|woman|female|feminine|femme|ladies|for her)\b/.test(searchable)) return "feminine";
-  if (/\b(men|man|male|masculine|gentleman|gentlemen|for him)\b/.test(searchable)) return "masculine";
+  const forWomen = /\b(women|woman|female|feminine|femme|ladies|for her)\b/.test(searchable);
+  const forMen = /\b(men|man|male|masculine|gentleman|gentlemen|for him)\b/.test(searchable);
+  if (forWomen && forMen) return "unisex";
+  if (forWomen) return "feminine";
+  if (forMen) return "masculine";
   return "unisex";
 }
 
@@ -426,6 +431,50 @@ export async function getCategoryShowcase(): Promise<CategoryShowcaseEntry[]> {
       productCount: matches.length,
     };
   });
+}
+
+// Lead photo of a real catalogue product for each showcase tile. Tiles are
+// filled in order and skip products an earlier tile already used, so a row
+// never repeats a bottle; a tile with no match is left out and keeps its
+// static fallback image.
+export async function pickProductImages<K extends string>(
+  rules: Record<K, (product: PerfumeProduct) => boolean>,
+): Promise<Partial<Record<K, string>>> {
+  try {
+    const raw = await fetchAllProducts();
+    const isBestseller = (product: PerfumeProduct) => product.tags.some((tag) => tag.toLowerCase() === BESTSELLER_TAG);
+    const products = raw
+      .filter(isBrowsableFragrance)
+      .map(toPerfumeProduct)
+      .filter((product) => product.images[0])
+      .sort((a, b) => Number(isBestseller(b)) - Number(isBestseller(a)));
+    const used = new Set<string>();
+    const picked: Partial<Record<K, string>> = {};
+    for (const key of Object.keys(rules) as K[]) {
+      const matches = products.filter(rules[key]);
+      const product = matches.find((item) => !used.has(item.id)) ?? matches[0];
+      if (!product) continue;
+      used.add(product.id);
+      picked[key] = product.images[0];
+    }
+    return picked;
+  } catch {
+    return {};
+  }
+}
+
+// Same matching as the candles page's type filter (category "candle" plus the
+// type keyword in the title or description), with the page hero picked last
+// so it doesn't repeat a type tile's photo.
+export function getCandleShowcaseImages() {
+  const isCandle = (product: PerfumeProduct) => (product.category ?? "").toLowerCase().includes("candle");
+  const rules = Object.fromEntries(
+    CANDLE_COLLECTIONS.map((collection) => [
+      collection.slug,
+      (product: PerfumeProduct) => isCandle(product) && `${product.title} ${product.description}`.toLowerCase().includes(collection.slug),
+    ]),
+  ) as Record<CandleCollectionSlug, (product: PerfumeProduct) => boolean>;
+  return pickProductImages({ ...rules, hero: isCandle });
 }
 
 export async function getProductByHandle(handle: string): Promise<PerfumeProduct | null> {

@@ -26,7 +26,7 @@ const FRAGRANCE_PROFILES: { value: FragranceFamily; label: string; hint: string;
   { value: "woody", label: "Woody", hint: "Sandalwood & earth", image: "/leyros/sandalwood.jpg" },
   { value: "fresh", label: "Fresh / Citrus", hint: "Citrus & clean air", image: "/leyros/fleur-oranger.jpg" },
   { value: "floral", label: "Floral", hint: "Petals & soft blooms", image: "/leyros/rose.jpg" },
-  { value: "gourmand", label: "Gourmand", hint: "Sweet & comforting", image: "/leyros/nuit-detail.jpg" },
+  { value: "gourmand", label: "Gourmand", hint: "Sweet & comforting", image: "/leyros/about-old/daily-wear.webp" },
 ];
 
 export function AddToCartForm({ productId, handle, title, category, image, variants, fragranceFamily }: AddToCartFormProps) {

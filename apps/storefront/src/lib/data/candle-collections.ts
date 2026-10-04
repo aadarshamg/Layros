@@ -1,3 +1,5 @@
+// `image` is only a fallback — the tiles show a real candle from that type
+// (getCandleShowcaseImages) whenever the catalogue has one.
 export const CANDLE_COLLECTIONS = [
   {
     slug: "concrete",
@@ -15,7 +17,7 @@ export const CANDLE_COLLECTIONS = [
     headline: "Comforting fragrance and warm ambience for everyday rituals.",
     uses: "Bedrooms, reading corners, relaxation, self-care evenings, celebrations, and thoughtful gifts.",
     features: ["Soft, inviting ambience", "Everyday fragrance ritual", "Elegant home styling"],
-    image: "/leyros/candle.jpg",
+    image: "/leyros/about-old/scented-candle.webp",
   },
   {
     slug: "gel",

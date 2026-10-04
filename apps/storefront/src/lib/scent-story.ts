@@ -61,11 +61,10 @@ const FAMILY_THEMES: Record<FragranceFamily, ScentTheme> = {
 const NOTE_IMAGES: Array<[RegExp, string]> = [
   [/bergamot|lemon|lime|orange|citrus|grapefruit|mandarin/i, "/leyros/fleur-oranger.jpg"],
   [/rose|jasmine|floral|flower|tuberose|lavender|iris|violet/i, "/leyros/rose.jpg"],
-  [/oud|agarwood/i, "/leyros/oud.jpg"],
-  [/wood|sandal|cedar|vetiver|patchouli/i, "/leyros/sandalwood.jpg"],
-  [/vanilla|caramel|cocoa|coffee|sweet|tonka/i, "/leyros/nuit-detail.jpg"],
-  [/leather|tobacco|smoke|incense/i, "/leyros/cuir-mystique.jpg"],
-  [/amber|saffron|spice|resin|pepper/i, "/leyros/saffron.jpg"],
+  // Ingredient shots only — never a bottle, so a note chapter can't show
+  // another product's label.
+  [/oud|agarwood|wood|sandal|cedar|vetiver|patchouli/i, "/leyros/sandalwood.jpg"],
+  [/vanilla|caramel|cocoa|coffee|sweet|tonka|leather|tobacco|smoke|incense|amber|saffron|spice|resin|pepper/i, "/leyros/saffron.jpg"],
 ];
 
 function titleHash(title: string) {

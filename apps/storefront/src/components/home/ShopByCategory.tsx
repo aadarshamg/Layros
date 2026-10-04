@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { CategoryShowcaseEntry } from "@/lib/data/products";
+import type { PerfumeProduct } from "@leyros/types";
+import { getCandleShowcaseImages, pickProductImages, type CategoryShowcaseEntry } from "@/lib/data/products";
 import { CANDLE_COLLECTIONS } from "@/lib/data/candle-collections";
 
 const CATEGORY_COPY: Record<string, string> = {
@@ -11,82 +12,107 @@ const CATEGORY_COPY: Record<string, string> = {
   "gift pack": "Ready-to-gift Leyros favourites",
 };
 
+const textOf = (product: PerfumeProduct) => `${product.title} ${product.description}`.toLowerCase();
+const inCategory = (keyword: string) => (product: PerfumeProduct) => (product.category ?? "").toLowerCase().includes(keyword);
+const isPerfume = inCategory("collections");
+
+// Each tile shows the photo of a real catalogue product it links to (see
+// pickProductImages); `fallbackImage` is only used when nothing matches.
 const GENDER_COLLECTIONS = [
   {
     label: "Men",
     title: "Fragrances for Him",
     description: "Confident woods, fresh aromatics, rich ambers, and statement-making trails.",
     gender: "masculine",
-    image: "/leyros/cuir-mystique.jpg",
+    fallbackImage: "/leyros/about-old/hero-perfume.webp",
   },
   {
     label: "Women",
     title: "Fragrances for Her",
     description: "Radiant florals, luminous fruits, soft musks, and elegant signatures.",
     gender: "feminine",
-    image: "/leyros/fleur-oranger.jpg",
+    fallbackImage: "/leyros/about-old/daily-wear.webp",
   },
   {
     label: "Unisex",
     title: "Fragrances for Everyone",
     description: "Balanced compositions made to be chosen by character, not convention.",
     gender: "unisex",
-    image: "/leyros/nuit-doree.jpg",
+    fallbackImage: "/leyros/about-old/gift-pack.webp",
   },
 ] as const;
 
+// Links filter by the catalogue's real collection categories — every product's
+// `family` is still the migration default, so family links came up empty.
 const NOTE_COLLECTIONS = [
   {
     label: "Tobacco",
     description: "Smoky, warm, and richly textured.",
     href: "/collections/all?q=tobacco",
-    image: "/leyros/cuir-mystique.jpg",
+    match: (product: PerfumeProduct) => isPerfume(product) && textOf(product).includes("tobacco"),
+    fallbackImage: "/leyros/about-old/premium-attar.webp",
   },
   {
     label: "Vanilla",
     description: "Creamy, comforting, and softly sweet.",
     href: "/collections/all?q=vanilla",
-    image: "/leyros/nuit-detail.jpg",
+    match: (product: PerfumeProduct) => isPerfume(product) && textOf(product).includes("vanilla"),
+    fallbackImage: "/leyros/about-old/car-perfume.webp",
   },
   {
     label: "Woody",
     description: "Sandalwood, cedar, vetiver, and warm forest tones.",
-    href: "/collections/all?family=woody",
-    image: "/leyros/sandalwood.jpg",
+    href: "/collections/all?category=woody",
+    match: inCategory("woody"),
+    fallbackImage: "/leyros/sandalwood.jpg",
   },
   {
     label: "Amber",
     description: "Golden resins, soft spice, musk, and enveloping warmth.",
     href: "/collections/all?category=ambry",
-    image: "/leyros/saffron.jpg",
+    match: inCategory("ambry"),
+    fallbackImage: "/leyros/saffron.jpg",
   },
   {
     label: "Floral",
     description: "Rose, jasmine, iris, and luminous petal-led bouquets.",
-    href: "/collections/all?family=floral",
-    image: "/leyros/rose.jpg",
+    href: "/collections/all?category=floral",
+    match: inCategory("floral"),
+    fallbackImage: "/leyros/rose.jpg",
   },
   {
     label: "Fresh Citrus",
     description: "Bright citrus, clean aromatics, and airy freshness.",
-    href: "/collections/all?family=fresh",
-    image: "/leyros/vetiver-malabar.jpg",
+    href: "/collections/all?category=citrus",
+    match: inCategory("citrus"),
+    fallbackImage: "/leyros/about-old/premium-perfume.webp",
   },
   {
     label: "Gourmand",
     description: "Vanilla, sweetness, spice, and deliciously rich notes.",
-    href: "/collections/all?family=gourmand",
-    image: "/leyros/nuit-detail.jpg",
+    href: "/collections/all?category=gourmand",
+    match: inCategory("gourmand"),
+    fallbackImage: "/leyros/about-old/daily-wear.webp",
   },
   {
     label: "Oud",
     description: "Deep, resinous, and confidently intense.",
     href: "/collections/all?category=oud",
-    image: "/leyros/oud.jpg",
+    match: inCategory("oud"),
+    fallbackImage: "/leyros/about-old/gift-pack.webp",
   },
 ] as const;
 
-export function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }) {
+const TILE_IMAGE_RULES: Record<string, (product: PerfumeProduct) => boolean> = Object.fromEntries([
+  ...GENDER_COLLECTIONS.map((collection) => [
+    `gender:${collection.gender}`,
+    (product: PerfumeProduct) => isPerfume(product) && product.details.gender === collection.gender,
+  ]),
+  ...NOTE_COLLECTIONS.map((note) => [`note:${note.label}`, note.match]),
+]);
+
+export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }) {
+  const [tileImages, candleImages] = await Promise.all([pickProductImages(TILE_IMAGE_RULES), getCandleShowcaseImages()]);
   const categoryHref = (value: string) => value === "candle"
     ? "/candles"
     : `/collections/all?category=${encodeURIComponent(value)}`;
@@ -113,7 +139,7 @@ export function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }
               href={`/collections/all?category=collections&gender=${collection.gender}`}
               className="home-gender-card"
             >
-              <Image src={collection.image} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
+              <Image src={tileImages[`gender:${collection.gender}`] ?? collection.fallbackImage} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
               <span className="home-gender-card-shade" aria-hidden="true" />
               <div className="home-gender-card-copy">
                 <span>{collection.label}</span>
@@ -139,7 +165,7 @@ export function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }
             {NOTE_COLLECTIONS.map((note) => (
               <Link key={note.label} href={note.href} className="home-note-card" aria-label={`${note.label}: ${note.description}`}>
                 <div className="home-note-image">
-                  <Image src={note.image} alt="" fill sizes="(max-width: 650px) 46vw, (max-width: 1000px) 30vw, 20vw" />
+                  <Image src={tileImages[`note:${note.label}`] ?? note.fallbackImage} alt="" fill sizes="(max-width: 650px) 46vw, (max-width: 1000px) 30vw, 20vw" />
                 </div>
                 <div className="home-note-copy">
                   <h4>{note.label}</h4>
@@ -164,7 +190,7 @@ export function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }
           <div className="home-candles-grid">
             {CANDLE_COLLECTIONS.map((collection) => (
               <Link key={collection.label} href={`/candles?type=${collection.slug}#candle-products`} className="home-candle-card">
-                <Image src={collection.image} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
+                <Image src={candleImages[collection.slug] ?? collection.image} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
                 <span className="home-candle-card-shade" aria-hidden="true" />
                 <div className="home-candle-card-copy">
                   <h4>{collection.label}</h4>

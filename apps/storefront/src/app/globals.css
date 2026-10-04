@@ -12033,3 +12033,36 @@ body .product-card-pricing .product-card-price-head .product-card-price-off {
   margin-left: 0;
   padding: 2px 8px;
 }
+
+/* Menu opening: the panel drops and scales out from its button, then the
+   links slide in one after another. (The old stagger only targeted the
+   retired .cinematic-home layout, and the inner-page menu had none.) */
+@keyframes leyros-menu-panel-in {
+  from { opacity: 0; transform: translateY(-14px) scale(.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes leyros-menu-item-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+body header .home-menu[open] > nav {
+  transform-origin: top left;
+  animation: leyros-menu-panel-in .38s cubic-bezier(.22, 1, .36, 1) both;
+}
+body header .mobile-menu[open] > nav {
+  transform-origin: top right;
+  animation: leyros-menu-panel-in .38s cubic-bezier(.22, 1, .36, 1) both;
+}
+body header :is(.home-menu, .mobile-menu)[open] > nav > * {
+  animation: leyros-menu-item-in .36s cubic-bezier(.22, 1, .36, 1) both;
+}
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(1) { animation-delay: .06s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(2) { animation-delay: .09s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(3) { animation-delay: .12s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(4) { animation-delay: .15s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(5) { animation-delay: .18s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(6) { animation-delay: .21s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(7) { animation-delay: .24s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(8) { animation-delay: .27s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(9) { animation-delay: .30s; }
+body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(n + 10) { animation-delay: .33s; }

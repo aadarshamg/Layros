@@ -9052,36 +9052,46 @@ body .product-card-pricing {
   border-top: 1px solid rgba(62, 39, 35, .1);
   border-bottom: 1px solid rgba(62, 39, 35, .1);
 }
-body .product-card-info-row {
-  display: flex;
-  min-height: 22px;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 0;
-}
-body .product-card-info-row > span:first-child {
-  color: #85766d;
-  font-size: 9px;
+/* Price, struck-through MRP and the % off pill share one line; the pill
+   drops to the next line on narrow cards rather than squeezing the MRP. */
+body .product-card-price-label {
+  color: #52696c;
+  font-size: .6875rem;
   font-weight: 650;
   letter-spacing: .05em;
+  line-height: 1.2;
   text-transform: uppercase;
 }
-body .product-card-selling-price strong {
-  color: #3e2723;
+body .product-card-price-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin: 0;
+}
+body .product-card-price-now {
+  color: #17363b;
   font-size: 25px;
   font-weight: 850;
   letter-spacing: -.04em;
   line-height: 1;
 }
-body .product-card-mrp s {
-  color: #8f837c;
-  font-size: 12px;
+body .product-card-price-mrp {
+  color: #718588;
+  font-size: .75rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
-body .product-card-total-discount strong {
+body .product-card-price-off {
+  margin-left: auto;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(47, 123, 100, .12);
   color: #2f7b64;
-  font-size: 12px;
+  font-size: .6875rem;
   font-weight: 800;
+  letter-spacing: .04em;
+  white-space: nowrap;
 }
 body .product-card-classification {
   display: grid;
@@ -9114,7 +9124,7 @@ body .storefront-home .cinematic-product-copy .product-card-quick-add { margin-t
 @media (max-width: 650px) {
   body .product-card-body h3,
   body .cinematic-product-copy h3 { height: 38px; min-height: 37px; font-size: 15px; }
-  body .product-card-selling-price strong { font-size: 23px; }
+  body .product-card-price-now { font-size: 23px; }
   body .product-card-classification span,
   body .product-card-classification strong { padding-inline: 8px; font-size: 8px; }
 }
@@ -10443,16 +10453,11 @@ body .product-card-pricing {
   padding: 12px 0;
   border-color: rgba(23,54,59,.11);
 }
-body .product-card-info-row { min-height: 24px; }
-body .product-card-info-row > span:first-child { color: #52696c; font-size: .6875rem; line-height: 1.35; }
-body .product-card-selling-price strong,
 body .product-card .product-card-price strong,
 body .cinematic-product-copy .product-card-price strong,
 body .storefront-home .cinematic-product-copy .product-card-price strong { color: #17363b; }
-body .product-card-mrp s,
 body .product-card-price s,
 body .cinematic-product-copy .product-card-price s { color: #718588; font-size: .8125rem; }
-body .product-card-total-discount strong { color: #2f7b64; font-size: .8125rem; }
 body .product-card-size,
 body .storefront-home .cinematic-product-copy .product-card-size {
   min-height: 40px;
@@ -10641,9 +10646,9 @@ body .storefront-home .cinematic-product-copy .product-card-quick-add {
   body .product-card-badge,
   body .cinematic-collection .cinematic-product-image .cinematic-product-badge { min-height: 22px; padding: 4px 7px; font-size: .5rem; }
   body .product-card-info-label,
-  body .product-card-info-row > span:first-child { font-size: .625rem; }
+  body .product-card-price-label { font-size: .625rem; }
   body .product-card-pricing { gap: 5px; padding-block: 10px; }
-  body .product-card-selling-price strong { font-size: 1.35rem; }
+  body .product-card-price-now { font-size: 1.35rem; }
   .collection-intro-highlights li { padding: 7px 10px; font-size: .6875rem; }
   .collection-product-grid { gap: 22px 10px; }
   .product-breadcrumbs { width: calc(100% - 28px); font-size: .625rem; }
@@ -10669,19 +10674,10 @@ body .storefront-home .cinematic-product-copy .product-card-quick-add {
 /* Resolve high-specificity legacy card rules found during live QA. */
 body .storefront-home .home-new-arrivals .product-card-notes,
 body .storefront-home .home-signature-scents .product-card-notes,
-body .storefront-home .home-new-arrivals .product-card-info-row,
-body .storefront-home .home-signature-scents .product-card-info-row,
-body .product-card .product-card-notes,
-body .product-card .product-card-info-row { color: #52696c !important; }
+body .product-card .product-card-notes { color: #52696c !important; }
 body .storefront-home .home-new-arrivals .product-card-notes strong,
 body .storefront-home .home-signature-scents .product-card-notes strong,
 body .product-card .product-card-notes strong { color: #2f5c62 !important; }
-body .storefront-home .home-new-arrivals .product-card-selling-price strong,
-body .storefront-home .home-signature-scents .product-card-selling-price strong,
-body .product-card .product-card-selling-price strong { color: #17363b !important; }
-body .storefront-home .home-new-arrivals .product-card-total-discount strong,
-body .storefront-home .home-signature-scents .product-card-total-discount strong,
-body .product-card .product-card-total-discount strong { color: #2f7b64 !important; }
 .storefront-home .faq-item,
 .storefront-home .faq-item summary,
 .storefront-home .press-grid blockquote,
@@ -11308,52 +11304,26 @@ body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-
 
 body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-pricing {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 7px 12px;
+  gap: 6px;
   padding: 11px 12px;
   border: 0;
   border-radius: 12px;
   background: #fff8f5;
 }
 
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-info-row {
-  min-height: 18px;
-  align-items: center;
-  gap: 6px;
-}
-
 body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-purchase strong {
   margin: 0;
 }
 
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-selling-price {
-  grid-column: 1 / -1;
-  min-height: 30px;
-  padding-bottom: 7px;
-  border-bottom: 1px solid rgba(240,100,85,.14);
-}
-
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-selling-price strong {
-  color: #17363b !important;
-  font-size: 1.35rem;
-  line-height: 1;
-}
-
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-mrp {
-  justify-content: flex-start;
-}
-
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-total-discount {
-  justify-content: flex-end;
-}
-
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-info-row > span:first-child {
+body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-price-label {
   font-size: .5625rem;
-  line-height: 1.2;
 }
 
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-mrp s,
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-total-discount strong {
+body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-price-now {
+  font-size: 1.35rem;
+}
+
+body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-price-mrp {
   font-size: .6875rem;
 }
 

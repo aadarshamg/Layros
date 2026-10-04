@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { PerfumeProduct } from "@leyros/types";
 import { isBuyTwoGetOneEligible } from "@/lib/promotions";
+import { productCardName } from "@/lib/product-labels";
 
 export function PrivateBlendSection({ products }: { products: PerfumeProduct[] }) {
   const blends = products.filter(isBuyTwoGetOneEligible).slice(0, 3);
@@ -21,7 +22,7 @@ export function PrivateBlendSection({ products }: { products: PerfumeProduct[] }
             <Link href={`/products/${product.handle}`} key={product.id}>
               <Image src={product.images[0]} alt={product.title} fill sizes="(max-width: 760px) 80vw, 22vw" />
               <span>Chapter 0{index + 1}</span>
-              <div><small>{product.details.family} composition</small><strong>{product.title}</strong></div>
+              <div><strong>{productCardName(product)}</strong></div>
             </Link>
           ))}
         </div>

@@ -25,6 +25,11 @@ export function productCardCategoryLabel(product: PerfumeProduct): string {
 /** Compact merchandising name for product cards; the source title remains untouched. */
 export function productCardTitle(product: PerfumeProduct): string {
   const category = productCardCategoryLabel(product);
+  return `${productCardName(product)} (${category.toLocaleUpperCase("en-IN")})`;
+}
+
+/** Just the fragrance's name, e.g. "OMBRÉE LEATHER" — no size, gender, or "Inspired by…" tail. */
+export function productCardName(product: PerfumeProduct): string {
   let name = product.title
     .split("|")[0]
     .split(/\s+[–—-]\s+/)[0]
@@ -35,5 +40,5 @@ export function productCardTitle(product: PerfumeProduct): string {
     .trim();
 
   if (!name) name = product.brand || "Leyros";
-  return `${name.toLocaleUpperCase("en-IN")} (${category.toLocaleUpperCase("en-IN")})`;
+  return name.toLocaleUpperCase("en-IN");
 }

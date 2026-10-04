@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getBestSellers } from "@/lib/data/products";
 import { isBuyTwoGetOneEligible } from "@/lib/promotions";
+import { productCardName } from "@/lib/product-labels";
 
 export const metadata: Metadata = buildMetadata({
   title: "Private Blends",
@@ -40,21 +41,17 @@ export default async function PrivateBlendsPage() {
         <div className="page-shell">
           <header><span>The collection, unveiled</span><h2 id="private-blend-reveal-title">Choose the story that draws you in.</h2></header>
           <div className="private-blend-reveal-grid">
-            {products.map((product, index) => {
-              const notes = [...product.details.notesTop, ...product.details.notesHeart, ...product.details.notesBase].filter(Boolean).slice(0, 3);
-              return (
-                <Link href={`/products/${product.handle}`} key={product.id}>
-                  <Image src={product.images[0]} alt={product.title} fill sizes="(max-width: 700px) 92vw, 33vw" />
-                  <span className="private-blend-reveal-shade" aria-hidden="true" />
-                  <div className="private-blend-reveal-number">0{index + 1}</div>
-                  <div className="private-blend-reveal-copy">
-                    <small>{product.details.family} · {notes.join(" · ")}</small>
-                    <h3>{product.title}</h3>
-                    <p>Reveal this blend <i aria-hidden="true">→</i></p>
-                  </div>
-                </Link>
-              );
-            })}
+            {products.map((product, index) => (
+              <Link href={`/products/${product.handle}`} key={product.id}>
+                <Image src={product.images[0]} alt={product.title} fill sizes="(max-width: 700px) 92vw, 33vw" />
+                <span className="private-blend-reveal-shade" aria-hidden="true" />
+                <div className="private-blend-reveal-number">0{index + 1}</div>
+                <div className="private-blend-reveal-copy">
+                  <h3>{productCardName(product)}</h3>
+                  <p>Reveal this blend <i aria-hidden="true">→</i></p>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

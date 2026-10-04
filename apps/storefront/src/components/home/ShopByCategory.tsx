@@ -21,21 +21,21 @@ const isPerfume = inCategory("collections");
 const GENDER_COLLECTIONS = [
   {
     label: "Men",
-    title: "FOR HIM",
+    title: "For Him",
     description: "Confident woods, fresh aromatics, rich ambers, and statement-making trails.",
     gender: "masculine",
     fallbackImage: "/leyros/about-old/hero-perfume.webp",
   },
   {
     label: "Women",
-    title: "FOR HER",
+    title: "For Her",
     description: "Radiant florals, luminous fruits, soft musks, and elegant signatures.",
     gender: "feminine",
     fallbackImage: "/leyros/about-old/daily-wear.webp",
   },
   {
     label: "Unisex",
-    title: "FOR EVERYONE",
+    title: "For Everyone",
     description: "Balanced compositions made to be chosen by character, not convention.",
     gender: "unisex",
     fallbackImage: "/leyros/about-old/gift-pack.webp",

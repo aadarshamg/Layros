@@ -30,6 +30,17 @@ const revealSelectors = [
   ".footer-grid > *",
 ].join(",");
 
+// Cards in a row that scrolls sideways (the phone carousels) would each stay
+// invisible until swiped almost fully into view, so the next card peeks in
+// blank and then pops. Those cards skip the reveal; desktop grids keep it.
+function isInSidewaysScroller(element: HTMLElement) {
+  for (let node = element.parentElement; node && node !== document.body; node = node.parentElement) {
+    const { overflowX } = getComputedStyle(node);
+    if ((overflowX === "auto" || overflowX === "scroll") && node.scrollWidth > node.clientWidth + 1) return true;
+  }
+  return false;
+}
+
 export function SiteMotion() {
   const pathname = usePathname();
 
@@ -37,7 +48,7 @@ export function SiteMotion() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const root = document.documentElement;
-    const targets = Array.from(document.querySelectorAll<HTMLElement>(revealSelectors));
+    const targets = Array.from(document.querySelectorAll<HTMLElement>(revealSelectors)).filter((element) => !isInSidewaysScroller(element));
     root.classList.add("motion-ready");
 
     targets.forEach((element, index) => {

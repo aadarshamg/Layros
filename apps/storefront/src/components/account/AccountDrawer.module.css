@@ -1,0 +1,71 @@
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0 20px;
+}
+
+.avatar {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #f06455;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.phone {
+  margin: 0;
+  color: #52696c;
+  font-size: 13px;
+}
+
+.links {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(23, 54, 59, .1);
+  border-radius: 16px;
+  background: #fff;
+  color: #17363b;
+  transition: border-color .2s ease, transform .2s ease;
+}
+
+.link:hover {
+  border-color: rgba(240, 100, 85, .45);
+  transform: translateY(-1px);
+}
+
+.link span {
+  display: grid;
+  gap: 2px;
+}
+
+.link b {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.link small {
+  color: #52696c;
+  font-size: 12px;
+}
+
+.link i {
+  color: #f06455;
+  font-size: 22px;
+  font-style: normal;
+  line-height: 1;
+}

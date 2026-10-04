@@ -17,6 +17,10 @@ interface AuthContextValue {
   logout: () => Promise<void>;
   /** Re-fetches the full profile from the server, e.g. after saving a new default address mid-checkout. */
   refreshCustomer: () => Promise<void>;
+  /** The header's account icon opens a slide-out login/account drawer rather than a page. */
+  isAccountDrawerOpen: boolean;
+  openAccountDrawer: () => void;
+  closeAccountDrawer: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -34,6 +38,9 @@ export function AuthProvider({ children, initialCustomer, loginAvailable = true 
   const [customer, setCustomer] = useState<Customer | null>(initialCustomer);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState(false);
+  const openAccountDrawer = useCallback(() => setIsAccountDrawerOpen(true), []);
+  const closeAccountDrawer = useCallback(() => setIsAccountDrawerOpen(false), []);
 
   const requestOtp = useCallback(async (phone: string) => {
     setIsLoading(true);
@@ -104,8 +111,11 @@ export function AuthProvider({ children, initialCustomer, loginAvailable = true 
   }, []);
 
   const value = useMemo(
-    () => ({ customer, isLoggedIn: customer !== null, loginAvailable, isLoading, error, requestOtp, verifyOtp, logout, refreshCustomer }),
-    [customer, loginAvailable, isLoading, error, requestOtp, verifyOtp, logout, refreshCustomer],
+    () => ({
+      customer, isLoggedIn: customer !== null, loginAvailable, isLoading, error, requestOtp, verifyOtp, logout, refreshCustomer,
+      isAccountDrawerOpen, openAccountDrawer, closeAccountDrawer,
+    }),
+    [customer, loginAvailable, isLoading, error, requestOtp, verifyOtp, logout, refreshCustomer, isAccountDrawerOpen, openAccountDrawer, closeAccountDrawer],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

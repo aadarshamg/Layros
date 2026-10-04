@@ -55,9 +55,17 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
   // Reads 0 until the cart hydrates from localStorage on mount — same as
   // the old server-computed count showing 0 before Medusa responded.
   const { itemCount: bagCount, openDrawer } = useCart();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, openAccountDrawer } = useAuth();
   const accountHref = isLoggedIn ? "/account/orders" : "/account/login";
   const accountLabel = isLoggedIn ? "My account" : "Log in";
+  // Opens the slide-out account drawer instead of navigating; the href stays
+  // so "open in new tab" still reaches the account pages.
+  const openAccount = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+    event.preventDefault();
+    event.currentTarget.closest("details")?.removeAttribute("open");
+    openAccountDrawer();
+  };
 
   useEffect(() => {
     if (!isHome) {
@@ -98,7 +106,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
           <Link key={link.href} href={link.href}>{link.label}</Link>
         ),
       )}
-      <Link href={accountHref}>{accountLabel}</Link>
+      <Link href={accountHref} onClick={openAccount}>{accountLabel}</Link>
       <button type="button" onClick={openDrawer} className="cursor-pointer text-left">Shopping bag ({bagCount})</button>
     </>
   );
@@ -156,7 +164,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
           ) : (
             <button type="button" aria-label="Search fragrances" className="nav-search-trigger" onClick={() => setIsSearchOpen(true)}><span>Search</span><span aria-hidden="true">⌕</span></button>
           )}
-          <Link href={accountHref} aria-label={accountLabel} className="nav-account-link">
+          <Link href={accountHref} onClick={openAccount} aria-label={accountLabel} className="nav-account-link" aria-haspopup="dialog">
             <span className="nav-account-icon" aria-hidden="true" />
             <span className="nav-account-text">{accountLabel}</span>
           </Link>

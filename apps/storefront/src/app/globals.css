@@ -11938,9 +11938,10 @@ html body .cart-overlay > aside.cart-drawer .cart-checkout {
   }
 }
 
-/* Phones, homepage: once scrolled, the header floats as a slim rounded bar
-   inset from the screen edges (matching the hero card's rounded frame)
-   instead of a heavy full-width slab with oversized controls. */
+/* Phones, homepage: compact controls in both header states, and once
+   scrolled the header floats as a slim rounded bar inset from the screen
+   edges (matching the hero card's rounded frame) instead of a heavy
+   full-width slab. */
 @media (max-width: 600px) {
   body header.home-header.is-scrolled {
     top: 8px !important;
@@ -11958,22 +11959,22 @@ html body .cart-overlay > aside.cart-drawer .cart-checkout {
     min-height: 56px !important;
     padding-inline: 8px !important;
   }
-  body header.home-header.is-scrolled .wordmark-logo {
-    width: 70px;
-    height: 54px;
+  body header.home-header .wordmark-logo {
+    width: 70px !important;
+    height: 54px !important;
   }
-  body header.home-header.is-scrolled .home-menu > summary {
+  body header.home-header .home-menu > summary {
     min-height: 38px !important;
     height: 38px !important;
     padding-inline: 13px !important;
     font-size: .6875rem !important;
   }
-  body header.home-header.is-scrolled .nav-search-trigger,
-  body header.home-header.is-scrolled .bag-link {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-    min-height: 38px;
+  body header.home-header .nav-search-trigger,
+  body header.home-header .bag-link {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
   }
 }
 
@@ -12007,4 +12008,14 @@ html body .cart-overlay > aside.cart-drawer .cart-checkout {
 @media (max-width: 520px) {
   .storefront-home .home-notes-grid .home-note-image { --note-ring: 7px; }
   .storefront-home .home-notes-grid .home-note-card { --note-ring-space: 7px; }
+}
+
+/* Size picker on homepage product rows: the track grows with its buttons
+   (they are taller touch targets under 820px) instead of a fixed 36px that
+   the selected button spilled out of. */
+body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-sizes {
+  height: auto;
+  min-height: 0;
+  flex: 0 0 auto;
+  align-items: stretch;
 }

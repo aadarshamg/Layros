@@ -11937,3 +11937,74 @@ html body .cart-overlay > aside.cart-drawer .cart-checkout {
     animation: cart-drawer-slide-in .38s cubic-bezier(.22, 1, .36, 1) both;
   }
 }
+
+/* Phones, homepage: once scrolled, the header floats as a slim rounded bar
+   inset from the screen edges (matching the hero card's rounded frame)
+   instead of a heavy full-width slab with oversized controls. */
+@media (max-width: 600px) {
+  body header.home-header.is-scrolled {
+    top: 8px !important;
+    right: 8px !important;
+    left: 8px !important;
+    width: auto !important;
+    border-radius: 20px !important;
+    background: rgba(23, 54, 59, .9) !important;
+    background-color: rgba(23, 54, 59, .9) !important;
+    box-shadow: 0 10px 28px rgba(15, 43, 47, .28) !important;
+    backdrop-filter: blur(14px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  }
+  body header.home-header.is-scrolled .nav-shell {
+    min-height: 56px !important;
+    padding-inline: 8px !important;
+  }
+  body header.home-header.is-scrolled .wordmark-logo {
+    width: 70px;
+    height: 54px;
+  }
+  body header.home-header.is-scrolled .home-menu > summary {
+    min-height: 38px !important;
+    height: 38px !important;
+    padding-inline: 13px !important;
+    font-size: .6875rem !important;
+  }
+  body header.home-header.is-scrolled .nav-search-trigger,
+  body header.home-header.is-scrolled .bag-link {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    min-height: 38px;
+  }
+}
+
+/* Shop by Notes: the dashed ring is a real border on a pseudo-element rather
+   than an outline, so no browser (notably iOS Safari) clips or squares it. */
+.storefront-home .home-notes-grid .home-note-image {
+  --note-ring: 9px;
+  overflow: visible;
+  outline: 0;
+}
+.storefront-home .home-notes-grid .home-note-image img {
+  border-radius: 50%;
+}
+.storefront-home .home-notes-grid .home-note-image::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--note-ring) * -1);
+  display: block;
+  border: 1px dashed #8cb4b9;
+  border-radius: 50%;
+  background: none;
+  pointer-events: none;
+}
+.storefront-home .home-notes-grid .home-note-card:hover img {
+  transform: none;
+}
+/* Room for the ring inside each card, so nothing can crop it to the card box. */
+.storefront-home .home-notes-grid .home-note-card {
+  padding-top: var(--note-ring-space, 9px);
+}
+@media (max-width: 520px) {
+  .storefront-home .home-notes-grid .home-note-image { --note-ring: 7px; }
+  .storefront-home .home-notes-grid .home-note-card { --note-ring-space: 7px; }
+}

@@ -11511,3 +11511,415 @@ body header.site-header .mobile-menu .nav-family-children .nav-submenu-item:focu
   background: rgba(207, 233, 239, .12);
   color: #fff !important;
 }
+
+/* ── Cart drawer: one uniform card system ──────────────────────────────
+   Every block (progress, items, coupons, recommendations, footer) uses the
+   same white card, border, radius, spacing and type scale on a calm grey
+   background, so the cart reads as one system rather than many colours. */
+html body .cart-overlay > aside.cart-drawer {
+  --cd-bg: #f3f6f5;
+  --cd-card: #fff;
+  --cd-line: #e2e8e6;
+  --cd-ink: #17363b;
+  --cd-muted: #5f7275;
+  --cd-accent: #f06455;
+  --cd-green: #2f7b64;
+  --cd-radius: 14px;
+  --cd-gutter: 12px;
+  background: var(--cd-bg);
+}
+
+/* Header */
+html body .cart-overlay > aside.cart-drawer .cart-drawer-header {
+  min-height: 0;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--cd-line);
+  background: var(--cd-card);
+}
+html body .cart-overlay > aside.cart-drawer .cart-drawer-header h2 {
+  margin: 0;
+  color: var(--cd-ink);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+html body .cart-overlay > aside.cart-drawer .cart-drawer-header h2 small {
+  color: var(--cd-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+html body .cart-overlay > aside.cart-drawer .cart-close {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: var(--cd-bg);
+  color: var(--cd-ink);
+  font-size: 18px;
+}
+
+/* Promo: a slim full-width strip under the header */
+html body .cart-overlay > aside.cart-drawer .cart-promo-banner {
+  margin: 0;
+  padding: 7px 14px;
+  border-radius: 0;
+  background: var(--cd-ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+/* Shipping progress + reward progress: one card, split by a dashed rule */
+html body .cart-overlay > aside.cart-drawer .checkout-benefits.is-compact {
+  display: grid;
+  gap: 8px;
+  margin: 10px var(--cd-gutter) 0;
+  padding: 12px 14px;
+  border: 1px solid var(--cd-line);
+  border-radius: var(--cd-radius);
+  background: var(--cd-card);
+  box-shadow: none;
+}
+html body .cart-overlay > aside.cart-drawer .checkout-benefits.is-compact:has(+ .cart-reward) {
+  border-bottom: 0;
+  border-radius: var(--cd-radius) var(--cd-radius) 0 0;
+}
+html body .cart-overlay > aside.cart-drawer .checkout-shipping-copy {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0;
+}
+html body .cart-overlay > aside.cart-drawer .checkout-shipping-copy strong {
+  color: var(--cd-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+html body .cart-overlay > aside.cart-drawer .checkout-shipping-copy span {
+  color: var(--cd-muted);
+  font-size: 11px;
+}
+html body .cart-overlay > aside.cart-drawer .checkout-shipping-track,
+html body .cart-overlay > aside.cart-drawer .cart-reward .cart-progress {
+  position: relative;
+  height: 6px;
+  margin: 0;
+  overflow: visible;
+  border-radius: 99px;
+  background: #e6ecea;
+}
+html body .cart-overlay > aside.cart-drawer .checkout-shipping-track > span,
+html body .cart-overlay > aside.cart-drawer .cart-reward .cart-progress > span {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--cd-accent);
+}
+html body .cart-overlay > aside.cart-drawer .checkout-shipping-track > i {
+  top: 50%;
+  right: -2px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--cd-line);
+  background: var(--cd-card);
+  box-shadow: none;
+  font-size: 12px;
+  transform: translateY(-50%);
+}
+html body .cart-overlay > aside.cart-drawer .checkout-benefit-offers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 0;
+}
+html body .cart-overlay > aside.cart-drawer .checkout-benefit-offers:empty { display: none; }
+html body .cart-overlay > aside.cart-drawer .checkout-benefit-offers > div {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 0;
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--cd-bg);
+}
+html body .cart-overlay > aside.cart-drawer .checkout-benefit-offers b {
+  color: var(--cd-ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+html body .cart-overlay > aside.cart-drawer .checkout-benefit-offers span {
+  color: var(--cd-muted);
+  font-size: 11px;
+}
+html body .cart-overlay > aside.cart-drawer .cart-reward {
+  display: grid;
+  gap: 8px;
+  margin: 0 var(--cd-gutter);
+  padding: 10px 14px 12px;
+  border: 1px solid var(--cd-line);
+  border-top: 1px dashed var(--cd-line);
+  border-radius: 0 0 var(--cd-radius) var(--cd-radius);
+  background: var(--cd-card);
+  box-shadow: none;
+}
+html body .cart-overlay > aside.cart-drawer .cart-reward-copy b {
+  color: var(--cd-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+html body .cart-overlay > aside.cart-drawer .cart-reward-scale {
+  margin: 0;
+  color: var(--cd-muted);
+  font-size: 11px;
+}
+
+/* Scroll area (cart view only — checkout steps keep their own panel):
+   cards stacked with one even gap */
+html body .cart-overlay > aside.cart-drawer .cart-drawer-scroll:has(> .cart-lines) {
+  background: var(--cd-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px var(--cd-gutter) 14px;
+}
+html body .cart-overlay > aside.cart-drawer .cart-drawer-scroll:has(> .cart-lines) > * {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* Items: one card, rows split by a hairline */
+html body .cart-overlay > aside.cart-drawer .cart-lines {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--cd-line);
+  border-radius: var(--cd-radius);
+  background: var(--cd-card);
+}
+html body .cart-overlay > aside.cart-drawer .cart-line {
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+html body .cart-overlay > aside.cart-drawer .cart-line + .cart-line {
+  border-top: 1px solid var(--cd-line);
+}
+html body .cart-overlay > aside.cart-drawer .cart-line-image {
+  height: 88px;
+  border-radius: 10px;
+  background: #f6f8f7;
+}
+html body .cart-overlay > aside.cart-drawer .cart-line-heading a {
+  color: var(--cd-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+html body .cart-overlay > aside.cart-drawer .cart-line-heading p {
+  margin-top: 3px;
+  color: var(--cd-muted);
+  font-size: 12px;
+}
+html body .cart-overlay > aside.cart-drawer .cart-line-heading button {
+  color: var(--cd-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+html body .cart-overlay > aside.cart-drawer .cart-quantity {
+  min-height: 0;
+  height: 32px;
+  border: 1px solid var(--cd-line);
+  border-radius: 10px;
+  background: var(--cd-card);
+}
+html body .cart-overlay > aside.cart-drawer .cart-quantity button,
+html body .cart-overlay > aside.cart-drawer .cart-quantity span {
+  min-width: 30px;
+  height: 30px;
+  color: var(--cd-ink);
+  font-size: 13px;
+}
+html body .cart-overlay > aside.cart-drawer .cart-line-price strong {
+  color: var(--cd-ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+html body .cart-overlay > aside.cart-drawer .cart-line-price small {
+  color: var(--cd-green);
+  font-size: 11px;
+  font-weight: 600;
+}
+html body .cart-overlay > aside.cart-drawer .cart-line-price small s {
+  margin-right: 5px;
+  color: var(--cd-muted);
+  font-weight: 400;
+}
+
+/* Coupons: same card */
+html body .cart-overlay > aside.cart-drawer .cart-coupon.coupon-widget {
+  border: 1px solid var(--cd-line);
+  border-radius: var(--cd-radius);
+  background: var(--cd-card);
+  box-shadow: none;
+}
+html body .cart-overlay > aside.cart-drawer .cart-coupon.coupon-widget > summary {
+  min-height: 0;
+  padding: 12px 14px;
+}
+html body .cart-overlay > aside.cart-drawer .coupon-widget-tag {
+  width: 32px;
+  height: 32px;
+  background: #fff1ec;
+  color: var(--cd-accent);
+  box-shadow: none;
+  font-size: 14px;
+}
+html body .cart-overlay > aside.cart-drawer .coupon-widget-summary-text b {
+  color: var(--cd-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+html body .cart-overlay > aside.cart-drawer .coupon-widget-summary-text small {
+  color: var(--cd-muted);
+  font-size: 12px;
+}
+
+/* Recommendations: same card, plain product tiles */
+html body .cart-overlay > aside.cart-drawer .cart-recommendations {
+  padding: 12px 0 12px 12px;
+  border: 1px solid var(--cd-line);
+  border-radius: var(--cd-radius);
+  background: var(--cd-card);
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendations .cart-section-heading {
+  margin: 0 12px 10px 0;
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendations .cart-section-heading h3 {
+  color: var(--cd-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-controls button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--cd-line);
+  background: var(--cd-card);
+  box-shadow: none;
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendation {
+  border: 1px solid var(--cd-line);
+  border-radius: 12px;
+  background: var(--cd-card);
+  box-shadow: none;
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-image {
+  background: #f6f8f7;
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy a {
+  color: var(--cd-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy p b {
+  color: var(--cd-ink);
+  font-size: 13px;
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy p span {
+  color: var(--cd-green);
+  font-size: 11px;
+}
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy button {
+  min-height: 32px;
+  border: 1px solid var(--cd-ink);
+  border-radius: 10px;
+  background: var(--cd-card);
+  color: var(--cd-ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Trust strip: quiet text row, no coloured block */
+html body .cart-overlay > aside.cart-drawer .cart-trust-marquee {
+  padding: 8px 0;
+  border: 1px dashed var(--cd-line);
+  border-radius: var(--cd-radius);
+  background: transparent;
+}
+html body .cart-overlay > aside.cart-drawer .cart-trust-marquee span {
+  color: var(--cd-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Footer: savings tab on the top edge, total, Snapmint, checkout */
+html body .cart-overlay > aside.cart-drawer .cart-drawer-footer {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 10px;
+  padding: 18px 14px 14px;
+  border-top: 1px solid var(--cd-line);
+  background: var(--cd-card);
+  box-shadow: 0 -8px 24px rgba(23, 54, 59, .06);
+}
+html body .cart-overlay > aside.cart-drawer .cart-savings {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 99px;
+  background: var(--cd-green);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+html body .cart-overlay > aside.cart-drawer .cart-b2g1-summary {
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--cd-line);
+  border-radius: 12px;
+  background: var(--cd-bg);
+}
+html body .cart-overlay > aside.cart-drawer .cart-total-row {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+html body .cart-overlay > aside.cart-drawer .cart-total-row b {
+  color: var(--cd-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+html body .cart-overlay > aside.cart-drawer .cart-total-row small {
+  color: var(--cd-muted);
+  font-size: 11px;
+}
+html body .cart-overlay > aside.cart-drawer .cart-total-row strong {
+  color: var(--cd-ink);
+  font-size: 20px;
+  font-weight: 800;
+}
+html body .cart-overlay > aside.cart-drawer .cart-snapmint {
+  min-height: 0;
+  margin: 0;
+  padding: 8px 10px 8px 0;
+  overflow: hidden;
+  border: 1px solid var(--cd-line);
+  border-radius: 12px;
+  background: var(--cd-bg);
+  font-size: 12px;
+}
+html body .cart-overlay > aside.cart-drawer .cart-checkout {
+  min-height: 52px;
+  margin: 0;
+  border-radius: var(--cd-radius);
+  box-shadow: none;
+}

@@ -11982,6 +11982,9 @@ html body .cart-overlay > aside.cart-drawer .cart-checkout {
    than an outline, so no browser (notably iOS Safari) clips or squares it. */
 .storefront-home .home-notes-grid .home-note-image {
   --note-ring: 9px;
+  /* Leave room for the ring on both sides: the image filled its whole column,
+     so the ring overhung the card and iOS Safari cropped its sides. */
+  width: calc(100% - var(--note-ring) * 2);
   overflow: visible;
   outline: 0;
 }

@@ -11496,3 +11496,18 @@ body header.home-header .home-menu nav .nav-family-menu[open] > summary::after {
   .collection-gender-switch > span { grid-column: 1 / -1; margin: 0 0 2px 2px; }
   .collection-gender-switch button { min-height: 40px; padding: 0 6px; font-size: 12.5px; }
 }
+
+/* Fragrance sub-links in the dark teal menu panel: solid white at every
+   width (they were a light-theme grey-brown at 75% opacity on desktop). */
+body header.home-header .home-menu .nav-family-children .nav-submenu-item,
+body header.site-header .mobile-menu .nav-family-children .nav-submenu-item {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+body header.home-header .home-menu .nav-family-children .nav-submenu-item:hover,
+body header.home-header .home-menu .nav-family-children .nav-submenu-item:focus-visible,
+body header.site-header .mobile-menu .nav-family-children .nav-submenu-item:hover,
+body header.site-header .mobile-menu .nav-family-children .nav-submenu-item:focus-visible {
+  background: rgba(207, 233, 239, .12);
+  color: #fff !important;
+}

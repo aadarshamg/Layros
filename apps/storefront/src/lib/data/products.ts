@@ -184,10 +184,17 @@ async function fetchAllProducts(): Promise<RawSanityProduct[]> {
 
 const BESTSELLER_TAG = "bestseller";
 
+// Candles only appear where a shopper is looking for candles — the candles
+// page, the Candles category, a search for "candle", or next to another
+// candle — never mixed into perfume rows and listings.
+function isCandle(product: PerfumeProduct) {
+  return (product.category ?? "").toLowerCase().includes("candle");
+}
+
 export async function getBestSellers(limit = 4): Promise<PerfumeProduct[]> {
   try {
     const raw = await fetchAllProducts();
-    const browsable = raw.filter(isBrowsableFragrance).map(toPerfumeProduct);
+    const browsable = raw.filter(isBrowsableFragrance).map(toPerfumeProduct).filter((product) => !isCandle(product));
     const bestsellers = browsable.filter((product) =>
       product.tags.some((tag) => tag.toLowerCase() === BESTSELLER_TAG),
     );
@@ -298,10 +305,11 @@ export async function getSimilarProducts(
 ): Promise<PerfumeProduct[]> {
   try {
     const raw = await fetchAllProducts();
-    const browsable = raw.filter(isBrowsableFragrance).map(toPerfumeProduct);
+    const everything = raw.filter(isBrowsableFragrance).map(toPerfumeProduct);
     const inCart = new Set(cartProductIds);
     const interestSeeds = new Set([...cartProductIds, ...interestProductIds]);
-    const cartItems = browsable.filter((product) => interestSeeds.has(product.id));
+    const cartItems = everything.filter((product) => interestSeeds.has(product.id));
+    const browsable = cartItems.some(isCandle) ? everything : everything.filter((product) => !isCandle(product));
 
     const excluded = new Set(cartProductIds);
     const results: PerfumeProduct[] = [];
@@ -425,18 +433,15 @@ export async function getFamilyShowcase(): Promise<FamilyShowcaseEntry[]> {
 }
 
 export async function getCategoryShowcase(): Promise<CategoryShowcaseEntry[]> {
-  const { products } = await listProducts({ limit: 100 });
-  return HOME_CATEGORIES.map((category) => {
-    const matches = products.filter((product) =>
-      product.category?.toLowerCase().includes(category.value),
-    );
+  return Promise.all(HOME_CATEGORIES.map(async (category) => {
+    const { products, count } = await listProducts({ category: category.value, limit: 1 });
     return {
       label: category.label,
       value: category.value,
-      image: matches[0]?.images[0] ?? category.fallbackImage,
-      productCount: matches.length,
+      image: products[0]?.images[0] ?? category.fallbackImage,
+      productCount: count,
     };
-  });
+  }));
 }
 
 // Lead photo of a real catalogue product for each showcase tile. Tiles are
@@ -473,7 +478,6 @@ export async function pickProductImages<K extends string>(
 // type keyword in the title or description), with the page hero picked last
 // so it doesn't repeat a type tile's photo.
 export function getCandleShowcaseImages() {
-  const isCandle = (product: PerfumeProduct) => (product.category ?? "").toLowerCase().includes("candle");
   const rules = Object.fromEntries(
     CANDLE_COLLECTIONS.map((collection) => [
       collection.slug,
@@ -515,6 +519,9 @@ export async function listProducts(params: {
       throw new Error("Use the editorial catalogue while the Sanity catalogue is empty.");
     }
     let products = browsableRaw.map(toPerfumeProduct);
+    if (!`${params.category ?? ""} ${params.q ?? ""}`.toLowerCase().includes("candle")) {
+      products = products.filter((product) => !isCandle(product));
+    }
     if (params.q) {
       const query = params.q.toLowerCase();
       products = products.filter((product) =>

@@ -11510,3 +11510,55 @@ body header.home-header .home-menu nav .nav-family-menu[open] > summary::after {
 }
 
 .home-instagram-grid .home-instagram-video { position: absolute; top: 8px; right: 8px; z-index: 1; display: grid; width: 26px; height: 26px; place-items: center; border-radius: 50%; background: rgba(0, 0, 0, .55); color: #fff; font-size: 10px; font-style: normal; pointer-events: none; }
+
+/* Men / Women / Unisex switch in the collection toolbar — tinted coral so it
+   reads as the main choice, with the selected option filled. */
+.collection-gender-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 12px;
+  border: 1.5px solid rgba(240, 100, 85, .35);
+  border-radius: 14px;
+  background: #fff1ec;
+}
+.collection-gender-switch > span {
+  margin-right: 4px;
+  color: #b2493d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.collection-gender-switch button {
+  min-height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+  color: #17363b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.collection-gender-switch button:hover { transform: translateY(-1px); background: #ffd3c8; }
+.collection-gender-switch button.is-selected {
+  background: #f06455;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(240, 100, 85, .3);
+}
+.collection-gender-switch button:focus-visible { outline: 2px solid #17363b; outline-offset: 2px; }
+
+@media (max-width: 760px) {
+  .collection-gender-switch {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 8px;
+    padding: 8px;
+  }
+  .collection-gender-switch > span { grid-column: 1 / -1; margin: 0 0 2px 2px; }
+  .collection-gender-switch button { min-height: 40px; padding: 0 6px; font-size: 12.5px; }
+}

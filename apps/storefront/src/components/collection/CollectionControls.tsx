@@ -5,7 +5,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CATEGORY_FILTER_OPTIONS } from "@/lib/data/categories";
 
 const families = ["floral", "woody", "oriental", "fresh", "gourmand"];
-const genders = ["unisex", "feminine", "masculine"];
+const GENDER_OPTIONS = [
+  { value: "", label: "All" },
+  { value: "masculine", label: "Men" },
+  { value: "feminine", label: "Women" },
+  { value: "unisex", label: "Unisex" },
+];
 
 export function CollectionControls() {
   const pathname = usePathname();
@@ -19,6 +24,8 @@ export function CollectionControls() {
   const activeGender = searchParams.get("gender") ?? "";
   const activeMaxPrice = searchParams.get("maxPrice") ?? "";
   const activeFilterCount = Number(inStock) + Number(Boolean(activeCategory)) + Number(Boolean(activeFamily)) + Number(Boolean(activeGender)) + Number(Boolean(activeMaxPrice));
+  // Candles and car perfumes aren't worn, so Men/Women/Unisex means nothing there.
+  const showGenderSwitch = !/candle|car perfume/i.test(activeCategory);
 
   function updateParam(key: string, value?: string) {
     const next = new URLSearchParams(searchParams.toString());
@@ -71,6 +78,22 @@ export function CollectionControls() {
             </select>
           </label>
         </div>
+        {showGenderSwitch && (
+          <div className="collection-gender-switch" role="group" aria-label="Shop for">
+            <span>Shop for</span>
+            {GENDER_OPTIONS.map((option) => (
+              <button
+                key={option.label}
+                type="button"
+                className={activeGender === option.value ? "is-selected" : undefined}
+                aria-pressed={activeGender === option.value}
+                onClick={() => updateParam("gender", option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {filtersOpen && (
@@ -85,12 +108,6 @@ export function CollectionControls() {
             <strong>Fragrance family</strong>
             <div>{families.map((family) => (
               <button key={family} type="button" className={activeFamily === family ? "is-selected" : undefined} onClick={() => updateParam("family", activeFamily === family ? "" : family)}>{family}</button>
-            ))}</div>
-          </div>
-          <div className="filter-group">
-            <strong>For</strong>
-            <div>{genders.map((gender) => (
-              <button key={gender} type="button" className={activeGender === gender ? "is-selected" : undefined} onClick={() => updateParam("gender", activeGender === gender ? "" : gender)}>{gender}</button>
             ))}</div>
           </div>
           <button type="button" className="clear-collection-filters" onClick={clearFilters}>Clear all filters</button>

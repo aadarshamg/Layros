@@ -11928,3 +11928,12 @@ html body .cart-overlay > aside.cart-drawer .cart-checkout {
   border-radius: var(--cd-radius);
   box-shadow: none;
 }
+
+/* Phones: the drawer is full-screen, so the desktop 34px nudge reads as no
+   motion at all — slide the whole panel in from the right instead. */
+@keyframes cart-drawer-slide-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@media (max-width: 600px) and (prefers-reduced-motion: no-preference) {
+  html body .cart-overlay > aside.cart-drawer {
+    animation: cart-drawer-slide-in .38s cubic-bezier(.22, 1, .36, 1) both;
+  }
+}

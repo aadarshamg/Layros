@@ -9093,31 +9093,6 @@ body .product-card-price-off {
   letter-spacing: .04em;
   white-space: nowrap;
 }
-body .product-card-classification {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  overflow: hidden;
-  border: 1px solid rgba(184, 134, 11, .22);
-  border-radius: 9px;
-  background: #fbf3e2;
-}
-body .product-card-classification span,
-body .product-card-classification strong {
-  display: flex;
-  min-height: 31px;
-  align-items: center;
-  padding: 7px 10px;
-  color: #684f14;
-  font-size: 9px;
-  font-weight: 750;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-body .product-card-classification strong {
-  border-left: 1px solid rgba(184, 134, 11, .22);
-  background: #0b1d2a;
-  color: #fff;
-}
 body .product-card-quick-add,
 body .storefront-home .cinematic-product-copy .product-card-quick-add { margin-top: 2px; }
 
@@ -9125,8 +9100,6 @@ body .storefront-home .cinematic-product-copy .product-card-quick-add { margin-t
   body .product-card-body h3,
   body .cinematic-product-copy h3 { height: 38px; min-height: 37px; font-size: 15px; }
   body .product-card-price-now { font-size: 23px; }
-  body .product-card-classification span,
-  body .product-card-classification strong { padding-inline: 8px; font-size: 8px; }
 }
 
 /* Product-page EMI strip: visible beside the active variant and before purchase. */
@@ -10468,10 +10441,6 @@ body .storefront-home .cinematic-product-copy .product-card-size {
 }
 body .product-card-size.is-selected,
 body .storefront-home .cinematic-product-copy .product-card-size.is-selected { border-color: #2f5c62; background: #e2f0ed; color: #17363b; }
-body .product-card-classification { border-color: rgba(23,54,59,.16); background: #e2f0ed; }
-body .product-card-classification span,
-body .product-card-classification strong { min-height: 34px; color: #2f5c62; font-size: .6875rem; }
-body .product-card-classification strong { border-color: rgba(255,255,255,.2); background: #17363b; color: #fff; }
 body .product-card-badge,
 body .cinematic-collection .cinematic-product-image .cinematic-product-badge {
   min-height: 24px;
@@ -11325,41 +11294,6 @@ body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-
 
 body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-price-mrp {
   font-size: .6875rem;
-}
-
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-classification {
-  display: flex;
-  min-height: 34px;
-  align-items: center;
-  gap: 6px;
-  overflow: visible;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-}
-
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-classification span,
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-classification strong {
-  min-height: 34px;
-  justify-content: center;
-  padding: 7px 10px;
-  border: 0;
-  border-radius: 999px;
-  font-size: .625rem;
-  letter-spacing: .045em;
-}
-
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-classification span {
-  min-width: 0;
-  flex: 1;
-  background: #e2f0ed;
-  color: #2f5c62;
-}
-
-body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-classification strong {
-  flex: 0 0 auto;
-  background: #17363b;
-  color: #fff;
 }
 
 body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-quick-add {

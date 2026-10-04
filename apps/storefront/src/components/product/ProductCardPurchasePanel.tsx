@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { PerfumeProduct } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatInr, formatSize } from "@/lib/format";
-import { genderLabel, productCardCategoryLabel } from "@/lib/product-labels";
+import { genderLabel } from "@/lib/product-labels";
 
 export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct }) {
   const { addItem, openDrawer } = useCart();
@@ -22,7 +22,6 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
     ? Math.round((1 - variant.price / compareAt) * 100)
     : 0;
   const gender = genderLabel(product);
-  const classification = gender ?? productCardCategoryLabel(product);
   const notes = [...product.details.notesTop, ...product.details.notesHeart, ...product.details.notesBase]
     .filter((note, index, all) => note && all.indexOf(note) === index)
     .slice(0, 3);
@@ -82,11 +81,6 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
             </>
           )}
         </p>
-      </div>
-
-      <div className="product-card-classification" aria-label={gender ? "Perfume classification" : "Product classification"}>
-        <span>{gender ? "Gender" : "Product Type"}</span>
-        <strong>{classification}</strong>
       </div>
 
       <button type="button" onClick={handleQuickAdd} className="product-card-quick-add">

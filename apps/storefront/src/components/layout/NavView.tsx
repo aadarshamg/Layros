@@ -38,7 +38,7 @@ const links: NavLink[] = [
   { href: "/collections/all?category=attar", label: "Attar Fragrance" },
   { href: `/collections/all?category=${encodeURIComponent("gift pack")}`, label: "Luxury Gift Pack" },
   { href: `/collections/all?category=${encodeURIComponent("car perfume")}`, label: "Car Perfumes" },
-  { href: "/collections/all?sort=new", label: "New Launch" },
+  { href: "/collections/all?category=collections&sort=new", label: "New Launch" },
   { href: "/candles", label: "Candles" },
   { href: "/story", label: "About Us" },
 ];

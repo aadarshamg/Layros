@@ -201,11 +201,17 @@ export async function getBestSellers(limit = 4): Promise<PerfumeProduct[]> {
   }
 }
 
+// Perfumes only — the catalogue's perfume categories are "The … Collections",
+// the same keyword the homepage "Perfumes" tile filters on. Candles, attars,
+// car perfumes and gift packs stay out of New Arrivals.
 export async function getNewArrivals(limit = 4): Promise<PerfumeProduct[]> {
   try {
     const raw = await fetchAllProducts();
-    const browsable = raw.filter(isBrowsableFragrance).map(toPerfumeProduct);
-    return browsable.sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
+    const perfumes = raw
+      .filter(isBrowsableFragrance)
+      .map(toPerfumeProduct)
+      .filter((product) => (product.category ?? "").toLowerCase().includes("collections"));
+    return perfumes.sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
   } catch {
     return [...editorialProducts].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
   }

@@ -64,7 +64,7 @@ export function CartDrawer() {
     removeItem,
     addItem,
   } = useCart();
-  const { isLoggedIn, customer } = useAuth();
+  const { isLoggedIn, customer, loginAvailable } = useAuth();
   const [suggestions, setSuggestions] = useState<SuggestedProduct[]>([]);
   const [storeSettings, setStoreSettings] = useState<StoreSettings>({ rewardEnabled: false });
   type DrawerView = "cart" | "login" | "address" | "payment";
@@ -154,7 +154,7 @@ export function CartDrawer() {
       return;
     }
     if (!isLoggedIn) {
-      setView("login");
+      setView(loginAvailable ? "login" : "address");
       return;
     }
     if (customer?.defaultShippingAddress && customer.email) {

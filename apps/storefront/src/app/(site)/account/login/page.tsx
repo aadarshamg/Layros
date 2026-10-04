@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
@@ -8,7 +10,7 @@ type Step = "phone" | "code";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { requestOtp, verifyOtp, isLoading } = useAuth();
+  const { requestOtp, verifyOtp, isLoading, loginAvailable } = useAuth();
   const [step, setStep] = useState<Step>("phone");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -25,7 +27,7 @@ export default function LoginPage() {
     try {
       await requestOtp(phone);
       setStep("code");
-      setInfo(`We've sent a 6-digit code to +91 ${phone}.`);
+      setInfo(`We've sent a 6-digit code to +91 ${phone} on WhatsApp.`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not send the code. Please try again.");
     }
@@ -48,10 +50,25 @@ export default function LoginPage() {
     setInfo(null);
     try {
       await requestOtp(phone);
-      setInfo(`We've sent a new code to +91 ${phone}.`);
+      setInfo(`We've sent a new code to +91 ${phone} on WhatsApp.`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not send the code. Please try again.");
     }
+  }
+
+  if (!loginAvailable) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
+        <p className="text-xs uppercase tracking-widest text-charcoal-soft/60">Account</p>
+        <h1 className="mt-1 font-serif text-3xl">Accounts are coming soon</h1>
+        <p className="mt-3 text-sm text-charcoal-soft/70">
+          Phone login is being set up. You can still order as a guest — just add your delivery details at checkout.
+        </p>
+        <Link href="/collections/all" className="mt-8 inline-block rounded-full bg-charcoal px-6 py-3 text-xs uppercase tracking-widest text-offwhite">
+          Continue shopping
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -59,7 +76,7 @@ export default function LoginPage() {
       <p className="text-xs uppercase tracking-widest text-charcoal-soft/60">Account</p>
       <h1 className="mt-1 font-serif text-3xl">Log in or sign up</h1>
       <p className="mt-3 text-sm text-charcoal-soft/70">
-        No password needed — we&apos;ll text you a one-time code.
+        No password needed — we&apos;ll send a one-time code to your WhatsApp.
       </p>
 
       {step === "phone" && (

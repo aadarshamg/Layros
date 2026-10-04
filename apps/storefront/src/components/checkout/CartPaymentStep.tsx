@@ -30,7 +30,7 @@ export function CartPaymentStep({
   onDone: () => void;
 }) {
   const router = useRouter();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, loginAvailable } = useAuth();
   const { items, appliedCoupon, total, clearCart } = useCart();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("razorpay");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -169,7 +169,7 @@ export function CartPaymentStep({
             <span><b>Cash on Delivery</b><small>Pay in cash when your order arrives</small></span>
           </label>
         ) : (
-          <p className="cart-step-note">Log in to unlock Cash on Delivery.</p>
+          <p className="cart-step-note">{loginAvailable ? "Log in to unlock Cash on Delivery." : "Cash on Delivery is coming soon — pay securely online for now."}</p>
         )}
       </div>
 

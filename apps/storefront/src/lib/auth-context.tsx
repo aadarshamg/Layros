@@ -6,6 +6,8 @@ import type { Customer } from "@leyros/types";
 interface AuthContextValue {
   customer: Customer | null;
   isLoggedIn: boolean;
+  /** False until an OTP provider (WhatsApp/SMS) is connected — login is hidden rather than offered and failing. */
+  loginAvailable: boolean;
   isLoading: boolean;
   error: string | null;
   /** Sends a fresh OTP to `phone`. Throws with a user-facing message on failure. */
@@ -28,7 +30,7 @@ async function readJsonError(response: Response, fallback: string): Promise<stri
   }
 }
 
-export function AuthProvider({ children, initialCustomer }: { children: ReactNode; initialCustomer: Customer | null }) {
+export function AuthProvider({ children, initialCustomer, loginAvailable = true }: { children: ReactNode; initialCustomer: Customer | null; loginAvailable?: boolean }) {
   const [customer, setCustomer] = useState<Customer | null>(initialCustomer);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -102,8 +104,8 @@ export function AuthProvider({ children, initialCustomer }: { children: ReactNod
   }, []);
 
   const value = useMemo(
-    () => ({ customer, isLoggedIn: customer !== null, isLoading, error, requestOtp, verifyOtp, logout, refreshCustomer }),
-    [customer, isLoading, error, requestOtp, verifyOtp, logout, refreshCustomer],
+    () => ({ customer, isLoggedIn: customer !== null, loginAvailable, isLoading, error, requestOtp, verifyOtp, logout, refreshCustomer }),
+    [customer, loginAvailable, isLoading, error, requestOtp, verifyOtp, logout, refreshCustomer],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

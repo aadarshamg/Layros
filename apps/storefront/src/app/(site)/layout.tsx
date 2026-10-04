@@ -11,6 +11,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { getCurrentCustomer } from "@/lib/auth/session";
 import { getStoreSettings } from "@/lib/data/store-settings";
 import { WelcomeOfferPopup } from "@/components/layout/WelcomeOfferPopup";
+import { isOtpDeliveryAvailable } from "@/lib/auth/otp-senders";
 import "../globals.css";
 
 export default async function SiteLayout({ children }: LayoutProps<"/">) {
@@ -19,7 +20,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
     <>
       <JsonLd data={organizationJsonLd({ email: storeSettings.contactEmail, phone: storeSettings.contactPhone })} />
       <JsonLd data={websiteJsonLd()} />
-      <AuthProvider initialCustomer={customer}>
+      <AuthProvider initialCustomer={customer} loginAvailable={isOtpDeliveryAvailable()}>
         <CartProvider>
           <SiteMotion />
           <NavView announcementMessages={storeSettings.announcementMessages} />

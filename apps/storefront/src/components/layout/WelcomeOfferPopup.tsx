@@ -10,7 +10,7 @@ const SESSION_KEY = "leyros-welcome-offer-seen";
 
 export function WelcomeOfferPopup() {
   const pathname = usePathname();
-  const { isLoggedIn, isLoading, requestOtp, verifyOtp, refreshCustomer } = useAuth();
+  const { isLoggedIn, loginAvailable, isLoading, requestOtp, verifyOtp, refreshCustomer } = useAuth();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<"phone" | "code">("phone");
   const [phone, setPhone] = useState("");
@@ -21,10 +21,11 @@ export function WelcomeOfferPopup() {
   const excluded = pathname.startsWith("/account") || pathname.startsWith("/checkout") || pathname.startsWith("/products/");
 
   useEffect(() => {
-    if (isLoggedIn || excluded || window.sessionStorage.getItem(SESSION_KEY)) return;
+    // Login-to-unlock only makes sense once codes can actually be delivered.
+    if (!loginAvailable || isLoggedIn || excluded || window.sessionStorage.getItem(SESSION_KEY)) return;
     const timer = window.setTimeout(() => setOpen(true), 1300);
     return () => window.clearTimeout(timer);
-  }, [excluded, isLoggedIn]);
+  }, [excluded, isLoggedIn, loginAvailable]);
 
   function close() {
     window.sessionStorage.setItem(SESSION_KEY, "true");

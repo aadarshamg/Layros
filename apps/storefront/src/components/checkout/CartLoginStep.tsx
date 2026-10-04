@@ -27,7 +27,7 @@ export function CartLoginStep({ onBack, onLoggedIn, onGuest }: { onBack: () => v
     try {
       await requestOtp(phone);
       setStep("code");
-      setInfo(`We've sent a 6-digit code to +91 ${phone}.`);
+      setInfo(`We've sent a 6-digit code to +91 ${phone} on WhatsApp.`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not send the code. Please try again.");
     }
@@ -49,7 +49,7 @@ export function CartLoginStep({ onBack, onLoggedIn, onGuest }: { onBack: () => v
     setInfo(null);
     try {
       await requestOtp(phone);
-      setInfo(`We've sent a new code to +91 ${phone}.`);
+      setInfo(`We've sent a new code to +91 ${phone} on WhatsApp.`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not send the code. Please try again.");
     }
@@ -61,7 +61,7 @@ export function CartLoginStep({ onBack, onLoggedIn, onGuest }: { onBack: () => v
         <button type="button" onClick={onBack} className="cart-step-back">← Back to bag</button>
       </div>
       <h3 className="cart-step-title">Log in to check out faster</h3>
-      <p className="cart-step-subtitle">No password needed — we&apos;ll text you a one-time code.</p>
+      <p className="cart-step-subtitle">No password needed — we&apos;ll send a one-time code to your WhatsApp.</p>
 
       <CartOrderSummaryMini />
       <CouponWidget />

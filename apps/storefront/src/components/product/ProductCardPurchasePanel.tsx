@@ -71,15 +71,14 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
       </p>
 
       <div className="product-card-pricing" aria-label="Product pricing">
-        <span className="product-card-price-label">Selling Price</span>
+        {/* The % off pill sits on the label row so it never wraps under the price on narrow cards. */}
+        <div className="product-card-price-head">
+          <span className="product-card-price-label">Selling Price</span>
+          {discount > 0 && <span className="product-card-price-off">{discount}% OFF</span>}
+        </div>
         <p className="product-card-price-line">
           <span className="product-card-price-now">{formatInr(variant.price)}</span>
-          {discount > 0 && (
-            <>
-              <span className="product-card-price-mrp">MRP <s>{formatInr(compareAt)}</s></span>
-              <span className="product-card-price-off">{discount}% OFF</span>
-            </>
-          )}
+          {discount > 0 && <span className="product-card-price-mrp">MRP <s>{formatInr(compareAt)}</s></span>}
         </p>
       </div>
 

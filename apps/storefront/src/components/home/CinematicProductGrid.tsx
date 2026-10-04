@@ -5,6 +5,7 @@ import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurcha
 import { HorizontalProductShelf } from "@/components/home/HorizontalProductShelf";
 import { genderLabel, productCardTitle } from "@/lib/product-labels";
 import { getProductBadge } from "@/lib/product-badge";
+import { ProductBadgeIcon } from "@/components/product/ProductBadgeIcon";
 
 export function CinematicProductGrid({
   eyebrow,
@@ -49,7 +50,7 @@ export function CinematicProductGrid({
                   )}
                   {badge && (
                     <small className={`cinematic-product-badge product-badge-${badge.tone}`}>
-                      <span aria-hidden="true">↗</span> {badge.label}
+                      <ProductBadgeIcon /> {badge.label}
                     </small>
                   )}
                   {gender && <span className="product-gender-badge">{gender}</span>}

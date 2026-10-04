@@ -12019,3 +12019,17 @@ body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-
   flex: 0 0 auto;
   align-items: stretch;
 }
+
+/* Card pricing: label and the % off pill share the top row, price and MRP
+   the second, so the pill never wraps onto a line of its own. */
+body .product-card-pricing .product-card-price-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+body .product-card-pricing .product-card-price-head .product-card-price-off {
+  margin-left: 0;
+  padding: 2px 8px;
+}

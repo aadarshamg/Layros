@@ -12069,3 +12069,45 @@ body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(7) { animatio
 body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(8) { animation-delay: .27s; }
 body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(9) { animation-delay: .30s; }
 body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(n + 10) { animation-delay: .33s; }
+
+/* Homepage campaign banner hero (the video is switched off for now). A strip
+   in the banner's own dark brown sits under the floating header, so the
+   header never covers the banner's logo or headline, and fades into it. */
+.storefront-home .hero-banner {
+  --hero-banner-band: 94px;
+  position: relative;
+  margin: 14px;
+  padding-top: var(--hero-banner-band);
+  overflow: hidden;
+  border-radius: 38px;
+  background: #1a0e07;
+}
+.storefront-home .hero-banner-link {
+  position: relative;
+  display: block;
+}
+.storefront-home .hero-banner-link::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  height: 9%;
+  background: linear-gradient(#1a0e07, rgba(26, 14, 7, 0));
+  pointer-events: none;
+}
+.storefront-home .hero-banner-link img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.storefront-home .hero-banner-link:focus-visible {
+  outline: 3px solid #d9bd70;
+  outline-offset: -3px;
+}
+@media (max-width: 600px) {
+  .storefront-home .hero-banner {
+    --hero-banner-band: 78px;
+    margin: 8px;
+    border-radius: 24px;
+  }
+}

@@ -15,7 +15,7 @@ export default async function RestoreCartPage({ params }: { params: Promise<{ to
     return (
       <section className="page-shell restore-cart">
         <h1>This bag link has expired</h1>
-        <p>The products may have sold out or the link is no longer valid — but the collection is still waiting for you.</p>
+        <p>The products may have sold out or the link is no longer valid, but the collection is still waiting for you.</p>
         <Link href="/collections/all" className="review-write-button">Browse fragrances</Link>
       </section>
     );
@@ -28,7 +28,7 @@ export default async function RestoreCartPage({ params }: { params: Promise<{ to
   return (
     <section className="page-shell restore-cart">
       <h1>Restoring your bag…</h1>
-      <p>One moment — we&apos;re putting your {lines.length === 1 ? "item" : `${lines.length} items`} back in your bag.</p>
+      <p>One moment. We&apos;re putting your {lines.length === 1 ? "item" : `${lines.length} items`} back in your bag.</p>
       <RestoreCart lines={lines} />
     </section>
   );

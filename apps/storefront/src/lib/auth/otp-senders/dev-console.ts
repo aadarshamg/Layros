@@ -7,6 +7,6 @@ import "server-only";
  * as long as MSG91_AUTH_KEY (or the WhatsApp vars) are configured.
  */
 export async function sendViaDevConsole(phone: string, code: string): Promise<{ ok: true }> {
-  console.log(`[dev-console OTP] ${phone}: ${code} (no OTP provider configured — see .env.example)`);
+  console.log(`[dev-console OTP] ${phone}: ${code} (no OTP provider configured; see .env.example)`);
   return { ok: true };
 }

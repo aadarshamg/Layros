@@ -50,7 +50,7 @@ export default function AddressesPage() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl space-y-4 text-sm">
-      <p className="text-charcoal-soft/70">Saved as your default delivery address — pre-fills checkout next time.</p>
+      <p className="text-charcoal-soft/70">Saved as your default delivery address. It pre-fills checkout next time.</p>
       <label className="block">
         <span className="mb-1 block uppercase tracking-widest text-charcoal-soft/70">Full name</span>
         <input required value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full rounded-xl border border-border px-3 py-2" />

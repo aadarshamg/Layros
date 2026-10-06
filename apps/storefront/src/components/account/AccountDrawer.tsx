@@ -109,7 +109,7 @@ function LoginForm({ onLoggedIn }: { onLoggedIn: (isNewCustomer: boolean) => voi
   return (
     <div className="cart-step">
       <h3 className="cart-step-title">Log in or sign up</h3>
-      <p className="cart-step-subtitle">No password needed — we&apos;ll send a one-time code to your WhatsApp.</p>
+      <p className="cart-step-subtitle">No password needed. We&apos;ll send a one-time code to your WhatsApp.</p>
 
       {step === "phone" ? (
         <form onSubmit={handleRequestOtp} className="cart-step-form">
@@ -220,7 +220,7 @@ function ComingSoon() {
     <div className="cart-step">
       <h3 className="cart-step-title">Accounts are coming soon</h3>
       <p className="cart-step-subtitle">
-        Phone login is being set up. You can still order as a guest — just add your delivery details at checkout.
+        Phone login is being set up. You can still order as a guest. Just add your delivery details at checkout.
       </p>
       <button type="button" onClick={closeAccountDrawer} className="cart-step-primary-button">Continue shopping</button>
     </div>

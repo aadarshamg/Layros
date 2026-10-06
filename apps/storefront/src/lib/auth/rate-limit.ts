@@ -82,7 +82,7 @@ export async function checkOtpRateLimit(phone: string, ipHash: string): Promise<
   if (!writeClient) {
     // No Sanity write access configured (e.g. local dev without a token) —
     // fail open so the flow is still testable, matching saveOrder's fallback.
-    console.error("OTP rate limit check skipped — SANITY_API_TOKEN is not configured.");
+    console.error("OTP rate limit check skipped: SANITY_API_TOKEN is not configured.");
     return { allowed: true };
   }
 

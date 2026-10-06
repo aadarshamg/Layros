@@ -24,7 +24,7 @@ export default async function SamplesPage() {
       <p className="content-page-copy" style={{ maxWidth: 640, color: "var(--ink-soft)", fontFamily: "var(--font-playfair)", fontSize: 17, lineHeight: 1.65, marginBottom: 40 }}>
         A discovery coffret lets you live with two or three extraits over several days before choosing
         your signature bottle. Curated sample sets are assembled by our concierge team to suit your
-        preferences — tell us what you&rsquo;re drawn to and we&rsquo;ll put one together for you.
+        preferences. Tell us what you&rsquo;re drawn to and we&rsquo;ll put one together for you.
       </p>
       <div className="button-row">
         <a href={`mailto:${email}?subject=Discovery%20coffret`} className="button button-dark">

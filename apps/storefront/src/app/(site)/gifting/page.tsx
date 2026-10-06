@@ -23,7 +23,7 @@ export default async function GiftingPage() {
       </div>
       <p className="content-page-copy" style={{ maxWidth: 640, color: "var(--ink-soft)", fontFamily: "var(--font-playfair)", fontSize: 17, lineHeight: 1.65, marginBottom: 40 }}>
         Every Leyros bottle can be finished with our signature wax-sealed box wrap and a handwritten
-        card — a small ceremony that makes the gift feel considered, not rushed. Add it to any order
+        card, a small ceremony that makes the gift feel considered, not rushed. Add it to any order
         at checkout by ticking &ldquo;Add complimentary gift wrap&rdquo; and writing your card message,
         or ask our concierge to help you choose.
       </p>

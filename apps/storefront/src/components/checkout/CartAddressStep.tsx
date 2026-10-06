@@ -127,7 +127,7 @@ export function CartAddressStep({
     return (
       <div className="cart-step">
         <div className="cart-step-header">
-          <button type="button" onClick={onBack} className="cart-step-back">← Back to bag</button>
+          <button type="button" onClick={onBack} className="cart-step-back"><span className="ui-inline-arrow is-left" aria-hidden="true" /> Back to bag</button>
         </div>
         <h3 className="cart-step-title">Deliver to</h3>
         <CheckoutBenefits compact />
@@ -149,7 +149,7 @@ export function CartAddressStep({
   return (
     <div className="cart-step">
       <div className="cart-step-header">
-        <button type="button" onClick={savedAddress ? () => setIsEditing(false) : onBack} className="cart-step-back">← Back</button>
+        <button type="button" onClick={savedAddress ? () => setIsEditing(false) : onBack} className="cart-step-back"><span className="ui-inline-arrow is-left" aria-hidden="true" /> Back</button>
       </div>
       <h3 className="cart-step-title">Delivery details</h3>
       <CheckoutBenefits compact />
@@ -188,7 +188,7 @@ export function CartAddressStep({
             placeholder="6-digit PIN"
           />
           {isLookingUpPin && <small>Looking up your city and state…</small>}
-          {pinLookupFailed && <small>Couldn&apos;t find that PIN — enter city/state below.</small>}
+          {pinLookupFailed && <small>Couldn&apos;t find that PIN. Enter city/state below.</small>}
         </label>
         <div className="cart-step-field-row">
           <label className="cart-step-field">

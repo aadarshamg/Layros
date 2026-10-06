@@ -109,7 +109,7 @@ export function getCollectionPresentation({ handle, category = "", family = "", 
   return {
     eyebrow: "Pick a mood. Find your signature.",
     title: handle === "all" ? "Shop All" : handle.replace(/-/g, " "),
-    description: "Explore long-lasting perfumes, concentrated attars, candles, and scent-led gifts—crafted with care for the way you actually live.",
+    description: "Explore long-lasting perfumes, concentrated attars, candles, and scent-led gifts, crafted with care for the way you actually live.",
     highlights: ["Thoughtfully crafted", "Premium experience", "Made for every mood"],
   };
 }

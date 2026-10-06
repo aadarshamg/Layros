@@ -18,7 +18,7 @@ const statements = [
   },
   {
     quote:
-      "A fragrance should feel like a private ritual — never rushed, never generic.",
+      "A fragrance should feel like a private ritual: never rushed, never generic.",
     source: "Maison Leyros",
     detail: "Founding principle",
   },

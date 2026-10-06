@@ -87,7 +87,7 @@ export function FragranceFinderQuiz({ products }: { products: PerfumeProduct[] }
         <h2 style={{ marginTop: 8, marginBottom: 32 }}>Fragrances chosen for you</h2>
         {results.length === 0 ? (
           <p style={{ color: "var(--ink-soft)" }}>
-            We couldn&rsquo;t find a match yet — the collection is still growing.{" "}
+            We couldn&rsquo;t find a match yet. The collection is still growing.{" "}
             <Link href="/collections/all" style={{ textDecoration: "underline" }}>Browse everything</Link>.
           </p>
         ) : (

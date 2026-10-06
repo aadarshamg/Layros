@@ -17,7 +17,7 @@ export default async function PrivacyPage() {
     <LegalPageLayout title="Privacy Policy" path="/legal/privacy" updated="20 September 2026">
       <p>
         LEYROS (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects the information you give us when you browse,
-        create an account, or place an order — including your name, email, phone number, shipping and
+        create an account, or place an order, including your name, email, phone number, shipping and
         billing addresses, and order history. We use it only to fulfil orders, provide client care, and,
         with your consent, send occasional updates about new releases.
       </p>

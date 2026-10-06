@@ -17,7 +17,7 @@ export default async function FragranceFinderPage() {
     <div className="finder-section section-pad">
       <div className="page-shell">
         <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Fragrance Finder", url: "/fragrance-finder" }]} />
-        <h1 className="sr-only">Fragrance Finder — find your Leyros signature scent</h1>
+        <h1 className="sr-only">Fragrance Finder: find your Leyros signature scent</h1>
         <div className="finder-card" style={{ marginTop: 24, display: "block" }}>
           <FragranceFinderQuiz products={products} />
         </div>

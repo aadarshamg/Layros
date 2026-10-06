@@ -138,7 +138,7 @@ export function CartPaymentStep({
     <div className="cart-step">
       <Script src="https://checkout.razorpay.com/v1/checkout.js" onLoad={() => setRazorpayReady(true)} />
       <div className="cart-step-header">
-        <button type="button" onClick={onBack} className="cart-step-back">← Back</button>
+        <button type="button" onClick={onBack} className="cart-step-back"><span className="ui-inline-arrow is-left" aria-hidden="true" /> Back</button>
       </div>
       <h3 className="cart-step-title">Choose how you&apos;ll pay</h3>
 
@@ -169,7 +169,7 @@ export function CartPaymentStep({
             <span><b>Cash on Delivery</b><small>Pay in cash when your order arrives</small></span>
           </label>
         ) : (
-          <p className="cart-step-note">{loginAvailable ? "Log in to unlock Cash on Delivery." : "Cash on Delivery is coming soon — pay securely online for now."}</p>
+          <p className="cart-step-note">{loginAvailable ? "Log in to unlock Cash on Delivery." : "Cash on Delivery is coming soon. Pay securely online for now."}</p>
         )}
       </div>
 

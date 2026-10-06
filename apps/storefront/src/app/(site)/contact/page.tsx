@@ -6,7 +6,7 @@ import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_PHONE } from "@/lib/site-default
 
 export const metadata: Metadata = buildMetadata({
   title: "Contact & Client Care",
-  description: "Reach the Leyros client care team — private consultations, order support, and boutique enquiries.",
+  description: "Reach the Leyros client care team for private consultations, order support, and boutique enquiries.",
   path: "/contact",
 });
 

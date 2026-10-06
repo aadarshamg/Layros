@@ -14,7 +14,7 @@ export function RelatedProducts({ products }: { products: PerfumeProduct[] }) {
             <h2 id="related-products-title">Related Products</h2>
             <p>Discover similar Leyros creations chosen by fragrance profile and category.</p>
           </div>
-          <Link href="/collections/all">Explore all <span aria-hidden="true">→</span></Link>
+          <Link href="/collections/all">Explore all <span className="ui-inline-arrow" aria-hidden="true" /></Link>
         </header>
         <div className="related-products-grid">
           {products.map((item) => <ProductCard key={item.id} product={item} />)}

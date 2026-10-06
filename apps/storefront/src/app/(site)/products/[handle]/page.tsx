@@ -1,3 +1,4 @@
+import "./product-page.css";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -14,7 +15,6 @@ import { ProductInterestTracker } from "@/components/product/ProductInterestTrac
 import { ProductRatingLine } from "@/components/product/ProductRatingLine";
 import { ProductReviews } from "@/components/product/ProductReviews";
 import { ProductGallery } from "@/components/product/ProductGallery";
-import { BuyTwoGetOneOffer } from "@/components/product/BuyTwoGetOneOffer";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { CategoryCouponOffers } from "@/components/product/CategoryCouponOffers";
 import { getProductCouponCategory, isBuyTwoGetOneEligible } from "@/lib/promotions";
@@ -22,8 +22,9 @@ import { genderLabel } from "@/lib/product-labels";
 import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr, formatSize } from "@/lib/format";
-import { getScentStoryTheme } from "@/lib/scent-story";
+import { getScentStoryTheme, scentNoteImage, scentStoryNarrative } from "@/lib/scent-story";
 import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/shipping";
+import { RotatingHighlights } from "@/components/product/RotatingHighlights";
 import type { CSSProperties } from "react";
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
@@ -50,15 +51,16 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const { details } = product;
   const images = product.images.length ? product.images : ["/leyros/nuit-doree-hero.jpg"];
 
-  // Real migrated descriptions run long (the old site's full marketing
-  // copy) — show a short excerpt up front and the rest in a disclosure
-  // below, rather than a wall of text in the hero column.
-  const SHORT_DESCRIPTION_LENGTH = 150;
+  // Prefer complete sentences in the purchase panel; keep the full copy below.
+  const SHORT_DESCRIPTION_LENGTH = 220;
+  const cleanDescription = product.description.replace(/[\u200B\uFEFF]/g, "").replace(/\.(?=[A-Z])/g, ". ").trim();
+  const excerpt = cleanDescription.slice(0, SHORT_DESCRIPTION_LENGTH);
+  const sentenceEnd = excerpt.lastIndexOf(".");
   const shortDescription =
-    product.description.length > SHORT_DESCRIPTION_LENGTH
-      ? `${product.description.slice(0, SHORT_DESCRIPTION_LENGTH).replace(/\s+\S*$/, "")}…`
-      : product.description;
-  const hasFullDescription = product.description.length > shortDescription.length;
+    cleanDescription.length > SHORT_DESCRIPTION_LENGTH
+      ? sentenceEnd > 60 ? excerpt.slice(0, sentenceEnd + 1) : `${excerpt.replace(/\s+\S*$/, "")}…`
+      : cleanDescription;
+  const hasFullDescription = cleanDescription.length > shortDescription.length;
   const isFragrance = isBuyTwoGetOneEligible(product);
   const seo = getProductSeo(product);
   const shortProductName = seo.name;
@@ -77,6 +79,14 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
         "--scent-angle": scentTheme.angle,
       } as CSSProperties)
     : undefined;
+  const scentStory = isFragrance ? scentStoryNarrative(product, shortProductName) : "";
+  const noteChapters = isFragrance
+    ? [
+        { number: "01", label: "The opening", title: "Top notes", notes: details.notesTop, image: scentNoteImage(details.notesTop, images[0]) },
+        { number: "02", label: "The heart", title: "Heart notes", notes: details.notesHeart, image: scentNoteImage(details.notesHeart, images[Math.min(1, images.length - 1)]) },
+        { number: "03", label: "The trail", title: "Base notes", notes: details.notesBase, image: scentNoteImage(details.notesBase, images[Math.min(2, images.length - 1)]) },
+      ]
+    : [];
   return (
     <div className={`product-page${isFragrance ? " scent-story-page" : ""}`} style={scentStoryStyle}>
       <JsonLd data={productJsonLd(product, product.reviewCount && product.reviewAverage ? { value: product.reviewAverage, count: product.reviewCount } : undefined)} />
@@ -84,22 +94,34 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       <ProductInterestTracker productId={product.id} />
       <section className="product-hero">
         <nav className="page-shell product-breadcrumbs" aria-label="Breadcrumb">
-          <Link href="/">Home</Link><span>/</span><span>{shortProductName}</span>
+          <Link href="/">Home</Link><span>/</span><Link href="/collections/all">{seo.category}</Link><span>/</span><span>{shortProductName}</span>
         </nav>
-        <header className="page-shell product-identity">
-          <h1>{shortProductName}</h1>
-          <div className="product-top-facts" aria-label="Product summary">
-            {topFacts.filter(Boolean).map((fact) => <span key={fact}>{fact}</span>)}
-          </div>
-          <ProductRatingLine handle={product.handle} count={product.reviewCount} average={product.reviewAverage} />
-        </header>
-        {isBuyTwoGetOneEligible(product) && <BuyTwoGetOneOffer />}
         <div className="page-shell product-hero-grid">
           <ProductGallery title={product.title} images={images} videoUrl={product.videoUrl} />
-
-          <div className="product-info">
+          <aside className="product-info">
+            <header className="product-identity">
+              <div className="product-kicker-row">
+                <p>{seo.category} · {genderLabel(product) ?? "Leyros collection"}</p>
+                {isFragrance && <span className="product-kicker-badge">Buy 2, get 1 free</span>}
+              </div>
+              <h1>{shortProductName}</h1>
+              <ProductRatingLine handle={product.handle} count={product.reviewCount} average={product.reviewAverage} />
+            </header>
             <p className="product-description">{shortDescription}</p>
-            <p className="product-price">₹{product.variants[0]?.price.toLocaleString("en-IN")}<span>Taxes included</span></p>
+            {isFragrance && (
+              <div className="product-quick-facts" aria-label="Product summary">
+                <div><span>Profile</span><strong>{details.family}</strong></div>
+                <div><span>Concentration</span><strong>{details.concentration}</strong></div>
+                <div><span>Presence</span><strong>{details.intensity}</strong></div>
+              </div>
+            )}
+            {topFacts.length > 0 && <RotatingHighlights highlights={product.highlights} seed={product.id} />}
+            {isFragrance && (
+              <div className="product-offer-card">
+                <span>Limited offer</span>
+                <div><strong>Buy 2, get 1 free</strong><p>Add any 3 eligible Perfumes or Attars. The lowest-priced eligible item is free.</p></div>
+              </div>
+            )}
             {couponCategory && <CategoryCouponOffers category={couponCategory} />}
             <AddToCartForm
               productId={product.id}
@@ -109,63 +131,89 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               image={images[0]}
               variants={product.variants}
             />
-            <DeliveryTimeline
-              dispatchDays={rewardSettings.dispatchDays ?? DEFAULT_DISPATCH_DAYS}
-              deliveryDaysMin={rewardSettings.deliveryDaysMin ?? DEFAULT_DELIVERY_DAYS_MIN}
-              deliveryDaysMax={rewardSettings.deliveryDaysMax ?? DEFAULT_DELIVERY_DAYS_MAX}
-            />
-            {rewardSettings.rewardEnabled && rewardSettings.rewardThreshold && (
-              <section className="product-offers" aria-labelledby="product-offers-heading">
-                <h2 id="product-offers-heading">Offers</h2>
-                <div className="product-offer-grid">
-                  <article className="product-offer-card">
-                    <span className="offer-rail">Gift · Included</span>
-                    <div className="offer-copy">
-                      <h3>A miniature surprise for you</h3>
-                      <p>{rewardSettings.rewardDescription || "A complimentary gift"} on orders over {formatInr(rewardSettings.rewardThreshold)}.</p>
-                      <small>Added automatically at checkout</small>
-                    </div>
-                    <div className="offer-image"><Image src="/leyros/about-old/premium-attar.webp" alt="Leyros attar in a wooden gift box" fill sizes="110px" /></div>
-                  </article>
-                  <article className="product-offer-card">
-                    <span className="offer-rail">Delivery · Included</span>
-                    <div className="offer-copy">
-                      <h3>Free shipping across India</h3>
-                      <p>On orders of {formatInr(FREE_SHIPPING_THRESHOLD)} or more — {formatInr(STANDARD_SHIPPING_FEE)} below that.</p>
-                      <small>Applied automatically</small>
-                    </div>
-                    <div className="offer-image"><Image src="/leyros/about-old/premium-perfume.webp" alt="Leyros eau de parfum in its presentation box" fill sizes="110px" /></div>
-                  </article>
-                </div>
-              </section>
-            )}
-          </div>
+            <div className="product-service-line"><span>Small-batch blended</span><span>Secure checkout</span><span>Order tracking</span></div>
+            <div className="product-purchase-details">
+              <details>
+                <summary>Delivery & shipping <span>From {formatInr(FREE_SHIPPING_THRESHOLD)}, shipping is on us</span></summary>
+                <DeliveryTimeline
+                  dispatchDays={rewardSettings.dispatchDays ?? DEFAULT_DISPATCH_DAYS}
+                  deliveryDaysMin={rewardSettings.deliveryDaysMin ?? DEFAULT_DELIVERY_DAYS_MIN}
+                  deliveryDaysMax={rewardSettings.deliveryDaysMax ?? DEFAULT_DELIVERY_DAYS_MAX}
+                />
+                <p>Free shipping on orders of {formatInr(FREE_SHIPPING_THRESHOLD)} or more. {formatInr(STANDARD_SHIPPING_FEE)} below that.</p>
+              </details>
+              {rewardSettings.rewardEnabled && rewardSettings.rewardThreshold && (
+                <details>
+                  <summary>A little extra, from Leyros <span>Complimentary on orders over {formatInr(rewardSettings.rewardThreshold)}</span></summary>
+                  <p>{rewardSettings.rewardDescription || "A complimentary gift"} on orders over {formatInr(rewardSettings.rewardThreshold)}. Added automatically at checkout.</p>
+                </details>
+              )}
+            </div>
+          </aside>
         </div>
-        <div className="page-shell product-detail-notes">
-          <header className="product-details-heading">
-            <h2>Product details</h2>
-          </header>
-          {isFragrance && (
-            <div className="product-detail-summary" aria-label="Key fragrance details">
-              <article><span>Fragrance profile</span><strong>{details.family}</strong></article>
-              <article><span>For</span><strong>{genderLabel(product) ?? "Unisex"}</strong></article>
+      </section>
+
+      {isFragrance && (
+        <section className="product-scent-story" aria-labelledby="scent-story-title">
+          <div className="page-shell product-story-intro">
+            <div className="product-story-heading">
+              <span>#ScentStory</span>
+              <p>{scentTheme.mood}</p>
+            </div>
+            <div className="product-story-copy">
+              <p className="product-story-chapter">{scentTheme.chapter}</p>
+              <h2 id="scent-story-title">A fragrance with a point of view.</h2>
+              <p>{scentStory}</p>
+            </div>
+          </div>
+          <div className="page-shell product-note-grid">
+            {noteChapters.map((chapter) => (
+              <article key={chapter.title} className="product-note-card">
+                <Image src={chapter.image} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" />
+                <div className="product-note-card-overlay" />
+                <div className="product-note-card-copy">
+                  <span>{chapter.number} · {chapter.label}</span>
+                  <h3>{chapter.title}</h3>
+                  <p>{chapter.notes.length ? chapter.notes.join(" · ") : "A carefully composed impression"}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="page-shell product-story-ritual">
+            <span>Wear it when</span><p>{scentTheme.ritual}</p>
+          </div>
+        </section>
+      )}
+
+      <section className="product-detail-section" aria-labelledby="product-details-title">
+        <div className="page-shell product-detail-layout">
+          <div className="product-details-heading">
+            <span>The essentials</span>
+            <h2 id="product-details-title">Product details</h2>
+            <p>Everything you need to choose your fragrance with confidence.</p>
+          </div>
+          <div>
+            <div className="product-detail-summary" aria-label="Key product details">
+              {isFragrance && <article><span>Fragrance profile</span><strong>{details.family}</strong></article>}
+              <article><span>For</span><strong>{genderLabel(product) ?? "Everyone"}</strong></article>
+              {isFragrance && <article><span>Concentration</span><strong>{details.concentration}</strong></article>}
               <article><span>Available sizes</span><strong>{product.variants.map((variant) => formatSize(variant.sizeMl, variant.sizeLabel)).join(" · ")}</strong></article>
             </div>
-          )}
-          <div className="product-disclosures">
-            {hasFullDescription && (
-              <details>
-                <summary>About this fragrance</summary>
-                <p style={{ whiteSpace: "pre-line" }}>{product.description}</p>
-              </details>
-            )}
-            {featureList.length > 0 && (
-              <details>
-                <summary>{isFragrance ? "Complete fragrance notes" : "Product features"}</summary>
-                <p>{featureList.join(", ")}.</p>
-              </details>
-            )}
-            <details><summary>Delivery, tracking & returns</summary><p>Track your order from dispatch to delivery. Standard delivery across India in 3–5 business days, free on orders of {formatInr(FREE_SHIPPING_THRESHOLD)} or more ({formatInr(STANDARD_SHIPPING_FEE)} below that). Returns are accepted for items that arrive damaged, incorrect or faulty — contact us within 7 days of delivery.</p></details>
+            <div className="product-disclosures">
+              {(hasFullDescription || cleanDescription) && (
+                <details open>
+                  <summary>About this {isFragrance ? "fragrance" : "product"}</summary>
+                  <p style={{ whiteSpace: "pre-line" }}>{product.description}</p>
+                </details>
+              )}
+              {featureList.length > 0 && (
+                <details>
+                  <summary>{isFragrance ? "Complete fragrance notes" : "Product features"}</summary>
+                  <p>{featureList.join(", ")}.</p>
+                </details>
+              )}
+              <details><summary>Delivery, tracking and returns</summary><p>Track your order from dispatch to delivery. Standard delivery across India takes 3 to 5 business days. Shipping is free on orders of {formatInr(FREE_SHIPPING_THRESHOLD)} or more and {formatInr(STANDARD_SHIPPING_FEE)} below that. Returns are accepted for items that arrive damaged, incorrect or faulty. Contact us within 7 days of delivery.</p></details>
+            </div>
           </div>
         </div>
       </section>

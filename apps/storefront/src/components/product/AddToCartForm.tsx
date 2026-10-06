@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import type { PerfumeVariant } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
@@ -25,6 +24,8 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
   const selected = variants.find((variant) => variant.id === selectedVariantId);
+  const compareAtPrice = selected?.compareAtPrice && selected.compareAtPrice > selected.price ? selected.compareAtPrice : undefined;
+  const discountPercent = compareAtPrice && selected ? Math.round(((compareAtPrice - selected.price) / compareAtPrice) * 100) : 0;
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -49,39 +50,24 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
 
   return (
     <form onSubmit={handleSubmit} className="purchase-form">
+      <div className="purchase-price" aria-live="polite">
+        <div>
+          <strong>{formatInr(selected?.price ?? 0)}</strong>
+          {compareAtPrice && <s>{formatInr(compareAtPrice)}</s>}
+          {discountPercent > 0 && <b>{discountPercent}% off</b>}
+        </div>
+        <span>MRP inclusive of all taxes</span>
+      </div>
       <div className="purchase-field-heading">
         <p className="size-label">Size</p>
       </div>
       <div className="size-grid">
         {variants.map((variant) => (
-          <button key={variant.id} type="button" onClick={() => setSelectedVariantId(variant.id)} className={`size-option ${selectedVariantId === variant.id ? "selected" : ""}`}>
-            {image && (
-              <span className="variant-image">
-                <Image src={image} alt="" fill sizes="110px" />
-              </span>
-            )}
+          <button key={variant.id} type="button" aria-pressed={selectedVariantId === variant.id} onClick={() => setSelectedVariantId(variant.id)} className={`size-option ${selectedVariantId === variant.id ? "selected" : ""}`}>
             <span className="variant-copy"><b>{formatSize(variant.sizeMl, variant.sizeLabel)}</b><small>{formatInr(variant.price)}</small></span>
           </button>
         ))}
       </div>
-
-      {selected && (
-        <aside className="product-snapmint" aria-label="Snapmint EMI payment option">
-          <span className="product-snapmint-tag">NEW</span>
-          <span className="product-snapmint-copy">
-            Pay <b>{formatInr(Math.round(selected.price / 3))}</b> now, rest later by
-            <strong>snapmint</strong>
-          </span>
-          <a
-            href="https://snapmint.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View Snapmint EMI plans on the official Snapmint website (opens in a new tab)"
-          >
-            View Plans <span aria-hidden="true">›</span>
-          </a>
-        </aside>
-      )}
 
       <div className="purchase-actions">
         <div className="quantity-control" aria-label="Quantity">
@@ -95,6 +81,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
           </span>
         </button>
       </div>
+      {selected && <p className="purchase-installments">Or 3 payments of {formatInr(Math.round(selected.price / 3))} with <a href="https://snapmint.com/" target="_blank" rel="noopener noreferrer">Snapmint ↗</a></p>}
       {justAdded && <p className="form-message success">Added to your boutique bag.</p>}
     </form>
   );

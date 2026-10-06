@@ -364,7 +364,7 @@ export function CartDrawer() {
                   <Image src="/paytm-logo.svg" alt="" width={43} height={14} />
                 </span>
               </span>
-              <span className="cart-checkout-arrow" aria-hidden="true">→</span>
+              <span className="cart-checkout-arrow ui-inline-arrow" aria-hidden="true" />
             </button>
           </footer>
         )}

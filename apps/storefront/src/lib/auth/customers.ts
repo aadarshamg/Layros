@@ -29,7 +29,7 @@ export interface FindOrCreateResult {
  */
 export async function findOrCreateCustomerByPhone(phone: string): Promise<FindOrCreateResult> {
   if (!writeClient) {
-    throw new Error("Cannot create/find customer — SANITY_API_TOKEN is not configured.");
+    throw new Error("Cannot create/find customer: SANITY_API_TOKEN is not configured.");
   }
 
   const customerId = customerIdForPhone(phone);
@@ -76,7 +76,7 @@ export async function patchDefaultAddress(customerId: string, address: ShippingA
 }
 
 export async function bumpTokenVersion(customerId: string): Promise<void> {
-  if (!writeClient) throw new Error("Cannot bump token version — SANITY_API_TOKEN is not configured.");
+  if (!writeClient) throw new Error("Cannot bump token version: SANITY_API_TOKEN is not configured.");
   await writeClient.patch(customerId).setIfMissing({ tokenVersion: 0 }).inc({ tokenVersion: 1 }).commit();
 }
 
@@ -84,6 +84,6 @@ export async function updateProfile(
   customerId: string,
   updates: { name?: string; email?: string; marketingOptIn?: boolean },
 ): Promise<void> {
-  if (!writeClient) throw new Error("Cannot update profile — SANITY_API_TOKEN is not configured.");
+  if (!writeClient) throw new Error("Cannot update profile: SANITY_API_TOKEN is not configured.");
   await writeClient.patch(customerId).set(updates).commit();
 }

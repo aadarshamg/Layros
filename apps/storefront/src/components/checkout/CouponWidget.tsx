@@ -24,7 +24,7 @@ export function CouponWidget({ defaultOpen = false }: { defaultOpen?: boolean })
     <details className={`cart-coupon coupon-widget ${appliedCoupon ? "is-applied" : ""}`} open={defaultOpen || Boolean(appliedCoupon)}>
       <summary>
         <span className="coupon-widget-tag" aria-hidden="true">%</span>
-        <span className="coupon-widget-summary-text"><b>{appliedCoupon ? `${appliedCoupon.code} applied — saved ${formatInr(couponDiscount)}!` : "Coupons"}</b><small>{appliedCoupon ? "Tap to manage" : offerCount ? `View ${offerCount} applicable offers` : "View available savings"}</small></span>
+        <span className="coupon-widget-summary-text"><b>{appliedCoupon ? `${appliedCoupon.code} applied: saved ${formatInr(couponDiscount)}!` : "Coupons"}</b><small>{appliedCoupon ? "Tap to manage" : offerCount ? `View ${offerCount} applicable offers` : "View available savings"}</small></span>
         <span className="coupon-widget-chevron" aria-hidden="true">+</span>
       </summary>
       <div className="cart-coupon-body">

@@ -87,8 +87,8 @@ export function ProductGallery({ title, images, videoUrl }: { title: string; ima
         <span className="product-gallery-counter">{activeIndex + 1} / {slides.length}</span>
         {slides.length > 1 && (
           <>
-            <button type="button" className="product-gallery-arrow is-previous" onClick={previous} aria-label="Previous product image">‹</button>
-            <button type="button" className="product-gallery-arrow is-next" onClick={next} aria-label="Next product image">›</button>
+            <button type="button" className="product-gallery-arrow is-previous" onClick={previous} aria-label="Previous product image"><span className="ui-chevron is-left" aria-hidden="true" /></button>
+            <button type="button" className="product-gallery-arrow is-next" onClick={next} aria-label="Next product image"><span className="ui-chevron is-right" aria-hidden="true" /></button>
           </>
         )}
       </div>
@@ -111,8 +111,8 @@ export function ProductGallery({ title, images, videoUrl }: { title: string; ima
           <span className="product-gallery-fullscreen-counter">{activeIndex + 1} / {images.length}</span>
           {images.length > 1 && (
             <>
-              <button type="button" className="product-gallery-arrow is-previous" onClick={previousImage} aria-label="Previous product image">‹</button>
-              <button type="button" className="product-gallery-arrow is-next" onClick={nextImage} aria-label="Next product image">›</button>
+              <button type="button" className="product-gallery-arrow is-previous" onClick={previousImage} aria-label="Previous product image"><span className="ui-chevron is-left" aria-hidden="true" /></button>
+              <button type="button" className="product-gallery-arrow is-next" onClick={nextImage} aria-label="Next product image"><span className="ui-chevron is-right" aria-hidden="true" /></button>
             </>
           )}
         </div>

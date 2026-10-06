@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
   if (!result.ok) {
     if (result.reason === "duplicate") {
-      return NextResponse.json({ error: "You've already reviewed this product — thank you!" }, { status: 409 });
+      return NextResponse.json({ error: "You've already reviewed this product. Thank you!" }, { status: 409 });
     }
     if (result.reason === "unknown-product") {
       return NextResponse.json({ error: "Product not found." }, { status: 404 });

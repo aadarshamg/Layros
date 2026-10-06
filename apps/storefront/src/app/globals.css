@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --font-inter: var(--font-outfit);
-  --font-playfair: var(--font-outfit);
+  --font-primary: var(--font-reference-body), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-reference-heading), "Arial Narrow", Arial, sans-serif;
+  --font-outfit: var(--font-primary);
+  --font-inter: var(--font-primary);
+  --font-playfair: var(--font-primary);
   --ink: #171714;
   --ink-soft: #514d47;
   --paper: #fbfaf7;
@@ -27,7 +30,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-outfit), Arial, sans-serif; font-size: 16px; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-primary); font-size: 16px; }
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 img { object-fit: cover; }
@@ -40,6 +43,7 @@ img { object-fit: cover; }
 .with-rule { display: flex; align-items: center; gap: 12px; }
 .with-rule::before { content: ""; width: 34px; height: 1px; background: var(--gold); flex: none; }
 h1, h2, h3, p { margin-top: 0; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display) !important; font-weight: 400; }
 .button { min-height: 46px; display: inline-flex; align-items: center; justify-content: center; padding: 13px 24px; border: 1px solid transparent; font-size: 10px; line-height: 1; font-weight: 650; letter-spacing: .18em; text-transform: uppercase; transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease; }
 .button:hover { transform: translateY(-2px); }
 .button-dark { background: var(--ink); color: white; }
@@ -2458,6 +2462,31 @@ body:not(:has(.cinematic-home)) .product-disclosures p { margin: 0; padding: 0 1
     overscroll-behavior: auto;
     scrollbar-width: auto;
   }
+}
+
+/* Every purchase CTA shares the same display type, regardless of section. */
+html body :is(
+  .product-card-quick-add,
+  .trial-set-add,
+  .acquire-button,
+  .video-tile-add,
+  .video-modal-add
+) {
+  font-family: var(--font-display) !important;
+  font-size: 1.15rem !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  letter-spacing: .025em !important;
+  text-transform: uppercase !important;
+}
+
+html body .trial-set-meta,
+html body .trial-set-meta b,
+html body .trial-set-meta s {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: .015em;
 }
 
 @media (max-width: 900px) {
@@ -5880,7 +5909,7 @@ body:not(:has(.cinematic-home)) .site-header .nav-actions {
 }
 .cart-step-title {
   margin: 0 0 6px;
-  font-family: Outfit, sans-serif;
+  font-family: var(--font-primary);
   font-size: 23px;
   font-weight: 650;
   line-height: 1.2;
@@ -9782,7 +9811,7 @@ body:not(:has(.cinematic-home)) .site-header .wordmark-logo {
 .storefront-home .home-notes-heading p { margin: 7px 0 0; color: #7c7169; }
 .storefront-home .home-notes-heading > a { display: inline-block; margin-top: 13px; padding-bottom: 3px; color: #735416; border-bottom: 1px solid #c59a3b; font-size: .7rem; }
 .storefront-home .home-notes-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: clamp(10px, 1.5vw, 22px); }
-.storefront-home .home-note-card { display: grid; justify-items: center; gap: 10px; min-width: 0; padding: 0; background: transparent; border: 0; border-radius: 0; text-align: center; }
+.storefront-home .home-note-card { display: grid; justify-items: center; gap: 10px; min-width: 0; padding: 0; overflow: visible; background: transparent; border: 0; border-radius: 0; text-align: center; }
 .storefront-home .home-note-image { width: 100%; max-width: 128px; aspect-ratio: 1; overflow: hidden; background: #dfd8ce; border: 4px solid #fff; border-radius: 50%; outline: 1px dashed #c9c0b5; outline-offset: 4px; box-shadow: 0 8px 20px rgba(48,37,31,.1); }
 .storefront-home .home-note-image::after { display: none; }
 .storefront-home .home-note-image img { object-fit: cover; }
@@ -11497,6 +11526,129 @@ body header.home-header .home-menu nav .nav-family-menu[open] > summary::after {
   .collection-gender-switch button { min-height: 40px; padding: 0 6px; font-size: 12.5px; }
 }
 
+/* One optically centred arrow for links and buttons across the storefront.
+   Drawing it in CSS avoids the inconsistent baseline of the text arrow glyph. */
+.ui-inline-arrow {
+  position: relative;
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  flex: 0 0 18px;
+  align-self: center;
+  vertical-align: middle;
+  color: currentColor;
+  font-style: normal;
+  line-height: 1;
+}
+
+.ui-inline-arrow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 12%;
+  left: 10%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.ui-inline-arrow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  width: .42em;
+  height: .42em;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
+  transform-origin: center;
+}
+
+.ui-inline-arrow.is-left { transform: scaleX(-1); }
+
+.ui-chevron {
+  position: relative;
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  flex: 0 0 14px;
+  align-self: center;
+  vertical-align: middle;
+  color: currentColor;
+  line-height: 1;
+}
+
+.ui-chevron::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: translate(-50%, -50%) rotate(45deg);
+  transform-origin: center;
+}
+
+.ui-chevron.is-left { transform: scaleX(-1); }
+
+/* Remaining generated arrows use the same centred geometry. */
+.cinematic-collection .cinematic-product-image small::after,
+.home-header .home-menu nav > button:last-child::after {
+  content: "";
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  flex: 0 0 1.15em;
+  background: currentColor;
+  clip-path: polygon(0 44%, 65% 44%, 49% 28%, 58% 19%, 100% 50%, 58% 81%, 49% 72%, 65% 56%, 0 56%);
+  vertical-align: middle;
+}
+
+/* Search field: the active bar uses an ivory surface, so every control must
+   use the dark teal foreground rather than the old white-on-dark treatment. */
+body header.home-header .nav-search-form,
+body header.site-header .nav-search-form {
+  border-color: rgba(23, 54, 59, .3);
+  background: #fffaf3;
+  color: #17363b;
+  box-shadow: 0 10px 28px rgba(7, 28, 37, .18);
+}
+
+body header.home-header .nav-search-form input,
+body header.home-header .nav-search-form .nav-search-submit,
+body header.home-header .nav-search-form .nav-search-close,
+body header.site-header .nav-search-form input,
+body header.site-header .nav-search-form .nav-search-submit,
+body header.site-header .nav-search-form .nav-search-close {
+  color: #17363b;
+}
+
+body header.home-header .nav-search-form input::placeholder,
+body header.site-header .nav-search-form input::placeholder {
+  color: #52696c;
+  opacity: 1;
+  font-weight: 600;
+}
+
+body header.home-header .nav-search-form:focus-within,
+body header.site-header .nav-search-form:focus-within {
+  border-color: #f06455;
+  box-shadow: 0 10px 28px rgba(7, 28, 37, .2), 0 0 0 3px rgba(240, 100, 85, .2);
+}
+
+body header.home-header .nav-search-form .nav-search-submit:hover,
+body header.home-header .nav-search-form .nav-search-close:hover,
+body header.site-header .nav-search-form .nav-search-submit:hover,
+body header.site-header .nav-search-form .nav-search-close:hover {
+  background: #e2f0ed;
+}
+
 /* Fragrance sub-links in the dark teal menu panel: solid white at every
    width (they were a light-theme grey-brown at 75% opacity on desktop). */
 body header.home-header .home-menu .nav-family-children .nav-submenu-item,
@@ -12112,6 +12264,7 @@ body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(n + 10) { ani
 .storefront-home .hero-banner {
   --hero-banner-band: 94px;
   position: relative;
+  height: calc(100svh - 28px);
   margin: 14px;
   padding-top: var(--hero-banner-band);
   overflow: hidden;
@@ -12121,6 +12274,7 @@ body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(n + 10) { ani
 .storefront-home .hero-banner-link {
   position: relative;
   display: block;
+  height: 100%;
 }
 .storefront-home .hero-banner-link::before {
   content: "";
@@ -12134,7 +12288,9 @@ body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(n + 10) { ani
 .storefront-home .hero-banner-link img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
 }
 .storefront-home .hero-banner-link:focus-visible {
   outline: 3px solid #d9bd70;
@@ -12143,9 +12299,11 @@ body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(n + 10) { ani
 @media (max-width: 600px) {
   .storefront-home .hero-banner {
     --hero-banner-band: 78px;
+    height: calc(100svh - 16px);
     margin: 8px;
     border-radius: 24px;
   }
+  .storefront-home .hero-banner-link img { object-position: 58% center; }
 }
 
 /* Product card names: always one line, ending in "…" when too long (they
@@ -12357,7 +12515,7 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
   padding: 8px;
   overflow: hidden;
   /* Header colour, so the tiles tie in with the navigation bar */
-  border: 1.5px solid #17363b;
+  border: 3px solid #17363b;
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 8px 24px rgba(23, 54, 59, .06);
@@ -12621,4 +12779,148 @@ body .site-footer .footer-links ul {
   html body .candles-page .candles-page-category-card > div:last-child { padding: 8px 6px 9px; }
   html body .candles-page .candles-page-category-card h3 { font-size: .75rem; line-height: 1.25; }
   html body .candles-page .candles-page-category-card > div:last-child > span { display: none; }
+}
+
+/* Footer typography aligned with the reference system. */
+html body .site-footer .footer-grid {
+  gap: clamp(54px, 7vw, 120px);
+  padding-block: 70px;
+}
+
+html body .site-footer .footer-brand-logo {
+  width: 104px;
+  height: 88px;
+}
+
+html body .site-footer .footer-intro > p {
+  max-width: 660px;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+html body .site-footer .footer-links {
+  gap: clamp(52px, 6vw, 104px);
+}
+
+html body .site-footer .footer-grid .footer-links h4,
+html body .site-footer .footer-socials > span {
+  font-family: var(--font-display) !important;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .08em;
+}
+
+html body .site-footer .footer-grid .footer-links h4 { margin-bottom: 24px; }
+
+html body .site-footer .footer-grid .footer-links li,
+html body .site-footer .footer-grid .footer-links li a {
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+html body .site-footer .footer-grid .footer-links li { margin-bottom: 10px; }
+html body .site-footer .footer-contact-line { font-size: .9375rem; }
+html body .site-footer .footer-rating-text { font-size: .875rem; }
+
+/* Bold catalogue outlines inspired by the Bla Bli Blu tile treatment. */
+html body .candles-page .candles-page-category-card {
+  border-width: 3px;
+  border-color: #17363b;
+}
+
+html body .candles-page .candles-page-category-card.is-active {
+  border-width: 3px;
+  border-color: #f06455;
+}
+
+/* Condensed display headings need explicit word spacing to remain legible. */
+html body .collection-intro h1 {
+  letter-spacing: .015em;
+  word-spacing: .2em;
+}
+
+@media (max-width: 760px) {
+  html body .site-footer .footer-grid { gap: 34px; padding-block: 44px 30px; }
+  html body .site-footer .footer-links { gap: 24px; }
+  html body .site-footer .footer-grid .footer-links h4 { margin-bottom: 14px; font-size: 1.1rem; }
+  html body .site-footer .footer-grid .footer-links li,
+  html body .site-footer .footer-grid .footer-links li a { font-size: .9375rem; }
+}
+
+/* Reference typography for catalogue cards: larger, condensed and consistent. */
+html body .product-card.product-card .product-card-body h3,
+html body .product-card.product-card .product-name,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy h3 {
+  font-family: var(--font-display) !important;
+  font-size: 1.2rem !important;
+  font-weight: 400 !important;
+  line-height: 1.08 !important;
+  letter-spacing: .015em;
+}
+
+html body .product-card.product-card .product-card-scent,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-scent {
+  font-size: .9375rem;
+  line-height: 1.4;
+}
+
+html body .product-card.product-card .product-card-info-label,
+html body .product-card.product-card .product-card-price-label,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-info-label,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-price-label {
+  font-size: .8125rem;
+}
+
+html body .product-card.product-card .product-card-size,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-size {
+  min-height: 40px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: .015em;
+}
+
+html body .product-card.product-card .product-card-price-now,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-price-now {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .01em;
+}
+
+html body .product-card.product-card .product-card-price-mrp,
+html body .product-card.product-card .product-card-price-off,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-price-mrp,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-price-off {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: .015em;
+}
+
+html body .product-card.product-card .product-card-quick-add,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-quick-add {
+  min-height: 46px;
+  height: 46px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .025em;
+}
+
+@media (max-width: 600px) {
+  html body .product-card.product-card .product-card-body h3,
+  html body .product-card.product-card .product-name,
+  html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy h3 {
+    font-size: 1.05rem !important;
+  }
+  html body .product-card.product-card .product-card-price-now,
+  html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-price-now {
+    font-size: 1.4rem;
+  }
 }

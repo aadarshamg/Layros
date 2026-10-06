@@ -178,7 +178,7 @@ function isBrowsableFragrance(raw: RawSanityProduct) {
 }
 
 async function fetchAllProducts(): Promise<RawSanityProduct[]> {
-  if (!sanityConfigured) throw new Error("Sanity isn't configured yet — use the editorial catalogue.");
+  if (!sanityConfigured) throw new Error("Sanity isn't configured yet. Use the editorial catalogue.");
   return sanityClient.fetch<RawSanityProduct[]>(`*[_type == "product"] ${PRODUCT_PROJECTION}`, {}, SANITY_FETCH_OPTIONS);
 }
 
@@ -489,7 +489,7 @@ export function getCandleShowcaseImages() {
 
 export async function getProductByHandle(handle: string): Promise<PerfumeProduct | null> {
   try {
-    if (!sanityConfigured) throw new Error("Sanity isn't configured yet — use the editorial catalogue.");
+    if (!sanityConfigured) throw new Error("Sanity isn't configured yet. Use the editorial catalogue.");
     const raw = await sanityClient.fetch<RawSanityProduct | null>(
       `*[_type == "product" && slug.current == $handle][0] ${PRODUCT_PROJECTION}`,
       { handle },

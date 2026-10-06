@@ -49,7 +49,7 @@ export interface SaveOrderInput {
  */
 export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
   if (!writeClient) {
-    console.error("Cannot save order — SANITY_API_TOKEN is not configured.", input.orderNumber);
+    console.error("Cannot save order: SANITY_API_TOKEN is not configured.", input.orderNumber);
     return false;
   }
   try {

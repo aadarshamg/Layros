@@ -91,7 +91,7 @@ export default async function Home() {
               <p>
                 At the heart of our fragrances are <strong>premium perfume oils imported from France</strong>.
                 They are carefully selected for their depth, balance, and character, then thoughtfully
-                developed and finished by Leyros to create an expressive fragrance experience—from the
+                developed and finished by Leyros to create an expressive fragrance experience, from the
                 first impression to the lasting trail.
               </p>
               <p>

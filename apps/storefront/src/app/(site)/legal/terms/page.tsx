@@ -24,7 +24,7 @@ export default async function TermsPage() {
       <p>
         All product descriptions, photography, and fragrance copy on this site are the property of
         LEYROS and may not be reproduced without permission. We reserve the right to refuse or
-        cancel an order — for example in cases of suspected fraud or a pricing error — in which case
+        cancel an order, for example in cases of suspected fraud or a pricing error. In that case,
         you&rsquo;ll be refunded in full.
       </p>
       <p>

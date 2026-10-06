@@ -25,7 +25,7 @@ export async function ProductReviews({ productId, count, average }: { productId:
                 <b>{average.toFixed(1)}</b> out of 5 · {count} {count === 1 ? "review" : "reviews"}
               </p>
             ) : (
-              <p className="product-reviews-summary is-empty">No reviews yet — be the first to share how it wears.</p>
+              <p className="product-reviews-summary is-empty">No reviews yet. Be the first to share how it wears.</p>
             )}
           </div>
           <ReviewForm productId={productId} />

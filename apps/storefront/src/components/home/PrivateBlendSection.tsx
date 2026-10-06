@@ -13,7 +13,7 @@ export function PrivateBlendSection({ products }: { products: PerfumeProduct[] }
       <div className="cinematic-shell private-blend-home-grid">
         <header>
           <h2 id="private-blend-home-title">The Private Blend Edit</h2>
-          <Link href="/private-blends">Enter the Private Blend story <i aria-hidden="true">→</i></Link>
+          <Link href="/private-blends">Enter the Private Blend story <i className="ui-inline-arrow" aria-hidden="true" /></Link>
         </header>
         <div className="private-blend-preview">
           {blends.map((product, index) => (

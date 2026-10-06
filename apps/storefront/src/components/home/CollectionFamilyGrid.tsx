@@ -18,7 +18,7 @@ export function CollectionFamilyGrid({ entries }: { entries: FamilyShowcaseEntry
             <h2>Our Signature Collection</h2>
           </div>
           <div className="collection-title-meta">
-            <Link href="/collections/all">View all fragrances <i aria-hidden="true">→</i></Link>
+            <Link href="/collections/all">View all fragrances <i className="ui-inline-arrow" aria-hidden="true" /></Link>
           </div>
         </div>
         <HorizontalProductShelf label="Our Signature Collection">

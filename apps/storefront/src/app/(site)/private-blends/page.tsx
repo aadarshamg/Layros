@@ -26,7 +26,7 @@ export default async function PrivateBlendsPage() {
           <p>Composed away from the expected</p>
           <h1>Private Blends</h1>
           <strong>Not introduced. Uncovered.</strong>
-          <span>Rare-feeling compositions chosen to reveal their character in chapters—from first impression to lasting trail.</span>
+          <span>Rare-feeling compositions chosen to reveal their character in chapters, from first impression to lasting trail.</span>
           <a href="#the-reveal">Begin the reveal ↓</a>
         </div>
       </section>
@@ -48,7 +48,7 @@ export default async function PrivateBlendsPage() {
                 <div className="private-blend-reveal-number">0{index + 1}</div>
                 <div className="private-blend-reveal-copy">
                   <h3>{productCardName(product)}</h3>
-                  <p>Reveal this blend <i aria-hidden="true">→</i></p>
+                  <p>Reveal this blend <i className="ui-inline-arrow" aria-hidden="true" /></p>
                 </div>
               </Link>
             ))}

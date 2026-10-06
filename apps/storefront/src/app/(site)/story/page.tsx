@@ -65,7 +65,7 @@ export default function StoryPage() {
               <h3>Luxury Meets Everyday Elegance</h3>
               <p>
                 At <strong>Leyros Perfume</strong> we craft fragrances that feel elegant, modern, and
-                memorable — from alcohol-free attars to long-lasting office-friendly sprays.
+                memorable, from alcohol-free attars to long-lasting office-friendly sprays.
               </p>
               <div className="legacy-about-highlight">
                 Explore fragrance collections designed for Indian weather, premium gifting, and everyday
@@ -82,7 +82,7 @@ export default function StoryPage() {
             <h2>Top Trending Fragrance Categories</h2>
             <div className="legacy-about-gold-line" />
             <p>
-              Each category serves a unique lifestyle — daily wear, attars, gift packs, car perfumes, and
+              Each category serves a unique lifestyle: daily wear, attars, gift packs, car perfumes, and
               scented candles remain strong choices in 2026.
             </p>
           </header>
@@ -131,7 +131,7 @@ export default function StoryPage() {
                 fill
                 sizes="(max-width: 768px) 92vw, 560px"
               />
-              <figcaption>Luxury Gift Pack — Ready to gift</figcaption>
+              <figcaption>Luxury Gift Pack: Ready to gift</figcaption>
             </figure>
             <div className="legacy-about-copy">
               <h3>Luxury Gift Packs</h3>
@@ -157,7 +157,7 @@ export default function StoryPage() {
                 fill
                 sizes="(max-width: 768px) 92vw, 560px"
               />
-              <figcaption>Car Perfume — Vent clip</figcaption>
+              <figcaption>Car Perfume: Vent clip</figcaption>
             </figure>
           </div>
         </div>
@@ -178,12 +178,12 @@ export default function StoryPage() {
                 fill
                 sizes="(max-width: 768px) 92vw, 560px"
               />
-              <figcaption>Scented Candle — Warm vanilla</figcaption>
+              <figcaption>Scented Candle: Warm vanilla</figcaption>
             </figure>
             <div className="legacy-about-copy">
               <h3>Create a Premium Home Ambience</h3>
               <p>
-                Candles help transform living spaces into peaceful, elegant environments — perfect for
+                Candles help transform living spaces into peaceful, elegant environments, perfect for
                 gifting and home decor.
               </p>
               <div className="legacy-about-highlight">
@@ -243,7 +243,7 @@ export default function StoryPage() {
             </div>
             <div className="legacy-about-highlight">
               <strong>Are attars trending?</strong>
-              <p>Yes — alcohol-free concentrated attars are growing in popularity.</p>
+              <p>Yes. Alcohol-free concentrated attars are growing in popularity.</p>
             </div>
             <div className="legacy-about-highlight">
               <strong>Best fragrance for gifting?</strong>
@@ -262,7 +262,7 @@ export default function StoryPage() {
             height={1280}
             className="legacy-about-signoff-logo"
           />
-          <p>Premium fragrances crafted for modern lifestyles — perfumes, attars, candles, car perfumes and gift packs.</p>
+          <p>Premium fragrances crafted for modern lifestyles: perfumes, attars, candles, car perfumes and gift packs.</p>
           <small>© 2026 Leyros Perfume. All Rights Reserved.</small>
         </div>
       </section>

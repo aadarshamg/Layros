@@ -113,7 +113,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
           <div>
             <h2 id="home-category-title">Shop By Category</h2>
           </div>
-          <Link href="/collections/all">Explore everything <span aria-hidden="true">→</span></Link>
+          <Link href="/collections/all">Explore everything <span className="ui-inline-arrow" aria-hidden="true" /></Link>
         </header>
 
         <div className="home-gender-grid" aria-label="Shop fragrances by preference">
@@ -127,7 +127,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
               <span className="home-gender-card-shade" aria-hidden="true" />
               <div className="home-gender-card-copy">
                 <h3>{collection.title}</h3>
-                <b>Shop now <i aria-hidden="true">→</i></b>
+                <b>Shop now <i className="ui-inline-arrow" aria-hidden="true" /></b>
               </div>
             </Link>
           ))}
@@ -138,7 +138,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
             <div>
               <h3 id="home-notes-title">Shop by Notes</h3>
             </div>
-            <Link href="/collections/all?category=collections">Explore all perfumes <span aria-hidden="true">→</span></Link>
+            <Link href="/collections/all?category=collections">Explore all perfumes <span className="ui-inline-arrow" aria-hidden="true" /></Link>
           </header>
 
           <div className="home-notes-grid">
@@ -150,7 +150,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
                 <div className="home-note-copy">
                   <h4>{note.label}</h4>
                   <p>{note.description}</p>
-                  <span>Discover <i aria-hidden="true">→</i></span>
+                  <span>Discover <i className="ui-inline-arrow" aria-hidden="true" /></span>
                 </div>
               </Link>
             ))}
@@ -162,7 +162,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
             <div>
               <h3 id="home-candles-title">Shop Candles</h3>
             </div>
-            <Link href="/candles">View all candles <span aria-hidden="true">→</span></Link>
+            <Link href="/candles">View all candles <span className="ui-inline-arrow" aria-hidden="true" /></Link>
           </header>
 
           <div className="home-candles-grid">
@@ -173,7 +173,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
                 </span>
                 <div className="home-candle-card-copy">
                   <h4>{collection.label}</h4>
-                  <b>Shop now <i aria-hidden="true">→</i></b>
+                  <b>Shop now <i className="ui-inline-arrow" aria-hidden="true" /></b>
                 </div>
               </Link>
             ))}

@@ -33,7 +33,7 @@ export async function sendCartReminder(input: {
 }): Promise<ReminderSendResult> {
   if (!isWhatsAppCartConfigured()) {
     console.info(
-      `[cart-reminder:log-only] to +91${input.phone} — Hi ${input.name}, you left something in your Leyros bag: ${input.products}. ${input.closingLine} → ${input.restoreUrl}`,
+      `[cart-reminder:log-only] to +91${input.phone}: Hi ${input.name}, you left something in your Leyros bag: ${input.products}. ${input.closingLine} → ${input.restoreUrl}`,
     );
     return { ok: true, mode: "logged" };
   }

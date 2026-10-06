@@ -62,7 +62,7 @@ export default function LoginPage() {
         <p className="text-xs uppercase tracking-widest text-charcoal-soft/60">Account</p>
         <h1 className="mt-1 font-serif text-3xl">Accounts are coming soon</h1>
         <p className="mt-3 text-sm text-charcoal-soft/70">
-          Phone login is being set up. You can still order as a guest — just add your delivery details at checkout.
+          Phone login is being set up. You can still order as a guest. Just add your delivery details at checkout.
         </p>
         <Link href="/collections/all" className="mt-8 inline-block rounded-full bg-charcoal px-6 py-3 text-xs uppercase tracking-widest text-offwhite">
           Continue shopping
@@ -76,7 +76,7 @@ export default function LoginPage() {
       <p className="text-xs uppercase tracking-widest text-charcoal-soft/60">Account</p>
       <h1 className="mt-1 font-serif text-3xl">Log in or sign up</h1>
       <p className="mt-3 text-sm text-charcoal-soft/70">
-        No password needed — we&apos;ll send a one-time code to your WhatsApp.
+        No password needed. We&apos;ll send a one-time code to your WhatsApp.
       </p>
 
       {step === "phone" && (

@@ -40,8 +40,8 @@ export function CartRecommendationSlider({ children }: { children: ReactNode }) 
       <div className="cart-section-heading">
         <h3 id="cart-recommendations-title">You Might Also Like</h3>
         <div className="cart-recommendation-controls" aria-label="Recommendation carousel controls">
-          <button type="button" disabled={!canMoveBack} onClick={() => move(-1)} aria-label="Previous recommendations">←</button>
-          <button type="button" disabled={!canMoveForward} onClick={() => move(1)} aria-label="Next recommendations">→</button>
+          <button type="button" disabled={!canMoveBack} onClick={() => move(-1)} aria-label="Previous recommendations"><span className="ui-inline-arrow is-left" aria-hidden="true" /></button>
+          <button type="button" disabled={!canMoveForward} onClick={() => move(1)} aria-label="Next recommendations"><span className="ui-inline-arrow" aria-hidden="true" /></button>
         </div>
       </div>
       <div className="cart-recommendation-track" ref={trackRef} tabIndex={0} aria-label="Recommended products">

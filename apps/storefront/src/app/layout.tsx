@@ -1,7 +1,18 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Bebas_Neue, Roboto } from "next/font/google";
 
-const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"] });
+const bebasNeue = Bebas_Neue({
+  variable: "--font-reference-heading",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const roboto = Roboto({
+  variable: "--font-reference-body",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
@@ -43,7 +54,7 @@ export const metadata: Metadata = {
 // otherwise visually corrupt the Studio UI since both would share this <body>.
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${outfit.variable} h-full antialiased`}>
+    <html lang="en" className={`${bebasNeue.variable} ${roboto.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

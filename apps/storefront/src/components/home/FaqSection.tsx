@@ -10,7 +10,7 @@ const faqs: FaqItem[] = [
   {
     question: "Do you ship internationally?",
     answer:
-      "Not yet — we currently ship within India only. Standard delivery arrives in 3–5 business days, and orders of ₹999 or more qualify for free standard shipping.",
+      "Not yet. We currently ship within India only. Standard delivery arrives in 3–5 business days, and orders of ₹999 or more qualify for free standard shipping.",
   },
   {
     question: "Can I try a fragrance before buying a full bottle?",
@@ -20,12 +20,12 @@ const faqs: FaqItem[] = [
   {
     question: "What's your returns policy?",
     answer:
-      "Because each bottle is hand-finished to order, we accept returns only for items that arrive damaged, incorrect, or faulty — contact us within 7 days of delivery. For hygiene reasons, opened fragrance bottles can't otherwise be returned.",
+      "Because each bottle is hand-finished to order, we accept returns only for items that arrive damaged, incorrect, or faulty. Contact us within 7 days of delivery. For hygiene reasons, opened fragrance bottles can't otherwise be returned.",
   },
   {
     question: "Can I add gift wrap to my order?",
     answer:
-      "Yes — every bottle can be finished with our signature wax-sealed box wrap and a handwritten card. Add it from any product page, or ask our concierge team for gifting advice.",
+      "Yes. Every bottle can be finished with our signature wax-sealed box wrap and a handwritten card. Add it from any product page, or ask our concierge team for gifting advice.",
   },
   {
     question: "How should I store my fragrance?",

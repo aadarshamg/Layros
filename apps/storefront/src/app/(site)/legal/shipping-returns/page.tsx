@@ -23,7 +23,7 @@ export default async function ShippingReturnsPage() {
       </p>
       <p>
         Because each bottle is hand-finished to order, we accept returns only for items that arrive
-        damaged, incorrect, or faulty — please contact us within 7 days of delivery with photos of the
+        damaged, incorrect, or faulty. Please contact us within 7 days of delivery with photos of the
         issue and we&rsquo;ll arrange a replacement or refund. For hygiene reasons, opened fragrance
         bottles cannot otherwise be returned.
       </p>

@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       console.error("Order record-keeping failed after successful payment:", razorpay_payment_id, error);
     }
   } else {
-    console.warn("Verified payment without order details — left for the webhook:", razorpay_payment_id);
+    console.warn("Verified payment without order details; left for the webhook:", razorpay_payment_id);
   }
 
   return NextResponse.json({ verified: true, paymentId: razorpay_payment_id, orderNumber });

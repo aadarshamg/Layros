@@ -103,9 +103,6 @@ export default async function CollectionPage({ params, searchParams }: {
             <span className="eyebrow">{presentation.eyebrow}</span>
             <h1>{presentation.title}</h1>
             <p className="collection-intro-description">{presentation.description}</p>
-            <ul className="collection-intro-highlights" aria-label="Collection highlights">
-              {presentation.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
-            </ul>
           </div>
         </header>
 

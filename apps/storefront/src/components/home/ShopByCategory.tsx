@@ -185,12 +185,12 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
           <div className="home-candles-grid">
             {CANDLE_COLLECTIONS.map((collection) => (
               <Link key={collection.label} href={`/candles?type=${collection.slug}#candle-products`} className="home-candle-card">
-                <Image src={candleImages[collection.slug] ?? collection.image} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
-                <span className="home-candle-card-shade" aria-hidden="true" />
+                <span className="home-candle-card-image">
+                  <Image src={candleImages[collection.slug] ?? collection.image} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
+                </span>
                 <div className="home-candle-card-copy">
                   <h4>{collection.label}</h4>
-                  <p>{collection.description}</p>
-                  <b>Explore collection <i aria-hidden="true">→</i></b>
+                  <b>Shop now <i aria-hidden="true">→</i></b>
                 </div>
               </Link>
             ))}

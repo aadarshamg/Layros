@@ -12346,3 +12346,58 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
     aspect-ratio: 1 / 1;
   }
 }
+
+/* Shop Candles tiles: a white card with the photo on top and just the name
+   and "Shop now" below, matching the product cards. No dark fade over light
+   product shots and no text laid over photos that carry their own text. */
+.storefront-home .home-candles-grid .home-candle-card {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid #e3e9e7;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(23, 54, 59, .06);
+  color: #17363b;
+}
+.storefront-home .home-candles-grid .home-candle-card-image {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #f4f7f6;
+}
+.storefront-home .home-candles-grid .home-candle-card-image img {
+  object-fit: cover;
+  transition: transform .7s cubic-bezier(.22, 1, .36, 1);
+}
+.storefront-home .home-candles-grid .home-candle-card:hover .home-candle-card-image img {
+  transform: scale(1.04);
+}
+.storefront-home .home-candles-grid .home-candle-card-copy {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 8px 6px;
+}
+.storefront-home .home-candles-grid .home-candle-card h4 {
+  margin: 0;
+  color: #17363b;
+  font-size: clamp(18px, 1.5vw, 22px);
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+.storefront-home .home-candles-grid .home-candle-card b {
+  flex: none;
+  color: #f06455;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: none;
+  white-space: nowrap;
+}

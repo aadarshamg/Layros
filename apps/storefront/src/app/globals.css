@@ -12023,18 +12023,54 @@ body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-
   align-items: stretch;
 }
 
-/* Card pricing: label and the % off pill share the top row, price and MRP
-   the second, so the pill never wraps onto a line of its own. */
-body .product-card-pricing .product-card-price-head {
+/* Card pricing, compact: label, price and MRP stack tightly on the left and
+   the % off pill sits centred on the right, so no row is padded out by the
+   pill and the pill never wraps onto a line of its own. */
+body .product-card-pricing,
+body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-pricing {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
+}
+body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-pricing {
+  padding: 9px 12px;
+}
+body .product-card-pricing .product-card-price-main {
+  display: grid;
+  gap: 3px;
   min-width: 0;
 }
-body .product-card-pricing .product-card-price-head .product-card-price-off {
+body .product-card-pricing .product-card-price-line,
+body .storefront-home .cinematic-product-copy .product-card-pricing .product-card-price-line {
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  align-items: baseline;
+  gap: 0 6px;
+  line-height: 1.1;
+}
+body .product-card-pricing .product-card-price-now {
+  line-height: 1.1;
+}
+body .product-card-pricing > .product-card-price-off {
+  flex: none;
   margin-left: 0;
-  padding: 2px 8px;
+  padding: 3px 8px;
+}
+body .product-card-pricing .product-card-price-label {
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  body .product-card-pricing .product-card-price-label {
+    font-size: .5625rem;
+    letter-spacing: .04em;
+  }
+  body .product-card-pricing > .product-card-price-off {
+    padding: 3px 7px;
+    font-size: .625rem;
+  }
 }
 
 /* Menu opening: the panel drops and scales out from its button, then the

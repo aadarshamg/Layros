@@ -69,15 +69,15 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
       </div>
 
       <div className="product-card-pricing" aria-label="Product pricing">
-        {/* The % off pill sits on the label row so it never wraps under the price on narrow cards. */}
-        <div className="product-card-price-head">
+        {/* Label, price and MRP stack on the left; the % off pill is centred on the right. */}
+        <div className="product-card-price-main">
           <span className="product-card-price-label">Selling Price</span>
-          {discount > 0 && <span className="product-card-price-off">{discount}% OFF</span>}
+          <p className="product-card-price-line">
+            <span className="product-card-price-now">{formatInr(variant.price)}</span>
+            {discount > 0 && <span className="product-card-price-mrp">MRP <s>{formatInr(compareAt)}</s></span>}
+          </p>
         </div>
-        <p className="product-card-price-line">
-          <span className="product-card-price-now">{formatInr(variant.price)}</span>
-          {discount > 0 && <span className="product-card-price-mrp">MRP <s>{formatInr(compareAt)}</s></span>}
-        </p>
+        {discount > 0 && <span className="product-card-price-off">{discount}% OFF</span>}
       </div>
 
       <button type="button" onClick={handleQuickAdd} className="product-card-quick-add">

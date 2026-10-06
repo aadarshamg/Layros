@@ -12276,3 +12276,73 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
   letter-spacing: .01em;
   text-transform: none;
 }
+
+/* Product page under 900px: the single column must be allowed to shrink to
+   the screen. A plain 1fr took the photo gallery track's full width (648px
+   on a 390px phone) and pushed the whole top section off the right edge. */
+@media (max-width: 900px) {
+  body:not(:has(.cinematic-home)) .product-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  body .product-hero-grid > *,
+  body .product-gallery-slide {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+/* Inner pages on phones: the Explore button stacked its icon over the word
+   (spilling out of the pill) and the search icon was dark on the dark
+   header. Match the homepage header: a mint pill with the icon beside the
+   text, a mint search circle and a coral bag circle, all 38px. */
+@media (max-width: 900px) {
+  body header.site-header .mobile-menu > summary {
+    display: inline-flex !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 14px !important;
+    border: 0 !important;
+    background: #e2f0ed !important;
+    color: #17363b !important;
+    font-size: .6875rem !important;
+    font-weight: 750;
+    letter-spacing: .12em;
+    line-height: 1;
+  }
+  body header.site-header .mobile-menu > summary::before {
+    flex: none;
+    margin: 0 !important;
+    color: #f06455;
+    font-size: 15px;
+  }
+  body header.site-header .nav-search-trigger,
+  body header.site-header .bag-link {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+  body header.site-header .nav-search-trigger {
+    background: #e2f0ed !important;
+    color: #17363b !important;
+  }
+  body header.site-header .bag-link {
+    background: #f06455 !important;
+    color: #fff !important;
+  }
+}
+
+/* Product gallery on phones: the photos are square, but the stage was 574px
+   tall, leaving ~90px empty bands above and below each one. */
+@media (max-width: 900px) {
+  body .product-gallery .product-gallery-stage {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1;
+  }
+}

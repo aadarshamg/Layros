@@ -12111,3 +12111,18 @@ body header :is(.home-menu, .mobile-menu)[open] > nav > :nth-child(n + 10) { ani
     border-radius: 24px;
   }
 }
+
+/* Product card names: always one line, ending in "…" when too long (they
+   were clamped to two lines, which made rows of cards uneven). */
+body .product-card-body h3,
+body .cinematic-product-copy h3,
+body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy h3,
+body .product-card .product-card-body h3 .product-name {
+  display: block;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: unset;
+}

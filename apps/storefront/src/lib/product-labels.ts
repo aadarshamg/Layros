@@ -24,8 +24,10 @@ export function productCardCategoryLabel(product: PerfumeProduct): string {
 
 /** Compact merchandising name for product cards; the source title remains untouched. */
 export function productCardTitle(product: PerfumeProduct): string {
-  const category = productCardCategoryLabel(product);
-  return `${productCardName(product)} (${category.toLocaleUpperCase("en-IN")})`;
+  // Perfumes show Men / Women / Unisex as a badge on the photo, so the name
+  // stands alone; other products keep their type, e.g. "… (CANDLE)".
+  if (genderLabel(product)) return productCardName(product);
+  return `${productCardName(product)} (${productCardCategoryLabel(product).toLocaleUpperCase("en-IN")})`;
 }
 
 /** Just the fragrance's name, e.g. "OMBRÉE LEATHER" — no size, gender, or "Inspired by…" tail. */
@@ -36,8 +38,12 @@ export function productCardName(product: PerfumeProduct): string {
     .replace(/\([^)]*(?:ml|gm|grams?|set of)[^)]*\)/gi, "")
     .replace(/["“”']?(?:men(?:'s)?|women(?:'s)?|unisex)["“”']?\s+(?=(?:perfume|fragrance|inspired)\b)/gi, "")
     .replace(/\b(?:eau de parfum|eau de toilette|perfume|fragrance|parfum|edp|inspired)\b.*$/i, "")
+    // Gender is the photo badge's job, and size is picked below the name.
+    .replace(/["“”']?\b(?:men|women|unisex)\b["“”']?/gi, "")
+    .replace(/\b\d+\s?ml\b/gi, "")
     .replace(/\s+/g, " ")
-    .trim();
+    .trim()
+    .replace(/\s+(?:luxury|premium)$/i, "");
 
   if (!name) name = product.brand || "Leyros";
   return name.toLocaleUpperCase("en-IN");

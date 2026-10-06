@@ -12356,7 +12356,8 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
   flex-direction: column;
   padding: 8px;
   overflow: hidden;
-  border: 1px solid #e3e9e7;
+  /* Header colour, so the tiles tie in with the navigation bar */
+  border: 1.5px solid #17363b;
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 8px 24px rgba(23, 54, 59, .06);

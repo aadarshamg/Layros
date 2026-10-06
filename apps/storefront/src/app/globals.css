@@ -12180,3 +12180,11 @@ body .storefront-home .cinematic-product-copy .product-card-purchase .product-ca
   text-transform: capitalize;
   white-space: nowrap;
 }
+
+/* For Him / For Her / For Everyone tiles: no border. The faint border sat
+   over a dark brown card background and read as a black outline; a light
+   background also stops any dark fringe at the rounded image edges. */
+.storefront-home .home-gender-card {
+  border: 0;
+  background: #eef3f2;
+}

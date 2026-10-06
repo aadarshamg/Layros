@@ -22,21 +22,18 @@ const GENDER_COLLECTIONS = [
   {
     label: "Men",
     title: "For Him",
-    description: "Confident woods, fresh aromatics, rich ambers, and statement-making trails.",
     gender: "masculine",
     fallbackImage: "/leyros/about-old/hero-perfume.webp",
   },
   {
     label: "Women",
     title: "For Her",
-    description: "Radiant florals, luminous fruits, soft musks, and elegant signatures.",
     gender: "feminine",
     fallbackImage: "/leyros/about-old/daily-wear.webp",
   },
   {
     label: "Unisex",
     title: "For Everyone",
-    description: "Balanced compositions made to be chosen by character, not convention.",
     gender: "unisex",
     fallbackImage: "/leyros/about-old/gift-pack.webp",
   },
@@ -142,10 +139,8 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
               <Image src={tileImages[`gender:${collection.gender}`] ?? collection.fallbackImage} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
               <span className="home-gender-card-shade" aria-hidden="true" />
               <div className="home-gender-card-copy">
-                <span>{collection.label}</span>
                 <h3>{collection.title}</h3>
-                <p>{collection.description}</p>
-                <b>Shop {collection.label} <i aria-hidden="true">→</i></b>
+                <b>Shop now <i aria-hidden="true">→</i></b>
               </div>
             </Link>
           ))}

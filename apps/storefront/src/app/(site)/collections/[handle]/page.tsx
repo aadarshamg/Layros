@@ -100,9 +100,7 @@ export default async function CollectionPage({ params, searchParams }: {
       <div className="page-shell">
         <header className="collection-intro">
           <div className="collection-intro-copy">
-            <span className="eyebrow">{presentation.eyebrow}</span>
             <h1>{presentation.title}</h1>
-            <p className="collection-intro-description">{presentation.description}</p>
           </div>
         </header>
 

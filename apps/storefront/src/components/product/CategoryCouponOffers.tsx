@@ -21,9 +21,7 @@ export function CategoryCouponOffers({ category }: { category: CouponOfferCatego
   return (
     <section className="category-coupon-offers" aria-labelledby="category-coupon-title">
       <header>
-        <span>Exclusive category savings</span>
         <h2 id="category-coupon-title">Offers on {COUPON_CATEGORY_LABELS[category]}</h2>
-        <p>Choose the coupon that matches your eligible category subtotal.</p>
       </header>
       <div className="category-coupon-list">
         {offers.map((offer) => (

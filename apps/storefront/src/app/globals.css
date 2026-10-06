@@ -12602,3 +12602,23 @@ body .site-footer .footer-links ul {
   /* The oversized faded wordmark only adds height on phones */
   body .site-footer .footer-wordmark-wrap { display: none; }
 }
+
+/* Candles page style cards on phones: three small tiles in one row, matching
+   the homepage (they were stacked full-width cards). */
+@media (max-width: 600px) {
+  html body .candles-page .candles-page-category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  html body .candles-page .candles-page-category-card {
+    display: block;
+    border-radius: 14px;
+  }
+  html body .candles-page .candles-page-category-image {
+    min-height: 0;
+    aspect-ratio: 1;
+  }
+  html body .candles-page .candles-page-category-card > div:last-child { padding: 8px 6px 9px; }
+  html body .candles-page .candles-page-category-card h3 { font-size: .75rem; line-height: 1.25; }
+  html body .candles-page .candles-page-category-card > div:last-child > span { display: none; }
+}

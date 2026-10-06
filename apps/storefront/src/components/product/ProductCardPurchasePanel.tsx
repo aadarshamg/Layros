@@ -25,7 +25,9 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
   const notes = [...product.details.notesTop, ...product.details.notesHeart, ...product.details.notesBase]
     .filter((note, index, all) => note && all.indexOf(note) === index)
     .slice(0, 3);
-  const notesLabel = notes.length ? notes.join(" • ") : product.details.family;
+  // Perfumes fall back to their family (e.g. "Fresh"); other products only show
+  // real notes, since the catalogue default family means nothing for a candle.
+  const notesLabel = notes.length ? notes.join(" • ") : gender ? product.details.family : "";
 
   function handleQuickAdd() {
     addItem({
@@ -50,10 +52,10 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
   return (
     <div className="product-card-purchase">
       {/* Scent line right under the name: just the notes (or family), no label. */}
-      <p className="product-card-scent" aria-label={gender ? "Perfume notes" : "Fragrance profile"}>{notesLabel}</p>
+      {notesLabel && <p className="product-card-scent" aria-label={gender ? "Perfume notes" : "Fragrance profile"}>{notesLabel}</p>}
 
       <div className="product-card-info-group product-card-size-group">
-        <span className="product-card-info-label">ML / Size</span>
+        <span className="product-card-info-label">{gender ? "ML / Size" : "Size"}</span>
         <div className="product-card-sizes" aria-label="Choose product size">
           {sortedVariants.map((item) => (
             <button

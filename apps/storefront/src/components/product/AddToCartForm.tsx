@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
-import type { FragranceFamily, PerfumeVariant } from "@leyros/types";
+import type { PerfumeVariant } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatSize } from "@/lib/format";
 
@@ -18,18 +17,9 @@ interface AddToCartFormProps {
   category?: string;
   image?: string;
   variants: PerfumeVariant[];
-  fragranceFamily?: FragranceFamily;
 }
 
-const FRAGRANCE_PROFILES: { value: FragranceFamily; label: string; hint: string; image: string }[] = [
-  { value: "oriental", label: "Ambery", hint: "Warm amber & spice", image: "/leyros/saffron.jpg" },
-  { value: "woody", label: "Woody", hint: "Sandalwood & earth", image: "/leyros/sandalwood.jpg" },
-  { value: "fresh", label: "Fresh / Citrus", hint: "Citrus & clean air", image: "/leyros/fleur-oranger.jpg" },
-  { value: "floral", label: "Floral", hint: "Petals & soft blooms", image: "/leyros/rose.jpg" },
-  { value: "gourmand", label: "Gourmand", hint: "Sweet & comforting", image: "/leyros/about-old/daily-wear.webp" },
-];
-
-export function AddToCartForm({ productId, handle, title, category, image, variants, fragranceFamily }: AddToCartFormProps) {
+export function AddToCartForm({ productId, handle, title, category, image, variants }: AddToCartFormProps) {
   const { addItem } = useCart();
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id ?? "");
   const [quantity, setQuantity] = useState(1);
@@ -60,8 +50,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
   return (
     <form onSubmit={handleSubmit} className="purchase-form">
       <div className="purchase-field-heading">
-        <p className="size-label">Choose a variant</p>
-        <span>{selected?.inventoryQuantity ? "Ready in the atelier" : "Made by request"}</span>
+        <p className="size-label">Size</p>
       </div>
       <div className="size-grid">
         {variants.map((variant) => (
@@ -75,35 +64,6 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
           </button>
         ))}
       </div>
-
-      {fragranceFamily && (
-        <section className="fragrance-profile-picker" aria-labelledby="fragrance-profile-heading">
-          <div className="purchase-field-heading fragrance-profile-heading">
-            <p className="size-label" id="fragrance-profile-heading">Choose Fragrance Notes</p>
-            <span>Explore by notes</span>
-          </div>
-          <div className="fragrance-profile-options">
-            {FRAGRANCE_PROFILES.map((profile) => {
-              const isCurrent = profile.value === fragranceFamily;
-              return (
-                <Link
-                  key={profile.value}
-                  href={`/collections/all?family=${profile.value}`}
-                  className={`fragrance-profile-option${isCurrent ? " is-selected" : ""}`}
-                  aria-current={isCurrent ? "page" : undefined}
-                  aria-label={`${profile.label} perfumes${isCurrent ? ", current fragrance profile" : ""}`}
-                >
-                  <span className="fragrance-profile-image">
-                    <Image src={profile.image} alt={`${profile.label} fragrance notes`} fill sizes="120px" />
-                    {isCurrent && <i aria-hidden="true">✓</i>}
-                  </span>
-                  <span className="fragrance-profile-copy"><b>{profile.label}</b><small>{profile.hint}</small></span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      )}
 
       {selected && (
         <aside className="product-snapmint" aria-label="Snapmint EMI payment option">

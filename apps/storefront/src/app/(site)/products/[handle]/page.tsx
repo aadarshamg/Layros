@@ -22,7 +22,6 @@ import { genderLabel } from "@/lib/product-labels";
 import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr, formatSize } from "@/lib/format";
-import { ScentStory } from "@/components/product/ScentStory";
 import { getScentStoryTheme } from "@/lib/scent-story";
 import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/shipping";
 import type { CSSProperties } from "react";
@@ -37,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
     description: seo.description,
     path: `/products/${handle}`,
     image: product.images[0],
-    keywords: [...seo.keywords, "Leyros ScentStory", "perfume story"],
+    keywords: [...seo.keywords],
   });
 }
 
@@ -63,15 +62,11 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const isFragrance = isBuyTwoGetOneEligible(product);
   const seo = getProductSeo(product);
   const shortProductName = seo.name;
-  const gender = genderLabel(product);
-  const audience = seo.audience;
   const couponCategory = getProductCouponCategory(product);
-  const productAccord = isFragrance
-    ? [details.notesTop[0], details.notesHeart[0], details.notesBase[0]].filter(Boolean).join(" · ")
-    : product.tags.slice(0, 3).join(" · ");
-  const topFacts = isFragrance
-    ? [seo.category, seo.family, gender, details.concentration, seo.sizes, "30% concentration", productAccord, ...(product.highlights?.map((highlight) => highlight.title) ?? [])]
-    : [seo.category, seo.sizes, ...product.tags];
+  // Only the "when to wear" highlights managed in admin; category, family,
+  // gender and sizes are already shown elsewhere on the page.
+  const featureList = (isFragrance ? [...details.notesTop, ...details.notesHeart, ...details.notesBase] : product.tags).filter(Boolean);
+  const topFacts = product.highlights?.map((highlight) => highlight.title) ?? [];
   const scentTheme = getScentStoryTheme(product);
   const scentStoryStyle = isFragrance
     ? ({
@@ -90,12 +85,8 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       <section className="product-hero">
         <nav className="page-shell product-breadcrumbs" aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>/</span><span>{shortProductName}</span>
-          {seo.family && <><span>/</span><span>{seo.family}</span></>}
-          {gender && <><span>/</span><span>{gender}</span></>}
-          <span>/</span><span>{audience}</span>
         </nav>
         <header className="page-shell product-identity">
-          <p>{audience}</p>
           <h1>{shortProductName}</h1>
           <div className="product-top-facts" aria-label="Product summary">
             {topFacts.filter(Boolean).map((fact) => <span key={fact}>{fact}</span>)}
@@ -117,7 +108,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               category={product.category}
               image={images[0]}
               variants={product.variants}
-              fragranceFamily={isFragrance ? details.family : undefined}
             />
             <DeliveryTimeline
               dispatchDays={rewardSettings.dispatchDays ?? DEFAULT_DISPATCH_DAYS}
@@ -151,22 +141,13 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
             )}
           </div>
         </div>
-
-        <div className="page-shell product-assurance-band" aria-label="Leyros service benefits">
-          <article><b>Free shipping ₹999+</b><span>Tracked delivery across India</span></article>
-          <article><b>Atelier presentation</b><span>Elegant, gift-ready packaging</span></article>
-          <article><b>Secure payment</b><span>Protected encrypted checkout</span></article>
-        </div>
         <div className="page-shell product-detail-notes">
           <header className="product-details-heading">
-            <span>Product details</span>
-            <h2>Know your Leyros fragrance</h2>
-            <p>Clear composition, performance, presentation, and delivery information—without the long editorial sections.</p>
+            <h2>Product details</h2>
           </header>
           {isFragrance && (
             <div className="product-detail-summary" aria-label="Key fragrance details">
               <article><span>Fragrance profile</span><strong>{details.family}</strong></article>
-              <article><span>Concentration</span><strong>30% perfume oil</strong></article>
               <article><span>For</span><strong>{genderLabel(product) ?? "Unisex"}</strong></article>
               <article><span>Available sizes</span><strong>{product.variants.map((variant) => formatSize(variant.sizeMl, variant.sizeLabel)).join(" · ")}</strong></article>
             </div>
@@ -178,17 +159,17 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 <p style={{ whiteSpace: "pre-line" }}>{product.description}</p>
               </details>
             )}
-            <details>
-              <summary>{isFragrance ? "Complete fragrance notes" : "Product features"}</summary>
-              <p>{isFragrance ? [...details.notesTop, ...details.notesHeart, ...details.notesBase].join(", ") : product.tags.join(", ")}.</p>
-            </details>
-            <details><summary>Presentation</summary><p>Presented in the signature Leyros coffret, ready to gift.</p></details>
+            {featureList.length > 0 && (
+              <details>
+                <summary>{isFragrance ? "Complete fragrance notes" : "Product features"}</summary>
+                <p>{featureList.join(", ")}.</p>
+              </details>
+            )}
             <details><summary>Delivery, tracking & returns</summary><p>Track your order from dispatch to delivery. Standard delivery across India in 3–5 business days, free on orders of {formatInr(FREE_SHIPPING_THRESHOLD)} or more ({formatInr(STANDARD_SHIPPING_FEE)} below that). Returns are accepted for items that arrive damaged, incorrect or faulty — contact us within 7 days of delivery.</p></details>
           </div>
         </div>
       </section>
 
-      {isFragrance && <ScentStory product={product} name={shortProductName} />}
       <ProductReviews productId={product.id} count={product.reviewCount} average={product.reviewAverage} />
       <RelatedProducts products={relatedProducts} />
     </div>

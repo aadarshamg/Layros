@@ -33,7 +33,6 @@ export function BuyTwoGetOneOffer() {
       <aside className="page-shell b2g1-banner" aria-label="Buy 2 Get 1 Free offer">
         <div className="b2g1-banner-mark" aria-hidden="true">3</div>
         <div className="b2g1-banner-copy">
-          <span>Exclusive fragrance offer</span>
           <strong>Buy 2, Get 1 Free</strong>
           <p>Only on Perfumes &amp; Attars. Add any 3 eligible fragrances to your bag.</p>
         </div>

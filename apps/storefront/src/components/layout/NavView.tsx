@@ -59,6 +59,11 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
   const { isLoggedIn, openAccountDrawer } = useAuth();
   const accountHref = isLoggedIn ? "/account/orders" : "/account/login";
   const accountLabel = isLoggedIn ? "My account" : "Log in";
+  const closeCompactMenu = (target: EventTarget | null) => {
+    const menu = target instanceof Element ? target.closest("details.home-menu, details.mobile-menu") : null;
+    menu?.removeAttribute("open");
+    menu?.querySelectorAll("details[open]").forEach((inner) => inner.removeAttribute("open"));
+  };
   // Opens the slide-out account drawer instead of navigating; the href stays
   // so "open in new tab" still reaches the account pages.
   const openAccount = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -133,18 +138,18 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
             <summary>{link.children[0]?.label || link.label}</summary>
             <div className="nav-family-children">
               {link.children.map((child, index) => (
-                <Link key={child.href} href={child.href} className="nav-submenu-item">
+                <Link key={child.href} href={child.href} className="nav-submenu-item" onClick={(event) => closeCompactMenu(event.currentTarget)}>
                   {index === 0 ? "View all fragrances" : child.label}
                 </Link>
               ))}
             </div>
           </details>
         ) : (
-          <Link key={link.href} href={link.href}>{link.label}</Link>
+          <Link key={link.href} href={link.href} onClick={(event) => closeCompactMenu(event.currentTarget)}>{link.label}</Link>
         ),
       )}
       <Link href={accountHref} onClick={openAccount}>{accountLabel}</Link>
-      <button type="button" onClick={openDrawer} className="cursor-pointer text-left">Shopping bag ({bagCount})</button>
+      <button type="button" onClick={(event) => { closeCompactMenu(event.currentTarget); openDrawer(); }} className="cursor-pointer text-left">Shopping bag ({bagCount})</button>
     </>
   );
 

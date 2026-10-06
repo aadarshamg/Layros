@@ -58,7 +58,9 @@ export function GoogleReviewsSection({
           {visibleReviews.slice(0, 6).map((review, index) => (
             <article className="google-review-card" key={`${review.reviewerName}-${index}`}>
               <span className="google-review-quote" aria-hidden="true">“</span>
-              <blockquote>{review.reviewText}</blockquote>
+              <div className="google-review-copy">
+                <blockquote>{review.reviewText}</blockquote>
+              </div>
               <ReviewStars value={review.rating} />
               <div className="google-review-card-head">
                 <span className="google-review-avatar" aria-hidden="true">

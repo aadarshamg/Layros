@@ -1,4 +1,5 @@
 import { getApprovedReviews } from "@/lib/data/reviews";
+import { getSampleReviews } from "@/lib/data/sample-reviews";
 import { ReviewForm } from "@/components/product/ReviewForm";
 
 function Stars({ value }: { value: number }) {
@@ -10,8 +11,14 @@ function Stars({ value }: { value: number }) {
   );
 }
 
-export async function ProductReviews({ productId, count, average }: { productId: string; count?: number; average?: number }) {
+export async function ProductReviews({ productId, productName, count, average }: { productId: string; productName: string; count?: number; average?: number }) {
   const reviews = await getApprovedReviews(productId);
+  const isShowingSamples = reviews.length === 0;
+  const visibleReviews = isShowingSamples ? getSampleReviews(productId, productName) : reviews;
+  const visibleCount = isShowingSamples ? visibleReviews.length : count;
+  const visibleAverage = isShowingSamples
+    ? visibleReviews.reduce((total, review) => total + review.rating, 0) / visibleReviews.length
+    : average;
 
   return (
     <section className="product-reviews" id="reviews" aria-labelledby="product-reviews-heading">
@@ -19,10 +26,10 @@ export async function ProductReviews({ productId, count, average }: { productId:
         <div className="product-reviews-head">
           <div>
             <h2 id="product-reviews-heading">Reviews</h2>
-            {count && average ? (
+            {visibleCount && visibleAverage ? (
               <p className="product-reviews-summary">
-                <Stars value={average} />
-                <b>{average.toFixed(1)}</b> out of 5 · {count} {count === 1 ? "review" : "reviews"}
+                <Stars value={visibleAverage} />
+                <b>{visibleAverage.toFixed(1)}</b> out of 5 · {visibleCount} {isShowingSamples ? "sample reviews" : visibleCount === 1 ? "review" : "reviews"}
               </p>
             ) : (
               <p className="product-reviews-summary is-empty">No reviews yet. Be the first to share how it wears.</p>
@@ -30,14 +37,17 @@ export async function ProductReviews({ productId, count, average }: { productId:
           </div>
           <ReviewForm productId={productId} />
         </div>
-        {reviews.length > 0 && (
+        {isShowingSamples && (
+          <p className="product-reviews-sample-note"><b>Preview content</b> Sample reviews are shown until verified customer reviews are available.</p>
+        )}
+        {visibleReviews.length > 0 && (
           <ul className="product-review-list">
-            {reviews.map((review) => (
+            {visibleReviews.map((review) => (
               <li key={review.id} className="product-review">
                 <Stars value={review.rating} />
                 <p className="product-review-meta">
                   <b>{review.name}</b>
-                  {review.submittedAt && (
+                  {!("isSample" in review) && review.submittedAt && (
                     <time dateTime={review.submittedAt}>
                       {new Date(review.submittedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                     </time>

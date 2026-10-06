@@ -12126,3 +12126,21 @@ body .product-card .product-card-body h3 .product-name {
   text-overflow: ellipsis;
   -webkit-line-clamp: unset;
 }
+
+/* Scent line under the product name (notes, or the family until notes are
+   filled in): plain text, no label or box. */
+body .product-card-purchase .product-card-scent,
+body .storefront-home .cinematic-product-copy .product-card-purchase .product-card-scent {
+  height: auto;
+  min-height: 0;
+  margin: -6px 0 0;
+  padding: 0;
+  overflow: hidden;
+  color: #52696c;
+  font-size: .8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
+}

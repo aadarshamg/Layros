@@ -49,6 +49,9 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
 
   return (
     <div className="product-card-purchase">
+      {/* Scent line right under the name: just the notes (or family), no label. */}
+      <p className="product-card-scent" aria-label={gender ? "Perfume notes" : "Fragrance profile"}>{notesLabel}</p>
+
       <div className="product-card-info-group product-card-size-group">
         <span className="product-card-info-label">ML / Size</span>
         <div className="product-card-sizes" aria-label="Choose product size">
@@ -64,11 +67,6 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
           ))}
         </div>
       </div>
-
-      <p className="product-card-notes">
-        <span className="product-card-info-label">{gender ? "Perfume Notes" : "Fragrance Profile"}</span>
-        <strong>{notesLabel}</strong>
-      </p>
 
       <div className="product-card-pricing" aria-label="Product pricing">
         {/* The % off pill sits on the label row so it never wraps under the price on narrow cards. */}

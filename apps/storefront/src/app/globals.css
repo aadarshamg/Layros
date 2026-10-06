@@ -12402,3 +12402,105 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
   text-transform: none;
   white-space: nowrap;
 }
+
+/* ── Phones: no sideways scrolling anywhere ─────────────────────────────
+   Every row that used to swipe sideways becomes a grid of smaller tiles
+   that fits the screen; the slide arrows go away with it. */
+@media (max-width: 600px) {
+  html body .storefront-home .cinematic-product-grid,
+  html body .storefront-home .home-category-track,
+  html body .storefront-home .trial-sets-grid,
+  html body .storefront-home .home-reel-track,
+  html body .cart-drawer .cart-recommendation-track {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-flow: row !important;
+    grid-auto-columns: auto !important;
+    gap: 10px !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+    transform: none !important;
+  }
+  /* A lone reel spans the row instead of sitting in half of it */
+  html body .storefront-home .home-reel-track {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+  }
+  html body .storefront-home .cinematic-product-grid > *,
+  html body .storefront-home .home-category-track > *,
+  html body .storefront-home .trial-sets-grid > *,
+  html body .storefront-home .home-reel-track > *,
+  html body .cart-drawer .cart-recommendation-track > * {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: none !important;
+    scroll-snap-align: none !important;
+  }
+  /* Five category cards: the last one spans the full row */
+  html body .storefront-home .home-category-track > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  /* Private Blend chapters: three small arches in one row */
+  html body .storefront-home .private-blend-preview {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-flow: row !important;
+    gap: 8px !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+  }
+  html body .storefront-home .private-blend-preview > * {
+    width: auto !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+
+  /* Slide arrows have nothing to slide any more */
+  html body .storefront-home .home-product-shelf-controls,
+  html body .cart-drawer .cart-recommendation-controls {
+    display: none !important;
+  }
+
+  /* Cart: the top four picks only, so the cart stays short */
+  html body .cart-drawer .cart-recommendation-track > :nth-child(n + 5) {
+    display: none !important;
+  }
+
+  /* Product page: thumbnails wrap; fragrance notes as a 3-column grid */
+  html body .product-gallery-thumbnails {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)) !important;
+    gap: 8px !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+  }
+  html body .product-gallery-thumbnails > * {
+    width: auto !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+  html body .fragrance-profile-options {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-flow: row !important;
+    gap: 8px !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+  }
+  html body .fragrance-profile-options > * {
+    width: auto !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+}
+
+/* Small Private Blend arches on phones: no "Chapter 0X" label over the bottle
+   cap, and the name sits snug at the bottom. */
+@media (max-width: 600px) {
+  html body .storefront-home .private-blend-preview > a > span { display: none; }
+  html body .storefront-home .private-blend-preview > a > div { inset: auto 8px 10px; }
+  html body .storefront-home .private-blend-preview strong { font-size: .6875rem; line-height: 1.25; }
+}

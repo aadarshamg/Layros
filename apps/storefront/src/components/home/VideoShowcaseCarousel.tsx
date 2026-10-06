@@ -224,7 +224,6 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
               {discount && <span className="ml-2 text-sm font-medium text-emerald-700">{discount}% OFF</span>}
             </p>
           )}
-          <p className="video-modal-description mt-3 text-sm text-charcoal-soft/70">{video.product.description}</p>
 
           <div className="video-modal-actions mt-auto flex gap-3 pt-6">
             <button

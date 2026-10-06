@@ -22,10 +22,9 @@ import { genderLabel } from "@/lib/product-labels";
 import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr, formatSize } from "@/lib/format";
-import { getScentStoryTheme, scentNoteImage, scentStoryNarrative } from "@/lib/scent-story";
+import { scentNoteImage } from "@/lib/scent-story";
 import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/shipping";
 import { RotatingHighlights } from "@/components/product/RotatingHighlights";
-import type { CSSProperties } from "react";
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
   const { handle } = await params;
@@ -51,16 +50,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const { details } = product;
   const images = product.images.length ? product.images : ["/leyros/nuit-doree-hero.jpg"];
 
-  // Prefer complete sentences in the purchase panel; keep the full copy below.
-  const SHORT_DESCRIPTION_LENGTH = 220;
-  const cleanDescription = product.description.replace(/[\u200B\uFEFF]/g, "").replace(/\.(?=[A-Z])/g, ". ").trim();
-  const excerpt = cleanDescription.slice(0, SHORT_DESCRIPTION_LENGTH);
-  const sentenceEnd = excerpt.lastIndexOf(".");
-  const shortDescription =
-    cleanDescription.length > SHORT_DESCRIPTION_LENGTH
-      ? sentenceEnd > 60 ? excerpt.slice(0, sentenceEnd + 1) : `${excerpt.replace(/\s+\S*$/, "")}…`
-      : cleanDescription;
-  const hasFullDescription = cleanDescription.length > shortDescription.length;
   const isFragrance = isBuyTwoGetOneEligible(product);
   const seo = getProductSeo(product);
   const shortProductName = seo.name;
@@ -69,26 +58,15 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   // gender and sizes are already shown elsewhere on the page.
   const featureList = (isFragrance ? [...details.notesTop, ...details.notesHeart, ...details.notesBase] : product.tags).filter(Boolean);
   const topFacts = product.highlights?.map((highlight) => highlight.title) ?? [];
-  const scentTheme = getScentStoryTheme(product);
-  const scentStoryStyle = isFragrance
-    ? ({
-        "--scent-bg": scentTheme.background,
-        "--scent-surface": scentTheme.surface,
-        "--scent-accent": scentTheme.accent,
-        "--scent-ink": scentTheme.ink,
-        "--scent-angle": scentTheme.angle,
-      } as CSSProperties)
-    : undefined;
-  const scentStory = isFragrance ? scentStoryNarrative(product, shortProductName) : "";
-  const noteChapters = isFragrance
+  const noteGroups = isFragrance
     ? [
-        { number: "01", label: "The opening", title: "Top notes", notes: details.notesTop, image: scentNoteImage(details.notesTop, images[0]) },
-        { number: "02", label: "The heart", title: "Heart notes", notes: details.notesHeart, image: scentNoteImage(details.notesHeart, images[Math.min(1, images.length - 1)]) },
-        { number: "03", label: "The trail", title: "Base notes", notes: details.notesBase, image: scentNoteImage(details.notesBase, images[Math.min(2, images.length - 1)]) },
+        { title: "Top notes", notes: details.notesTop },
+        { title: "Heart notes", notes: details.notesHeart },
+        { title: "Base notes", notes: details.notesBase },
       ]
     : [];
   return (
-    <div className={`product-page${isFragrance ? " scent-story-page" : ""}`} style={scentStoryStyle}>
+    <div className="product-page">
       <JsonLd data={productJsonLd(product, product.reviewCount && product.reviewAverage ? { value: product.reviewAverage, count: product.reviewCount } : undefined)} />
       <JsonLd data={productBreadcrumbJsonLd({ handle: product.handle, name: seo.name, category: seo.category })} />
       <ProductInterestTracker productId={product.id} />
@@ -107,7 +85,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               <h1>{shortProductName}</h1>
               <ProductRatingLine handle={product.handle} count={product.reviewCount} average={product.reviewAverage} />
             </header>
-            <p className="product-description">{shortDescription}</p>
             {isFragrance && (
               <div className="product-quick-facts" aria-label="Product summary">
                 <div><span>Profile</span><strong>{details.family}</strong></div>
@@ -116,12 +93,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               </div>
             )}
             {topFacts.length > 0 && <RotatingHighlights highlights={product.highlights} seed={product.id} />}
-            {isFragrance && (
-              <div className="product-offer-card">
-                <span>Limited offer</span>
-                <div><strong>Buy 2, get 1 free</strong><p>Add any 3 eligible Perfumes or Attars. The lowest-priced eligible item is free.</p></div>
-              </div>
-            )}
             {couponCategory && <CategoryCouponOffers category={couponCategory} />}
             <AddToCartForm
               productId={product.id}
@@ -154,33 +125,26 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       </section>
 
       {isFragrance && (
-        <section className="product-scent-story" aria-labelledby="scent-story-title">
-          <div className="page-shell product-story-intro">
-            <div className="product-story-heading">
-              <span>#ScentStory</span>
-              <p>{scentTheme.mood}</p>
+        <section className="product-notes-section" aria-labelledby="fragrance-notes-title">
+          <div className="page-shell">
+            <h2 id="fragrance-notes-title">Fragrance notes</h2>
+            <div className="product-note-grid">
+              {noteGroups.map((group) => (
+                <article key={group.title} className="product-note-group">
+                  <h3>{group.title}</h3>
+                  <div className="product-note-list">
+                    {group.notes.length ? group.notes.map((note) => (
+                      <div className="product-note" key={note}>
+                        <span className="product-note-image">
+                          <Image src={scentNoteImage([note], images[0])} alt="" fill sizes="92px" />
+                        </span>
+                        <span>{note}</span>
+                      </div>
+                    )) : <p>A carefully composed impression</p>}
+                  </div>
+                </article>
+              ))}
             </div>
-            <div className="product-story-copy">
-              <p className="product-story-chapter">{scentTheme.chapter}</p>
-              <h2 id="scent-story-title">A fragrance with a point of view.</h2>
-              <p>{scentStory}</p>
-            </div>
-          </div>
-          <div className="page-shell product-note-grid">
-            {noteChapters.map((chapter) => (
-              <article key={chapter.title} className="product-note-card">
-                <Image src={chapter.image} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" />
-                <div className="product-note-card-overlay" />
-                <div className="product-note-card-copy">
-                  <span>{chapter.number} · {chapter.label}</span>
-                  <h3>{chapter.title}</h3>
-                  <p>{chapter.notes.length ? chapter.notes.join(" · ") : "A carefully composed impression"}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div className="page-shell product-story-ritual">
-            <span>Wear it when</span><p>{scentTheme.ritual}</p>
           </div>
         </section>
       )}
@@ -200,12 +164,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               <article><span>Available sizes</span><strong>{product.variants.map((variant) => formatSize(variant.sizeMl, variant.sizeLabel)).join(" · ")}</strong></article>
             </div>
             <div className="product-disclosures">
-              {(hasFullDescription || cleanDescription) && (
-                <details open>
-                  <summary>About this {isFragrance ? "fragrance" : "product"}</summary>
-                  <p style={{ whiteSpace: "pre-line" }}>{product.description}</p>
-                </details>
-              )}
               {featureList.length > 0 && (
                 <details>
                   <summary>{isFragrance ? "Complete fragrance notes" : "Product features"}</summary>

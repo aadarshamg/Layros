@@ -6,7 +6,6 @@ import { CinematicHero } from "@/components/home/CinematicHero";
 import { CinematicProductGrid } from "@/components/home/CinematicProductGrid";
 import { VideoShowcase } from "@/components/home/VideoShowcase";
 import { FaqSection } from "@/components/home/FaqSection";
-import { PressSection } from "@/components/home/PressSection";
 import { EditorialMarquee } from "@/components/home/EditorialMarquee";
 import { ShopByCategory } from "@/components/home/ShopByCategory";
 import { TrialSetShowcase } from "@/components/home/TrialSetShowcase";
@@ -75,7 +74,6 @@ export default async function Home() {
       </section>
 
       <FaqSection />
-      <PressSection />
 
       <section className="cinematic-service about-leyros">
         <div className="cinematic-shell cinematic-service-grid">

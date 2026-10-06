@@ -12924,3 +12924,272 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
     font-size: 1.4rem;
   }
 }
+
+/* Cart typography follows the same display/body hierarchy as product cards. */
+html body .cart-overlay > aside.cart-drawer { font-family: var(--font-primary); }
+
+html body .cart-overlay > aside.cart-drawer :is(
+  .checkout-shipping-copy,
+  .checkout-benefit-offers,
+  .cart-reward,
+  .cart-line-heading p,
+  .cart-line-heading button,
+  .cart-quantity,
+  .coupon-widget-summary-text small,
+  .cart-trust-marquee,
+  .cart-total-row small,
+  .cart-snapmint
+) { font-family: var(--font-primary); }
+
+html body .cart-overlay > aside.cart-drawer .cart-drawer-header h2,
+html body .cart-overlay > aside.cart-drawer .cart-section-heading h3,
+html body .cart-overlay > aside.cart-drawer .cart-line-heading a,
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy > a,
+html body .cart-overlay > aside.cart-drawer .coupon-widget-summary-text b,
+html body .cart-overlay > aside.cart-drawer .cart-total-row b,
+html body .cart-overlay > aside.cart-drawer .cart-line-price strong,
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy p b,
+html body .cart-overlay > aside.cart-drawer .cart-total-row strong,
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy button,
+html body .cart-overlay > aside.cart-drawer .cart-checkout-copy b {
+  font-family: var(--font-display) !important;
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+
+html body .cart-overlay > aside.cart-drawer .cart-drawer-header h2 { font-size: 1.45rem; }
+html body .cart-overlay > aside.cart-drawer .cart-drawer-header h2 small { font-family: var(--font-primary); font-size: .8rem; font-weight: 600; letter-spacing: 0; }
+html body .cart-overlay > aside.cart-drawer .cart-section-heading h3 { font-size: 1.15rem; }
+html body .cart-overlay > aside.cart-drawer .cart-line-heading a { font-size: 1rem; line-height: 1.15; }
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy > a { font-size: .925rem; line-height: 1.15; }
+html body .cart-overlay > aside.cart-drawer .cart-line-price strong { font-size: 1.25rem; }
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy p b { font-size: 1.05rem; }
+html body .cart-overlay > aside.cart-drawer .cart-total-row strong { font-size: 1.65rem; }
+html body .cart-overlay > aside.cart-drawer .cart-recommendation-copy button { font-size: .9rem; }
+html body .cart-overlay > aside.cart-drawer .cart-checkout-copy b { font-size: 1.2rem; line-height: 1; }
+
+/* Homepage Google stories: genuine reviews in the Leyros colour system. */
+html body .storefront-home .google-reviews-section {
+  padding-block: clamp(72px, 8vw, 112px);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(207, 233, 239, .13), transparent 28rem),
+    #17363b;
+  color: #fffaf3;
+}
+
+html body .storefront-home .google-reviews-shell {
+  grid-template-columns: minmax(260px, .62fr) minmax(0, 1.55fr);
+  gap: clamp(38px, 6vw, 88px);
+  align-items: center;
+}
+
+html body .storefront-home .google-reviews-summary { max-width: 390px; }
+html body .storefront-home .google-reviews-google-mark { width: 48px; height: 48px; margin-bottom: 24px; box-shadow: none; }
+html body .storefront-home .google-reviews-summary > p {
+  margin: 0 0 10px;
+  color: #ffd3c8;
+  font-family: var(--font-primary);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+html body .storefront-home .google-reviews-summary h2 {
+  color: #fffaf3;
+  font-family: var(--font-display) !important;
+  font-size: clamp(3rem, 4.5vw, 5rem);
+  font-weight: 400;
+  letter-spacing: .015em;
+  line-height: .92;
+  text-transform: uppercase;
+}
+html body .storefront-home .google-reviews-score { margin-top: 30px; }
+html body .storefront-home .google-reviews-score > strong {
+  color: #fffaf3;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 400;
+}
+html body .storefront-home .google-reviews-score > div > span:last-child { color: #cfe0dd; font-size: .8rem; }
+html body .storefront-home .google-reviews-cta {
+  margin-top: 25px;
+  border-color: rgba(255, 211, 200, .65);
+  color: #fffaf3;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+html body .storefront-home .google-reviews-cta:hover { border-color: #f06455; background: #f06455; color: #fff; }
+
+html body .storefront-home .google-reviews-grid {
+  display: grid;
+  grid-auto-columns: minmax(320px, 46%);
+  grid-auto-flow: column;
+  grid-template-columns: none;
+  gap: 16px;
+  padding: 4px 4px 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: rgba(255, 211, 200, .7) rgba(255,255,255,.08);
+  scrollbar-width: thin;
+}
+
+html body .storefront-home .google-review-card {
+  --review-bg: #fffaf3;
+  --review-ink: #17363b;
+  --review-accent: #f06455;
+  position: relative;
+  display: flex;
+  min-height: 330px;
+  flex-direction: column;
+  padding: clamp(26px, 3vw, 38px);
+  overflow: hidden;
+  border: 0;
+  border-radius: 28px;
+  background: var(--review-bg);
+  color: var(--review-ink);
+  box-shadow: none;
+  scroll-snap-align: start;
+  backdrop-filter: none;
+}
+html body .storefront-home .google-review-card:nth-child(2) { --review-bg: #e2f0ed; --review-ink: #17363b; --review-accent: #2f7b64; }
+html body .storefront-home .google-review-card:nth-child(3) { --review-bg: #cfe9ef; --review-ink: #17363b; --review-accent: #4f8790; }
+html body .storefront-home .google-review-card:nth-child(4) { --review-bg: #ffd3c8; --review-ink: #5b302b; --review-accent: #f06455; }
+html body .storefront-home .google-review-card:nth-child(5) { --review-bg: #f7dc78; --review-ink: #43320c; --review-accent: #9a6d0d; }
+html body .storefront-home .google-review-quote {
+  position: absolute;
+  top: 15px;
+  right: 24px;
+  color: var(--review-accent);
+  font-family: Georgia, serif;
+  font-size: 6rem;
+  line-height: 1;
+  opacity: .22;
+}
+html body .storefront-home .google-review-card blockquote {
+  position: relative;
+  z-index: 1;
+  margin: 24px 0 22px;
+  color: var(--review-accent);
+  font-family: var(--font-review-script), cursive;
+  font-size: clamp(2rem, 2.8vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: .01em;
+  line-height: 1.24;
+  text-align: center;
+}
+html body .storefront-home .google-review-card > .google-review-stars { margin-bottom: 28px; color: var(--review-accent); }
+html body .storefront-home .google-review-card-head { grid-template-columns: 44px 1fr auto; margin: auto 0 0; }
+html body .storefront-home .google-review-avatar { background: var(--review-accent); color: #fff; }
+html body .storefront-home .google-review-card h3 {
+  margin: 0 0 2px;
+  color: var(--review-ink);
+  font-family: var(--font-display) !important;
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: .025em;
+  text-transform: uppercase;
+}
+html body .storefront-home .google-review-card-head div span,
+html body .storefront-home .google-review-card time { color: color-mix(in srgb, var(--review-ink) 68%, transparent); font-size: .72rem; }
+html body .storefront-home .google-review-card time { margin: 12px 0 0 56px; }
+html body .storefront-home .google-review-card > a { color: var(--review-ink); font-size: .72rem; }
+
+@media (max-width: 900px) {
+  html body .storefront-home .google-reviews-shell { grid-template-columns: 1fr; }
+  html body .storefront-home .google-reviews-summary { max-width: 680px; }
+  html body .storefront-home .google-reviews-grid { grid-auto-columns: minmax(310px, 58%); }
+}
+
+@media (max-width: 600px) {
+  html body .storefront-home .google-reviews-section { padding-block: 54px; }
+  html body .storefront-home .google-reviews-summary h2 { max-width: 9ch; font-size: 3rem; }
+  html body .storefront-home .google-reviews-score > strong { font-size: 2.8rem; }
+  html body .storefront-home .google-reviews-grid { grid-auto-columns: 84%; margin-right: -16px; padding-right: 16px; }
+  html body .storefront-home .google-review-card { min-height: 300px; border-radius: 22px; }
+  html body .storefront-home .google-review-card blockquote { font-size: 2rem; }
+}
+
+/* Main typography hierarchy: one display face for interface labels and one
+   body face for supporting copy. This intentionally sits last in the cascade
+   so older section-specific font declarations cannot create mixed styles. */
+html body .storefront-home .home-budget-grid > a > span,
+html body .storefront-home .home-budget-grid strong,
+html body .storefront-home .editorial-mark,
+html body .storefront-home .faq-item summary,
+html body .storefront-home .about-leyros-values strong,
+html body .storefront-home .about-leyros .cinematic-outline-button,
+html body .site-footer .footer-grid .footer-links li a,
+html body .site-footer .footer-contact-line a,
+html body .site-footer .footer-socials > span {
+  font-family: var(--font-display) !important;
+  font-weight: 400;
+}
+
+html body .storefront-home .home-budget-grid > a > span {
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: .015em;
+}
+
+html body .storefront-home .home-budget-grid strong {
+  font-size: 1.25rem;
+  line-height: 1.08;
+  letter-spacing: .02em;
+}
+
+html body .storefront-home .editorial-mark,
+html body .storefront-home .editorial-mark[class*="mark-"] {
+  font-size: clamp(1rem, 1.05vw, 1.2rem);
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: .12em;
+}
+
+html body .storefront-home .faq-item summary {
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: .012em;
+}
+
+html body .storefront-home .about-leyros-values strong {
+  font-size: 1.125rem;
+  line-height: 1.08;
+  letter-spacing: .015em;
+}
+
+html body .storefront-home .about-leyros .cinematic-outline-button {
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: .07em;
+}
+
+html body .site-footer .footer-grid .footer-links li a {
+  font-size: 1.125rem;
+  line-height: 1.2;
+  letter-spacing: .02em;
+}
+
+html body .site-footer .footer-contact-line a {
+  font-size: 1.05rem;
+  line-height: 1.1;
+  letter-spacing: .02em;
+}
+
+html body .storefront-home .faq-item p,
+html body .storefront-home .about-leyros-copy .about-leyros-story p,
+html body .storefront-home .about-leyros-values span,
+html body .site-footer .footer-intro > p,
+html body .site-footer .footer-contact-line,
+html body .site-footer .footer-rating-text {
+  font-family: var(--font-primary) !important;
+}
+
+@media (max-width: 650px) {
+  html body .storefront-home .home-budget-grid strong { font-size: 1.125rem; }
+  html body .storefront-home .editorial-mark,
+  html body .storefront-home .editorial-mark[class*="mark-"] { font-size: .9375rem; }
+  html body .storefront-home .faq-item summary { font-size: 1.125rem; }
+  html body .site-footer .footer-grid .footer-links li a { font-size: 1rem; }
+}

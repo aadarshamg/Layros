@@ -138,7 +138,6 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
             <div>
               <h3 id="home-notes-title">Shop by Notes</h3>
             </div>
-            <Link href="/collections/all?category=collections">Explore all perfumes <span className="ui-inline-arrow" aria-hidden="true" /></Link>
           </header>
 
           <div className="home-notes-grid">

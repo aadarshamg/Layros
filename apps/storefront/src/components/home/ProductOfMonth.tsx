@@ -76,7 +76,6 @@ export function ProductOfMonth({
               <span>{product.details.concentration}</span>
             </div>
             <h3>{product.title}</h3>
-            <p>{product.description}</p>
 
             {selected && (
               <div className="month-product-price">

@@ -48,7 +48,8 @@ const links: NavLink[] = [
 // at the same collection), so the parent itself is dropped here — its first
 // child stands in as the top-level entry, and the rest are indented under it.
 export function NavView({ announcementMessages }: { announcementMessages?: string[] } = {}) {
-  const isHome = usePathname() === "/";
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const announcements = announcementMessages?.length ? announcementMessages : DEFAULT_ANNOUNCEMENT_MESSAGES;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -78,6 +79,42 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
     window.addEventListener("scroll", updateHeader, { passive: true });
     return () => window.removeEventListener("scroll", updateHeader);
   }, [isHome]);
+
+  // The menus are <details> elements, which only close when their own button
+  // is tapped again. Also close them on a tap outside, on a link or button
+  // inside, on Escape, and whenever the page changes.
+  useEffect(() => {
+    const MENUS = "header details.home-menu, header details.mobile-menu, header details.nav-dropdown";
+    const close = (menu: Element) => {
+      menu.removeAttribute("open");
+      menu.querySelectorAll("details[open]").forEach((inner) => inner.removeAttribute("open"));
+    };
+    const openMenus = () => document.querySelectorAll(`${MENUS.split(", ").map((sel) => `${sel}[open]`).join(", ")}`);
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node | null;
+      openMenus().forEach((menu) => { if (!target || !menu.contains(target)) close(menu); });
+    };
+    const onClick = (event: MouseEvent) => {
+      const action = (event.target as Element | null)?.closest?.("a, button");
+      const menu = action?.closest(MENUS);
+      if (menu?.hasAttribute("open")) close(menu);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") openMenus().forEach(close);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("click", onClick);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("click", onClick);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.querySelectorAll("header details[open]").forEach((menu) => menu.removeAttribute("open"));
+  }, [pathname]);
 
   useEffect(() => {
     if (!isSearchOpen) return;

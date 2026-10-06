@@ -6,12 +6,9 @@ import { genderLabel, productCardTitle } from "@/lib/product-labels";
 import { getProductBadge } from "@/lib/product-badge";
 import { ProductBadgeIcon } from "@/components/product/ProductBadgeIcon";
 
+// The % off is shown once, in the price box (ProductCardPurchasePanel), not
+// again as a badge on the photo.
 export function ProductCard({ product }: { product: PerfumeProduct }) {
-  const cheapestVariant = [...product.variants].sort((a, b) => a.price - b.price)[0];
-  const compareAt = cheapestVariant?.compareAtPrice;
-  const discount = cheapestVariant && compareAt && compareAt > cheapestVariant.price
-    ? Math.round(((compareAt - cheapestVariant.price) / compareAt) * 100)
-    : 0;
   const gender = genderLabel(product);
   const displayTitle = productCardTitle(product);
   const badge = getProductBadge(product);
@@ -25,7 +22,6 @@ export function ProductCard({ product }: { product: PerfumeProduct }) {
             <ProductBadgeIcon /> {badge.label}
           </span>
         )}
-        {discount > 0 && <span className="product-card-discount">{discount}% off</span>}
         {gender && <span className="product-gender-badge">{gender}</span>}
       </Link>
       <div className="product-card-body">

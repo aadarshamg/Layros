@@ -12188,3 +12188,91 @@ body .storefront-home .cinematic-product-copy .product-card-purchase .product-ca
   border: 0;
   background: #eef3f2;
 }
+
+/* ── Product cards, one clean style (collection grid + homepage rows) ──
+   One white tile with a soft border; coral only for Add to cart; neutral
+   size buttons with a thin teal outline for the chosen one; no divider
+   lines or all-caps labels. */
+html body .product-card.product-card,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product {
+  padding: 8px 8px 12px;
+  border: 1px solid #e3e9e7;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(23, 54, 59, .06);
+}
+html body .product-card.product-card .product-card-image,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-image {
+  border-radius: 14px;
+  /* !important: an older rule forces mint here with !important */
+  background: #f4f7f6 !important;
+}
+
+/* Gender badge: a quiet light chip instead of a dark navy block */
+html body .product-card.product-card .product-gender-badge,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product .product-gender-badge {
+  border: 1px solid rgba(23, 54, 59, .08);
+  background: rgba(255, 255, 255, .94);
+  color: #17363b;
+  box-shadow: 0 2px 8px rgba(23, 54, 59, .1);
+}
+
+/* Labels in normal case */
+html body .product-card.product-card .product-card-info-label,
+html body .product-card.product-card .product-card-price-label,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-info-label,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-price-label {
+  color: #6b7f82;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Sizes: separate neutral buttons; the chosen one gets a thin teal outline */
+html body .product-card.product-card .product-card-sizes,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-sizes {
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+html body .product-card.product-card .product-card-size,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-size {
+  min-height: 36px;
+  border: 1px solid #dfe6e4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: none;
+  color: #52696c;
+  font-size: .8125rem;
+  font-weight: 600;
+}
+html body .product-card.product-card .product-card-size.is-selected,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-size.is-selected {
+  border: 1px solid #2f5c62;
+  background: #f3f8f7;
+  color: #2f5c62;
+  font-weight: 700;
+}
+
+/* Price: no divider lines and no tinted box */
+html body .product-card.product-card .product-card-pricing,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-pricing {
+  padding: 2px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Add to cart: the one coral element, a little shorter, normal case */
+html body .product-card.product-card .product-card-quick-add,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy .product-card-quick-add {
+  min-height: 40px;
+  height: 40px;
+  border-radius: 12px;
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+  text-transform: none;
+}

@@ -12504,3 +12504,65 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
   html body .storefront-home .private-blend-preview > a > div { inset: auto 8px 10px; }
   html body .storefront-home .private-blend-preview strong { font-size: .6875rem; line-height: 1.25; }
 }
+
+/* Phones: smaller tiles for the big full-width blocks */
+@media (max-width: 600px) {
+  /* For Him / For Her / For Everyone: three small tiles in one row */
+  html body .storefront-home .home-gender-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  html body .storefront-home .home-gender-card {
+    min-height: 0;
+    aspect-ratio: 3 / 4;
+    border-radius: 14px;
+  }
+  html body .storefront-home .home-gender-card-copy {
+    padding: 10px 9px;
+  }
+  html body .storefront-home .home-gender-card h3 {
+    margin: 0;
+    font-size: .875rem;
+    line-height: 1.15;
+  }
+  html body .storefront-home .home-gender-card b {
+    display: none;
+  }
+
+  /* Shop Candles: three small tiles in one row, name only */
+  html body .storefront-home .home-candles-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  html body .storefront-home .home-candles-grid .home-candle-card {
+    padding: 5px;
+    border-radius: 14px;
+  }
+  html body .storefront-home .home-candles-grid .home-candle-card-image {
+    aspect-ratio: 1;
+    border-radius: 10px;
+  }
+  html body .storefront-home .home-candles-grid .home-candle-card-copy {
+    padding: 8px 3px 4px;
+  }
+  html body .storefront-home .home-candles-grid .home-candle-card h4 {
+    font-size: .75rem;
+    line-height: 1.25;
+  }
+  html body .storefront-home .home-candles-grid .home-candle-card b {
+    display: none;
+  }
+
+  /* The Leyros Reels: two per row; a lone reel is a smaller centred card */
+  html body .storefront-home .home-reel-track {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  html body .storefront-home .home-reel-track > .home-reel-card:only-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(62%, 240px) !important;
+  }
+  html body .storefront-home .home-reel-track .home-reel-card {
+    border-radius: 18px;
+  }
+}

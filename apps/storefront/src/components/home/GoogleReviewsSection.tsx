@@ -28,12 +28,7 @@ export function GoogleReviewsSection({
       <div className="cinematic-shell google-reviews-shell">
         <div className="google-reviews-summary">
           <span className="google-reviews-google-mark"><GoogleGIcon /></span>
-          <p>Trusted by fragrance lovers</p>
           <h2 id="google-reviews-title">Customer stories, shared on Google</h2>
-          <span className="google-reviews-intro">
-            Read genuine feedback from customers who have experienced Leyros fragrances, attars,
-            candles, and gifting.
-          </span>
 
           {hasAggregateRating && (
             <div className="google-reviews-score" aria-label={`${rating.toFixed(1)} out of 5 from ${reviewCount} Google reviews`}>

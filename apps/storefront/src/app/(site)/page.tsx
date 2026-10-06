@@ -36,9 +36,7 @@ export default async function Home() {
       <CinematicHero tagline={storeSettings.tagline} videoUrl={storeSettings.heroVideoUrl} posterUrl={storeSettings.heroPosterUrl} />
 
       <CinematicProductGrid
-        eyebrow="Newly composed"
         heading="New Arrivals"
-        note="Latest to the atelier"
         products={newArrivals}
         variant="new-arrivals"
       />
@@ -52,9 +50,7 @@ export default async function Home() {
       <PrivateBlendSection products={bestSellers} />
 
       <CinematicProductGrid
-        eyebrow="Most acquired"
         heading="Signature Scents"
-        note="Hand-filled in small batches"
         products={bestSellers}
         variant="signature-scents"
       />
@@ -74,7 +70,6 @@ export default async function Home() {
       <EditorialMarquee />
 
       <section className="cinematic-manifesto">
-        <p>Leyros manifesto</p>
         <h2>The Chosen One</h2>
         <span>Forged through age-old hydro-distillation in Kannauj. An indelible olfactory sovereignty.</span>
       </section>

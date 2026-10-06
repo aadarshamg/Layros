@@ -8,15 +8,11 @@ import { getProductBadge } from "@/lib/product-badge";
 import { ProductBadgeIcon } from "@/components/product/ProductBadgeIcon";
 
 export function CinematicProductGrid({
-  eyebrow,
   heading,
-  note,
   products,
   variant,
 }: {
-  eyebrow: string;
   heading: string;
-  note?: string;
   products: PerfumeProduct[];
   variant?: "new-arrivals" | "signature-scents";
 }) {
@@ -27,10 +23,8 @@ export function CinematicProductGrid({
       <div className="cinematic-shell">
         <div className="cinematic-section-title">
           <div>
-            <p>{eyebrow}</p>
             <h2>{heading}</h2>
           </div>
-          {note && <span>{note}</span>}
         </div>
         <HorizontalProductShelf label={heading}>
           {products.map((product) => {

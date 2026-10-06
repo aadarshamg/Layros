@@ -12566,3 +12566,39 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
     border-radius: 18px;
   }
 }
+
+/* Footer: brand block plus two short link groups (Shop, Help) side by side,
+   so the footer stays compact on phones instead of four long lists. */
+body .site-footer .footer-grid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 40px;
+}
+body .site-footer .footer-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  align-content: start;
+}
+body .site-footer .footer-links ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (max-width: 760px) {
+  body .site-footer .footer-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+    padding-block: 40px 28px;
+  }
+  body .site-footer .footer-links { gap: 18px; }
+  body .site-footer .footer-grid .footer-links h4 { margin-bottom: 10px; }
+  body .site-footer .footer-grid .footer-links li { margin: 0; padding: 0; }
+  body .site-footer .footer-grid .footer-links li a {
+    display: block;
+    min-height: 0;
+    padding-block: 6px;
+    line-height: 1.3;
+  }
+  /* The oversized faded wordmark only adds height on phones */
+  body .site-footer .footer-wordmark-wrap { display: none; }
+}

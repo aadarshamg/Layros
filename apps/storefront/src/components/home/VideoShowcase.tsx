@@ -10,10 +10,8 @@ export async function VideoShowcase() {
       <div className="cinematic-shell">
         <header className="home-reels-heading">
           <div>
-            <p>Seen in motion</p>
             <h2 id="home-reels-title">The Leyros Reels</h2>
           </div>
-          <span>Watch. Discover. Shop.</span>
         </header>
         <VideoShowcaseCarousel videos={videos} />
       </div>

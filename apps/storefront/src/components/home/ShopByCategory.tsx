@@ -4,14 +4,6 @@ import type { PerfumeProduct } from "@leyros/types";
 import { getCandleShowcaseImages, pickProductImages, type CategoryShowcaseEntry } from "@/lib/data/products";
 import { CANDLE_COLLECTIONS } from "@/lib/data/candle-collections";
 
-const CATEGORY_COPY: Record<string, string> = {
-  collections: "Signature scents for every mood",
-  attar: "Concentrated oils with lasting depth",
-  "car perfume": "A refined atmosphere on the move",
-  candle: "Warm light and fragrance for home",
-  "gift pack": "Ready-to-gift Leyros favourites",
-};
-
 const textOf = (product: PerfumeProduct) => `${product.title} ${product.description}`.toLowerCase();
 const inCategory = (keyword: string) => (product: PerfumeProduct) => (product.category ?? "").toLowerCase().includes(keyword);
 const isPerfume = inCategory("collections");
@@ -119,12 +111,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
       <div className="cinematic-shell">
         <header className="home-category-heading">
           <div>
-            <p>One house, many fragrance worlds</p>
             <h2 id="home-category-title">Shop By Category</h2>
-            <span className="home-category-intro">
-              From everyday perfumes and traditional attars to car fragrances, scented candles,
-              and thoughtful gift packs—discover Leyros for every mood, space, and occasion.
-            </span>
           </div>
           <Link href="/collections/all">Explore everything <span aria-hidden="true">→</span></Link>
         </header>
@@ -149,9 +136,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
         <section className="home-notes-section" aria-labelledby="home-notes-title">
           <header className="home-notes-heading">
             <div>
-              <span>Follow the notes you love</span>
               <h3 id="home-notes-title">Shop by Notes</h3>
-              <p>Explore fragrances by the scent profile that feels most like you.</p>
             </div>
             <Link href="/collections/all?category=collections">Explore all perfumes <span aria-hidden="true">→</span></Link>
           </header>
@@ -175,9 +160,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
         <section className="home-candles-section" aria-labelledby="home-candles-title">
           <header className="home-candles-heading">
             <div>
-              <span>Fragrance for your space</span>
               <h3 id="home-candles-title">Shop Candles</h3>
-              <p>Discover candle styles for quiet rituals, thoughtful gifts, and beautifully scented rooms.</p>
             </div>
             <Link href="/candles">View all candles <span aria-hidden="true">→</span></Link>
           </header>
@@ -198,20 +181,8 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
         </section>
 
         <div className="home-category-secondary-heading">
-          <span>More ways to discover Leyros</span>
           <h3>Explore every product category</h3>
         </div>
-
-        <nav className="home-category-overview" aria-label="Browse every product category">
-          {entries.map((entry) => (
-            <Link key={`overview-${entry.value}`} href={categoryHref(entry.value)}>
-              {entry.label}
-            </Link>
-          ))}
-          <Link href="/collections/all" className="home-category-overview-all">
-            Explore all <span aria-hidden="true">→</span>
-          </Link>
-        </nav>
 
         <div className="home-category-track">
           {entries.map((entry) => (
@@ -226,7 +197,6 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
               <div className="home-category-copy">
                 <div>
                   <h3>{entry.label}</h3>
-                  <p>{CATEGORY_COPY[entry.value] ?? "Explore the complete Leyros collection"}</p>
                 </div>
                 <span className="home-category-arrow" aria-hidden="true">
                   <svg viewBox="0 0 24 24">

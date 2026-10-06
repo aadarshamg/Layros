@@ -9,47 +9,26 @@ const SOCIAL_LINKS = [
   { label: "YouTube", href: "https://www.youtube.com/@LeyrosPerfume", Icon: YoutubeIcon },
 ];
 
-// Real merchandising categories from the migrated catalog (same substring
-// keyword-match convention as the top nav and collection filter chips) —
-// mirrors the actual footer structure of the old site, not an invented one.
-const HELP_LINKS = [
-  { label: "Store Policies", href: "/legal/shipping-returns" },
-  { label: "Track your Order", href: "/account/orders" },
-  { label: "Request Return", href: "/contact" },
-  { label: "Return Policy", href: "/legal/shipping-returns" },
-  { label: "Privacy Policy", href: "/legal/privacy" },
-];
-
-const TOP_CATEGORY_LINKS = [
-  { label: "Fragrance Candles", href: "/candles" },
-  { label: "Gift Pack (Celeb Perfumes)", href: `/collections/all?category=${encodeURIComponent("gift pack")}` },
-  { label: "Attar Fragrances", href: "/collections/all?category=attar" },
-  { label: "The Fresh, Citrus & Marine Collections", href: `/collections/all?category=${encodeURIComponent("fresh, citrus & marine")}` },
-  { label: "The Ambry Collections", href: `/collections/all?category=${encodeURIComponent("ambry")}` },
-  { label: "The Floral & Fruity Collections", href: `/collections/all?category=${encodeURIComponent("floral & fruity")}` },
-  { label: "Festival Gift Packs", href: `/collections/all?category=${encodeURIComponent("gift pack")}` },
+// Two short groups instead of four long ones: every destination once.
+const PERFUMES = "/collections/all?category=collections";
+const SHOP_LINKS = [
+  { label: "All Perfumes", href: PERFUMES },
+  { label: "Men", href: `${PERFUMES}&gender=masculine` },
+  { label: "Women", href: `${PERFUMES}&gender=feminine` },
+  { label: "Unisex", href: `${PERFUMES}&gender=unisex` },
+  { label: "New Launch", href: `${PERFUMES}&sort=new` },
+  { label: "Attars", href: "/collections/all?category=attar" },
+  { label: "Candles", href: "/candles" },
+  { label: "Gift Packs", href: `/collections/all?category=${encodeURIComponent("gift pack")}` },
   { label: "Car Perfumes", href: `/collections/all?category=${encodeURIComponent("car perfume")}` },
-  { label: "The Oud Collections", href: `/collections/all?category=${encodeURIComponent("oud")}` },
 ];
 
-// Men's/Women's/Summer aren't real distinct groupings yet — the migrated
-// catalog never tagged individual fragrances by gender or season (every
-// product defaults to "unisex"), so these point at the full collection
-// rather than a fabricated subset. Concrete candles and gift sets are real,
-// title/category-verified subsets.
-const COLLECTIONS_LINKS = [
-  { label: "All Perfumes", href: "/collections/all?category=collections" },
-  { label: "Soy-Gel Wax Candle Collection", href: "/candles" },
-  { label: "New Launch Perfumes 2026", href: "/collections/all?category=collections&sort=new" },
-  { label: "Unisex Perfumes Collection", href: "/collections/all?category=collections" },
-  { label: "Festival Gift Sets", href: `/collections/all?category=${encodeURIComponent("gift pack")}` },
-  { label: "Summer Perfumes Collection", href: "/collections/all?category=collections" },
-  { label: "Men Perfumes Collection", href: "/collections/all?category=collections" },
-  { label: "Concrete Candle Collection", href: "/candles?type=concrete#candle-products" },
-  { label: "Women Perfumes Collection", href: "/collections/all?category=collections" },
+const HELP_LINKS = [
+  { label: "Track your order", href: "/account/orders" },
+  { label: "Shipping & returns", href: "/legal/shipping-returns" },
+  { label: "Contact us", href: "/contact" },
+  { label: "About Leyros", href: "/story" },
 ];
-
-const MORE_LINKS = [{ label: "About Us", href: "/story" }];
 
 const PAYMENT_BRANDS = [
   {
@@ -142,33 +121,20 @@ export function Footer({
           </div>
         </div>
 
-        <div>
-          <h4>Help</h4>
-          <ul>
-            {HELP_LINKS.map((link) => <li key={link.label}><Link href={link.href}>{link.label}</Link></li>)}
-          </ul>
-        </div>
-
-        <div>
-          <h4>Top Categories</h4>
-          <ul>
-            {TOP_CATEGORY_LINKS.map((link) => <li key={link.label}><Link href={link.href}>{link.label}</Link></li>)}
-          </ul>
-        </div>
-
-        <div>
-          <h4>Collections</h4>
-          <ul>
-            {COLLECTIONS_LINKS.map((link) => <li key={link.label}><Link href={link.href}>{link.label}</Link></li>)}
-          </ul>
-        </div>
-
-        <div>
-          <h4>More</h4>
-          <ul>
-            {MORE_LINKS.map((link) => <li key={link.label}><Link href={link.href}>{link.label}</Link></li>)}
-          </ul>
-        </div>
+        <nav className="footer-links" aria-label="Footer">
+          <div>
+            <h4>Shop</h4>
+            <ul>
+              {SHOP_LINKS.map((link) => <li key={link.label}><Link href={link.href}>{link.label}</Link></li>)}
+            </ul>
+          </div>
+          <div>
+            <h4>Help</h4>
+            <ul>
+              {HELP_LINKS.map((link) => <li key={link.label}><Link href={link.href}>{link.label}</Link></li>)}
+            </ul>
+          </div>
+        </nav>
       </div>
 
       <div className="footer-wordmark-wrap">

@@ -14,9 +14,7 @@ export function ShopByBudget() {
     <section className="home-budget" aria-labelledby="home-budget-title">
       <div className="cinematic-shell">
         <header>
-          <span>Choose your spend. Find your scent.</span>
           <h2 id="home-budget-title">Shop by Budget</h2>
-          <p>One click takes you straight to products within your preferred price.</p>
         </header>
         <div className="home-budget-grid">
           {BUDGET_LINKS.map((item) => (

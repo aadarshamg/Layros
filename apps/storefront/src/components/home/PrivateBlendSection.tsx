@@ -12,9 +12,7 @@ export function PrivateBlendSection({ products }: { products: PerfumeProduct[] }
     <section className="private-blend-home" aria-labelledby="private-blend-home-title">
       <div className="cinematic-shell private-blend-home-grid">
         <header>
-          <span>Beyond the familiar</span>
           <h2 id="private-blend-home-title">The Private Blend Edit</h2>
-          <p>A quieter side of Leyros—layered compositions selected for depth, character, and a trail that reveals itself slowly.</p>
           <Link href="/private-blends">Enter the Private Blend story <i aria-hidden="true">→</i></Link>
         </header>
         <div className="private-blend-preview">

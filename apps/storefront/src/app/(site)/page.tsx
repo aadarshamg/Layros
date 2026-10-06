@@ -43,9 +43,9 @@ export default async function Home() {
         variant="new-arrivals"
       />
 
-      <ShopByCategory entries={categoryShowcase} />
-
       <VideoShowcase />
+
+      <ShopByCategory entries={categoryShowcase} />
 
       <ShopByBudget />
 

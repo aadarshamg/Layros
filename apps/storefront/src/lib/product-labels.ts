@@ -98,6 +98,8 @@ function pyramidFromDescription(description: string): string[] {
       .split(/,|\band\b|&|\//i)
       .map((part) => part
         .replace(/[.:;|]+$/, "")
+        // "Spicy opening of Saffron" -> "Saffron"
+        .replace(/^.*\bof\s+/i, "")
         .replace(/^(?:rich|premium|refreshing|ripe)\s+/i, "")
         .replace(/\s+(?:notes?|accords?)$/i, "")
         .trim())

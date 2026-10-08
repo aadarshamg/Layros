@@ -13500,3 +13500,46 @@ html body footer.site-footer .footer-wordmark-wrap a.footer-wordmark {
   -webkit-text-stroke: 0 !important;
   background: none !important;
 }
+
+/* ── Borderless cards, Sniiff style ──────────────────────────────────────
+   No border, tile or padding around cards: photos run the full card width
+   and the text sits straight on the page underneath. */
+html body .product-card.product-card,
+html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product,
+html body .storefront-home .cinematic-product,
+html body .storefront-home .home-category-card,
+html body .storefront-home .home-candles-grid .home-candle-card,
+html body .candles-page .candles-page-category-card,
+html body .cart-drawer .cart-recommendation {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+html body .product-card.product-card .product-card-image,
+html body .storefront-home .cinematic-product-image,
+html body .storefront-home .home-category-image,
+html body .storefront-home .home-candles-grid .home-candle-card-image,
+html body .candles-page .candles-page-category-image {
+  margin: 0 !important;
+  border: 0 !important;
+  background: #f2f2f2 !important;
+}
+html body .product-card.product-card .product-card-image img,
+html body .storefront-home .cinematic-product-image img {
+  object-fit: cover !important;
+}
+/* Text column under the photo: no side inset, a small gap above */
+html body .product-card.product-card .product-card-body,
+html body .storefront-home .cinematic-product .cinematic-product-copy {
+  padding: 14px 0 0 !important;
+}
+html body .storefront-home .home-category-card .home-category-copy,
+html body .storefront-home .home-candles-grid .home-candle-card-copy,
+html body .candles-page .candles-page-category-card > div:last-child {
+  padding-inline: 0 !important;
+}
+/* Sniiff-sized gaps between borderless cards */
+html body .collection-product-grid {
+  column-gap: 16px !important;
+  row-gap: 40px !important;
+}

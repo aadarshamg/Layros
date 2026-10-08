@@ -13648,3 +13648,18 @@ html body .collection-product-grid {
   .storefront-home .bundle-steps-list li { min-height: 0; padding: 38px 18px 22px; }
   .storefront-home .bundle-steps-icon { width: 64px; height: 64px; }
 }
+
+/* Homepage rows: 4 bigger cards across on desktop (was 5) */
+@media (min-width: 1101px) {
+  html body .storefront-home .cinematic-product-grid {
+    grid-auto-columns: calc(25% - 10.5px) !important;
+  }
+}
+/* Cards line up: the scent line always takes two lines' space, so sizes,
+   price and Add to cart sit at the same height in every card */
+html body .product-card-purchase p.product-card-scent {
+  min-height: 3em;
+}
+html body .product-card-purchase .product-card-size-group {
+  margin-top: 2px;
+}

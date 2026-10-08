@@ -50,7 +50,6 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
       {notesLabel && <p className="product-card-scent" aria-label={gender ? "Perfume notes" : "Fragrance profile"}>{notesLabel}</p>}
 
       <div className="product-card-info-group product-card-size-group">
-        <span className="product-card-info-label">{gender ? "ML / Size" : "Size"}</span>
         <div className="product-card-sizes" aria-label="Choose product size">
           {sortedVariants.map((item) => (
             <button
@@ -66,9 +65,8 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
       </div>
 
       <div className="product-card-pricing" aria-label="Product pricing">
-        {/* Label, price and MRP stack on the left; the % off pill is centred on the right. */}
+        {/* Price and MRP on the left; the % off pill on the right. */}
         <div className="product-card-price-main">
-          <span className="product-card-price-label">Selling Price</span>
           <p className="product-card-price-line">
             <span className="product-card-price-now">{formatInr(variant.price)}</span>
             {discount > 0 && <span className="product-card-price-mrp">MRP <s>{formatInr(compareAt)}</s></span>}

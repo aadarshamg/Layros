@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { PerfumeProduct } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatInr, formatSize } from "@/lib/format";
-import { genderLabel } from "@/lib/product-labels";
+import { genderLabel, productScentLine } from "@/lib/product-labels";
 
 export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct }) {
   const { addItem, openDrawer } = useCart();
@@ -22,12 +22,7 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
     ? Math.round((1 - variant.price / compareAt) * 100)
     : 0;
   const gender = genderLabel(product);
-  const notes = [...product.details.notesTop, ...product.details.notesHeart, ...product.details.notesBase]
-    .filter((note, index, all) => note && all.indexOf(note) === index)
-    .slice(0, 3);
-  // Perfumes fall back to their family (e.g. "Fresh"); other products only show
-  // real notes, since the catalogue default family means nothing for a candle.
-  const notesLabel = notes.length ? notes.join(" • ") : gender ? product.details.family : "";
+  const notesLabel = productScentLine(product);
 
   function handleQuickAdd() {
     addItem({

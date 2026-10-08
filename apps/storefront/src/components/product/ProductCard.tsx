@@ -22,6 +22,11 @@ export function ProductCard({ product }: { product: PerfumeProduct }) {
             <ProductBadgeIcon /> {badge.label}
           </span>
         )}
+        {product.amazonRating && product.amazonRatingCount ? (
+          <span className="product-card-rating" aria-label={`Rated ${product.amazonRating.toFixed(1)} out of 5 from ${product.amazonRatingCount} ratings on Amazon`}>
+            <span aria-hidden="true">★</span> {product.amazonRating.toFixed(1)} ({product.amazonRatingCount.toLocaleString("en-IN")})
+          </span>
+        ) : null}
         {gender && <span className="product-gender-badge">{gender}</span>}
       </Link>
       <div className="product-card-body">

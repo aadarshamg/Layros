@@ -22,6 +22,9 @@ export interface RawSanityProduct {
   highlights?: ({ title?: string | null; icon?: string | null; order?: number | null } | null)[] | null;
   reviewCount?: number | null;
   reviewAverage?: number | null;
+  amazonRating?: number | null;
+  amazonRatingCount?: number | null;
+  amazonUrl?: string | null;
   variants?:
     | {
         id: string;
@@ -68,6 +71,9 @@ export const PRODUCT_PROJECTION = `{
   "highlights": highlights[]->{title, icon, order},
   "reviewCount": count(*[_type == "productReview" && approved == true && product._ref == ^._id]),
   "reviewAverage": math::avg(*[_type == "productReview" && approved == true && product._ref == ^._id].rating),
+  amazonRating,
+  amazonRatingCount,
+  amazonUrl,
   variants[]{
     "id": _key,
     sizeMl,
@@ -151,6 +157,9 @@ export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
       .map((h) => ({ title: h.title, icon: h.icon ?? undefined })),
     reviewCount: raw.reviewCount ?? 0,
     reviewAverage: raw.reviewAverage ?? undefined,
+    amazonRating: raw.amazonRating && raw.amazonRatingCount ? raw.amazonRating : undefined,
+    amazonRatingCount: raw.amazonRating && raw.amazonRatingCount ? raw.amazonRatingCount : undefined,
+    amazonUrl: raw.amazonUrl ?? undefined,
     createdAt: raw.createdAt,
     details: {
       concentration: raw.details?.concentration ?? "EDP",

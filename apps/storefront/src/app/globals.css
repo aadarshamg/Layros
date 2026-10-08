@@ -13406,3 +13406,40 @@ html body .storefront-home .hero-banner-link img {
   height: auto !important;
   object-fit: contain !important;
 }
+
+/* Amazon rating chip on card photos (bottom-right; gender badge is left) */
+html body .product-card-rating {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--ley-line);
+  background: #fff;
+  color: var(--ley-green);
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+html body .product-card-rating > span { color: #c79a2b; }
+
+/* Card scent line, Sniiff style: small grey capitals, up to two lines */
+html body .product-card-purchase .product-card-scent,
+html body .storefront-home .cinematic-product-copy .product-card-purchase .product-card-scent {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--ley-muted);
+  font-size: .6875rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  white-space: normal;
+}
+html body .product-card-purchase p.product-card-scent { font-size: .6875rem !important; line-height: 1.5 !important; }

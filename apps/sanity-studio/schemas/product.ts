@@ -83,6 +83,26 @@ export default defineType({
       validation: (Rule) => Rule.unique().max(6),
     }),
     defineField({
+      name: "amazonRating",
+      title: "Amazon rating (out of 5)",
+      description: 'Copy the star rating from this product’s Amazon listing, e.g. 4.3. Shown on shop cards and the product page as "on Amazon". Leave blank to hide.',
+      type: "number",
+      validation: (Rule) => Rule.min(1).max(5).precision(1),
+    }),
+    defineField({
+      name: "amazonRatingCount",
+      title: "Amazon ratings count",
+      description: "Number of ratings shown on the Amazon listing, e.g. 128.",
+      type: "number",
+      validation: (Rule) => Rule.integer().min(1),
+    }),
+    defineField({
+      name: "amazonUrl",
+      title: "Amazon listing link",
+      description: "Optional. The rating links here so shoppers can check it.",
+      type: "url",
+    }),
+    defineField({
       name: "variants",
       title: "Variants (bottle sizes)",
       type: "array",

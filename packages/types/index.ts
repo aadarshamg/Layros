@@ -71,6 +71,10 @@ export interface PerfumeProduct {
   /** Approved shopper reviews only; 0 / undefined until an admin approves one. */
   reviewCount?: number;
   reviewAverage?: number;
+  /** Rating copied from the product's Amazon listing by an admin (real, external). */
+  amazonRating?: number;
+  amazonRatingCount?: number;
+  amazonUrl?: string;
   createdAt: string;
 }
 

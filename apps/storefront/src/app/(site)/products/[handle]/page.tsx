@@ -9,7 +9,6 @@ import { productJsonLd } from "@/lib/seo/jsonld/product";
 import { productBreadcrumbJsonLd } from "@/lib/seo/jsonld/breadcrumb";
 import { getProductSeo } from "@/lib/seo/product-seo";
 import { getProductByHandle, getSimilarProducts } from "@/lib/data/products";
-import { summarizeSampleReviews } from "@/lib/data/sample-reviews";
 import { getStoreSettings } from "@/lib/data/store-settings";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { ProductInterestTracker } from "@/components/product/ProductInterestTracker";
@@ -54,8 +53,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const isFragrance = isBuyTwoGetOneEligible(product);
   const seo = getProductSeo(product);
   const shortProductName = seo.name;
-  const hasRealRating = Boolean(product.reviewCount && product.reviewAverage);
-  const sampleRating = hasRealRating ? null : summarizeSampleReviews(product.id, shortProductName);
   const couponCategory = getProductCouponCategory(product);
   // Only the "when to wear" highlights managed in admin; category, family,
   // gender and sizes are already shown elsewhere on the page.
@@ -88,9 +85,11 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               <h1>{shortProductName}</h1>
               <ProductRatingLine
                 handle={product.handle}
-                count={hasRealRating ? product.reviewCount : sampleRating?.count}
-                average={hasRealRating ? product.reviewAverage : sampleRating?.average}
-                isSample={!hasRealRating}
+                count={product.reviewCount}
+                average={product.reviewAverage}
+                amazonRating={product.amazonRating}
+                amazonRatingCount={product.amazonRatingCount}
+                amazonUrl={product.amazonUrl}
               />
             </header>
             {isFragrance && (

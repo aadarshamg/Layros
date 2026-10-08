@@ -13648,9 +13648,12 @@ html body .collection-product-grid {
   .storefront-home .bundle-steps-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 600px) {
-  .storefront-home .bundle-steps-list { grid-template-columns: minmax(0, 1fr); gap: 34px; }
-  .storefront-home .bundle-steps-list li { min-height: 0; padding: 38px 18px 22px; }
-  .storefront-home .bundle-steps-icon { width: 64px; height: 64px; }
+  .storefront-home .bundle-steps-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .storefront-home .bundle-steps-list li { min-width: 0; min-height: 0; padding: 28px 8px 16px; gap: 12px; }
+  .storefront-home .bundle-steps-list h3 { font-size: .95rem; line-height: 1.2; overflow-wrap: break-word; }
+  .storefront-home .bundle-steps-list p { font-size: .7rem; line-height: 1.5; }
+  .storefront-home .bundle-steps-number { width: 36px; height: 36px; top: -18px; font-size: 1rem; }
+  .storefront-home .bundle-steps-icon { width: 40px; height: 40px; }
 }
 
 /* Homepage rows: 4 bigger cards across on desktop (was 5) */

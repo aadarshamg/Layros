@@ -13673,6 +13673,13 @@ html body .product-card-purchase .product-card-size-group {
 }
 
 /* Match the navigation to the main display type and give the brand more presence. */
+html body header.site-header.site-header .mobile-menu > summary::before,
+html body header.site-header.site-header .mobile-menu > summary::after { content: none; display: none; }
+html body header.site-header.site-header .mobile-menu > summary {
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 10px !important;
+}
 html body .product-card.product-card .product-card-quick-add,
 html body .storefront-home .cinematic-product-copy .product-card-quick-add {
   transition: background-color .22s ease, color .22s ease;
@@ -13857,7 +13864,7 @@ html body .signature-hero-stage h1 { position: absolute; inset: 0; display: grid
 .signature-hero-shop { padding: 10px 0; border-bottom: 1px solid #789187; font-size: .75rem; letter-spacing: .09em; text-transform: uppercase; color: #eaece3; }
 .signature-hero-shop:hover { color: #fff; border-color: #fff; }
 .signature-hero :is(a):focus-visible { outline: 2px solid #eaece3; outline-offset: 6px; }
-html body .storefront-home .signature-hero + .home-new-arrivals { margin-top: 0; padding-top: 0; border-top: 0; }
+html body .storefront-home .signature-hero + .home-new-arrivals { margin-top: 0; padding-top: 32px; border-top: 0; }
 @keyframes signature-bottle-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
 @media (max-width: 700px) {
   html body .storefront-home .signature-hero { height: calc(100svh - var(--site-header-height, 100px)); padding: 20px; }

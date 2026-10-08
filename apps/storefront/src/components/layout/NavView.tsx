@@ -234,7 +234,9 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
             {bagCount > 0 && <span className="bag-count">{bagCount}</span>}
           </button>
           <details className="mobile-menu">
-            <summary aria-label="Open menu">Explore</summary>
+            <summary aria-label="Open menu">
+              <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </summary>
             <nav aria-label="Mobile navigation">{renderCompactMenu()}</nav>
           </details>
         </div>

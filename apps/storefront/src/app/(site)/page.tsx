@@ -13,6 +13,7 @@ import { GoogleReviewsSection } from "@/components/home/GoogleReviewsSection";
 import { InstagramSection } from "@/components/home/InstagramSection";
 import { PrivateBlendSection } from "@/components/home/PrivateBlendSection";
 import { ShopByBudget } from "@/components/home/ShopByBudget";
+import { BundleSteps } from "@/components/home/BundleSteps";
 import { getBestSellers, getCategoryShowcase, getNewArrivals } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 
@@ -53,6 +54,8 @@ export default async function Home() {
         products={bestSellers}
         variant="signature-scents"
       />
+
+      <BundleSteps />
 
       <GoogleReviewsSection
         rating={storeSettings.googleRating}

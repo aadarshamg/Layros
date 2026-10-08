@@ -13543,3 +13543,108 @@ html body .collection-product-grid {
   column-gap: 16px !important;
   row-gap: 40px !important;
 }
+
+/* Buy 2, get 1 free: 3 steps (Sniiff "build your bundle" layout) */
+.storefront-home .bundle-steps {
+  padding: clamp(56px, 7vw, 96px) 0;
+  background: #1a422f;
+  color: #fff;
+}
+.storefront-home .bundle-steps-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  align-items: center;
+  gap: clamp(28px, 4vw, 64px);
+}
+.storefront-home .bundle-steps-intro h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
+  line-height: .95;
+  text-transform: uppercase;
+}
+.storefront-home .bundle-steps-intro p {
+  margin: 16px 0 26px;
+  color: rgba(255, 255, 255, .85);
+  font-size: 1.05rem;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.storefront-home .bundle-steps-intro a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.storefront-home .bundle-steps-intro a:hover { background: #fff; color: #1a422f; }
+.storefront-home .bundle-steps-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 26px 0 0;
+  list-style: none;
+}
+.storefront-home .bundle-steps-list li {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  gap: 14px;
+  min-height: 300px;
+  padding: 42px 20px 26px;
+  background: #fff;
+  color: #1a422f;
+  text-align: center;
+}
+.storefront-home .bundle-steps-number {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 3px solid #fff;
+  border-radius: 50% !important;
+  background: #2c5b44;
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 800;
+  transform: translateX(-50%);
+}
+.storefront-home .bundle-steps-list h3 {
+  margin: 0;
+  color: #1a422f;
+  font-size: 1.25rem;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.storefront-home .bundle-steps-icon {
+  display: grid;
+  align-self: center;
+  width: 84px;
+  height: 84px;
+  place-items: center;
+}
+.storefront-home .bundle-steps-icon svg { width: 100%; height: 100%; fill: #2c5b44; }
+.storefront-home .bundle-steps-list p {
+  margin: 0;
+  color: #4f6354;
+  font-size: .9375rem;
+  line-height: 1.45;
+}
+@media (max-width: 900px) {
+  .storefront-home .bundle-steps-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  .storefront-home .bundle-steps-list { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+  .storefront-home .bundle-steps-list li { min-height: 0; padding: 38px 18px 22px; }
+  .storefront-home .bundle-steps-icon { width: 64px; height: 64px; }
+}

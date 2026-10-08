@@ -47,7 +47,7 @@ export function BundleSteps() {
         <header className="bundle-steps-intro">
           <h2 id="bundle-steps-title">Buy 2, get 1 free in 3 easy steps</h2>
           <p>Pick more fragrances, unlock more savings</p>
-          <Link href="/collections/all?category=collections">Start your box <span className="ui-inline-arrow" aria-hidden="true" /></Link>
+          <Link href="/collections/all?category=collections">Start your box </Link>
         </header>
         <ol className="bundle-steps-list">
           {STEPS.map((step, index) => (

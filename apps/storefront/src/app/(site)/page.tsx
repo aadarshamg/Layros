@@ -41,9 +41,9 @@ export default async function Home() {
         variant="new-arrivals"
       />
 
-      <BundleSteps />
-
       <VideoShowcase />
+
+      <BundleSteps />
 
       <ShopByCategory entries={categoryShowcase} />
 

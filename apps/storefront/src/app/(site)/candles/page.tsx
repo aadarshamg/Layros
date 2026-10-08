@@ -69,7 +69,7 @@ export default async function CandlesPage({
                 </div>
                 <div>
                   <h3>{collection.label}</h3>
-                  <span>{activeType === collection.slug ? "Selected" : "Shop now"} <i className="ui-inline-arrow" aria-hidden="true" /></span>
+                  <span>{activeType === collection.slug ? "Selected" : "Shop now"} </span>
                 </div>
               </Link>
             ))}

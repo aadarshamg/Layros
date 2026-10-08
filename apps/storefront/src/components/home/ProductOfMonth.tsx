@@ -106,7 +106,7 @@ export function ProductOfMonth({
 
             <div className="month-product-actions">
               <button type="button" onClick={addToBag} disabled={!selected}>Add to bag</button>
-              <Link href={`/products/${product.handle}`}>View details <span className="ui-inline-arrow" aria-hidden="true" /></Link>
+              <Link href={`/products/${product.handle}`}>View details </Link>
             </div>
           </div>
         </div>

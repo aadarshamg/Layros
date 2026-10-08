@@ -4,21 +4,20 @@ import { DEFAULT_TAGLINE, DEFAULT_HERO_VIDEO_URL, DEFAULT_HERO_POSTER_URL, HERO_
 
 export function CinematicHero({ tagline, videoUrl, posterUrl }: { tagline?: string; videoUrl?: string; posterUrl?: string }) {
   if (HERO_BANNER) {
-    // The banner carries its own headline and "Shop now" art, so the whole
-    // image is the link and no text is laid over it.
     return (
-      <section className="hero-banner">
-        <h1 className="sr-only">LEYROS Luxury Fragrance House</h1>
-        <Link href={HERO_BANNER.href} className="hero-banner-link" aria-label="Shop Leyros signature fragrances">
-          <Image
-            src={HERO_BANNER.src}
-            alt={HERO_BANNER.alt}
-            width={HERO_BANNER.width}
-            height={HERO_BANNER.height}
-            priority
-            sizes="(max-width: 600px) 100vw, (max-width: 1400px) 98vw, 1400px"
-          />
-        </Link>
+      <section className="signature-hero" aria-labelledby="signature-hero-title">
+        <div className="signature-hero-stage">
+          <h1 id="signature-hero-title">LEYROS</h1>
+          <Link href={HERO_BANNER.href} className="signature-hero-bottle" aria-label="Discover Leyros signature fragrances">
+            <Image
+              src="/leyros/aqualis-floating-v4.png"
+              alt="Leyros Aqualis perfume floating in glass with a silver atomizer"
+              fill
+              priority
+              sizes="(max-width: 700px) 85vw, 480px"
+            />
+          </Link>
+        </div>
       </section>
     );
   }

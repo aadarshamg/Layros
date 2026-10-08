@@ -58,7 +58,7 @@ export function CartLoginStep({ onBack, onLoggedIn, onGuest }: { onBack: () => v
   return (
     <div className="cart-step">
       <div className="cart-step-header">
-        <button type="button" onClick={onBack} className="cart-step-back"><span className="ui-inline-arrow is-left" aria-hidden="true" /> Back to bag</button>
+        <button type="button" onClick={onBack} className="cart-step-back"> Back to bag</button>
       </div>
       <h3 className="cart-step-title">Log in to check out faster</h3>
       <p className="cart-step-subtitle">No password needed. We&apos;ll send a one-time code to your WhatsApp.</p>

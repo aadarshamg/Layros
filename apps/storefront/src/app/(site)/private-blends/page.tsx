@@ -48,7 +48,7 @@ export default async function PrivateBlendsPage() {
                 <div className="private-blend-reveal-number">0{index + 1}</div>
                 <div className="private-blend-reveal-copy">
                   <h3>{productCardName(product)}</h3>
-                  <p>Reveal this blend <i className="ui-inline-arrow" aria-hidden="true" /></p>
+                  <p>Reveal this blend </p>
                 </div>
               </Link>
             ))}

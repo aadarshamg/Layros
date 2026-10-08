@@ -16,10 +16,10 @@ export const DEFAULT_HERO_POSTER_URL = "/leyros/nuit-doree-hero.jpg";
 // For now the homepage opens on this static campaign banner and the hero
 // video is switched off. Set to null to bring the video hero back.
 export const HERO_BANNER: { src: string; width: number; height: number; alt: string; href: string } | null = {
-  src: "/leyros/hero-banner.jpg",
-  width: 1672,
-  height: 941,
-  alt: "Leyros, Luxury Fragrance House: Scents. Style. Statement. Aventra, Aqualis and Veloria eau de parfum beside a Leyros gift box.",
+  src: "/leyros/hero-banner-green-v2.png",
+  width: 1774,
+  height: 887,
+  alt: "Leyros Luxury Fragrance House. Scents. Style. Statement. Find your signature scent. Aventra, Aqualis and Veloria perfumes on cream stone with jasmine and forest-green accents.",
   href: "/collections/all?category=collections",
 };
 export const DEFAULT_BRAND_ADDRESS = "Ludhiana, Punjab, 141116";

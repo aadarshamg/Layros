@@ -113,7 +113,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
           <div>
             <h2 id="home-category-title">Shop By Category</h2>
           </div>
-          <Link href="/collections/all">Explore everything <span className="ui-inline-arrow" aria-hidden="true" /></Link>
+          <Link href="/collections/all">Explore everything </Link>
         </header>
 
         <div className="home-gender-grid" aria-label="Shop fragrances by preference">
@@ -124,10 +124,8 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
               className="home-gender-card"
             >
               <Image src={tileImages[`gender:${collection.gender}`] ?? collection.fallbackImage} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
-              <span className="home-gender-card-shade" aria-hidden="true" />
               <div className="home-gender-card-copy">
                 <h3>{collection.title}</h3>
-                <b>Shop now <i className="ui-inline-arrow" aria-hidden="true" /></b>
               </div>
             </Link>
           ))}
@@ -149,7 +147,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
                 <div className="home-note-copy">
                   <h4>{note.label}</h4>
                   <p>{note.description}</p>
-                  <span>Discover <i className="ui-inline-arrow" aria-hidden="true" /></span>
+                  <span>Discover </span>
                 </div>
               </Link>
             ))}
@@ -161,7 +159,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
             <div>
               <h3 id="home-candles-title">Shop Candles</h3>
             </div>
-            <Link href="/candles">View all candles <span className="ui-inline-arrow" aria-hidden="true" /></Link>
+            <Link href="/candles">View all candles </Link>
           </header>
 
           <div className="home-candles-grid">
@@ -172,7 +170,6 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
                 </span>
                 <div className="home-candle-card-copy">
                   <h4>{collection.label}</h4>
-                  <b>Shop now <i className="ui-inline-arrow" aria-hidden="true" /></b>
                 </div>
               </Link>
             ))}
@@ -197,11 +194,6 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
                 <div>
                   <h3>{entry.label}</h3>
                 </div>
-                <span className="home-category-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M5 12h13m-5-5 5 5-5 5" />
-                  </svg>
-                </span>
               </div>
             </Link>
           ))}

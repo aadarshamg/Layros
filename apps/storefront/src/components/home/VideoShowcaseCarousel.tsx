@@ -31,32 +31,7 @@ export function VideoShowcaseCarousel({ videos }: { videos: ShoppableVideo[] }) 
 }
 
 function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () => void }) {
-  const { addItem } = useCart();
   const variant = video.product.variants[0];
-  const discount = variant ? discountPercent(variant.price, variant.compareAtPrice) : null;
-  const [justAdded, setJustAdded] = useState(false);
-  const promoLabel = video.promoBadge && !/demo|replace/i.test(video.promoBadge) ? video.promoBadge : "Featured";
-
-  function handleAddToCart(event: React.MouseEvent) {
-    event.stopPropagation();
-    if (!variant) return;
-    addItem({
-      productId: video.product.id,
-      handle: video.product.handle,
-      variantId: variant.id,
-      title: video.product.title,
-      category: video.product.category,
-      image: video.product.images[0],
-      sizeMl: variant.sizeMl,
-      sizeLabel: variant.sizeLabel,
-      sku: variant.sku,
-      unitPrice: variant.price,
-      compareAtPrice: variant.compareAtPrice,
-      quantity: 1,
-    });
-    setJustAdded(true);
-    window.setTimeout(() => setJustAdded(false), 1500);
-  }
 
   return (
     <article className="home-reel-card">
@@ -67,41 +42,14 @@ function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () =>
         aria-label={`Watch ${video.product.title}`}
       >
         <video src={video.videoUrl} autoPlay muted loop playsInline />
-        <span className="home-reel-shade" aria-hidden="true" />
-        <span className="home-reel-creator">
-          {video.creatorAvatar && <Image src={video.creatorAvatar} alt="" width={24} height={24} />}
-          <span>{video.creatorHandle || "@leyros"}</span>
-        </span>
-        <span className="home-reel-badge">{promoLabel}</span>
       </button>
-
-      <div className="home-reel-product">
-        <span className="home-reel-kicker">Shop the story</span>
+      <Link href={`/products/${video.product.handle}`} className="home-reel-product">
         <h3>{video.product.title}</h3>
-        {variant && (
-          <div className="home-reel-price">
-            <strong>{formatInr(variant.price)}</strong>
-            {variant.compareAtPrice && <s>{formatInr(variant.compareAtPrice)}</s>}
-            {discount && <span>{discount}% off</span>}
-          </div>
-        )}
-        <div className="home-reel-actions">
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            className={`video-tile-add${justAdded ? " added" : ""}`}
-          >
-            <span className="video-tile-add-label">{justAdded ? "Added ✓" : "Add to bag"}</span>
-          </button>
-          <button type="button" className="home-reel-view" onClick={onExpand} aria-label={`View ${video.product.title}`}>
-            <span aria-hidden="true">↗</span>
-          </button>
-        </div>
-      </div>
+        {variant && <div className="home-reel-price">{formatInr(variant.price)}</div>}
+      </Link>
     </article>
   );
 }
-
 function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose: () => void }) {
   const { addItem } = useCart();
   const videoRef = useRef<HTMLVideoElement>(null);

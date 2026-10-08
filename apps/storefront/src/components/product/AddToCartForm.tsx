@@ -81,7 +81,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
           </span>
         </button>
       </div>
-      {selected && <p className="purchase-installments">Or 3 payments of {formatInr(Math.round(selected.price / 3))} with <a href="https://snapmint.com/" target="_blank" rel="noopener noreferrer">Snapmint ↗</a></p>}
+      {selected && <p className="purchase-installments">Or 3 payments of {formatInr(Math.round(selected.price / 3))} with <a href="https://snapmint.com/" target="_blank" rel="noopener noreferrer">Snapmint</a></p>}
       {justAdded && <p className="form-message success">Added to your boutique bag.</p>}
     </form>
   );

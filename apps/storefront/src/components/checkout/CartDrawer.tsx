@@ -346,9 +346,7 @@ export function CartDrawer() {
                 aria-label="View Snapmint EMI plans on the official Snapmint website (opens in a new tab)"
               >
                 <span className="cart-snapmint-plans">View Plans</span>
-                <span className="cart-snapmint-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 20 20"><path d="m8 5 5 5-5 5" /></svg>
-                </span>
+
               </a>
             </p>
             <button type="button" onClick={startCheckout} className="cart-checkout">
@@ -364,7 +362,7 @@ export function CartDrawer() {
                   <Image src="/paytm-logo.svg" alt="" width={43} height={14} />
                 </span>
               </span>
-              <span className="cart-checkout-arrow ui-inline-arrow" aria-hidden="true" />
+
             </button>
           </footer>
         )}

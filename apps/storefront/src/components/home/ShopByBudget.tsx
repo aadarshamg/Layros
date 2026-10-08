@@ -21,7 +21,7 @@ export function ShopByBudget() {
             <Link href={item.href} key={item.label}>
               <span>{item.price}</span>
               <strong>{item.label}</strong>
-              <i className="ui-inline-arrow" aria-hidden="true" />
+
             </Link>
           ))}
         </div>

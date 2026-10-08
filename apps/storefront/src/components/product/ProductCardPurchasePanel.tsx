@@ -5,6 +5,7 @@ import type { PerfumeProduct } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatInr, formatSize } from "@/lib/format";
 import { genderLabel, productScentLine } from "@/lib/product-labels";
+import { DiyaIcon } from "@/components/product/DiyaIcon";
 
 export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct }) {
   const { addItem, openDrawer } = useCart();
@@ -47,7 +48,7 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
   return (
     <div className="product-card-purchase">
       {/* Scent line right under the name: just the notes (or family), no label. */}
-      {notesLabel && <p className="product-card-scent" aria-label={gender ? "Perfume notes" : "Fragrance profile"}>{notesLabel}</p>}
+      <p className="product-card-scent" aria-label={notesLabel ? (gender ? "Perfume notes" : "Fragrance profile") : undefined} aria-hidden={!notesLabel || undefined}>{notesLabel}</p>
 
       <div className="product-card-info-group product-card-size-group">
         <div className="product-card-sizes" aria-label="Choose product size">
@@ -76,7 +77,9 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
       </div>
 
       <button type="button" onClick={handleQuickAdd} className="product-card-quick-add">
-        {justAdded ? "Added ✓" : "Add to cart"}
+        <DiyaIcon />
+        <span>{justAdded ? "Added ✓" : "Add to cart"}</span>
+        <DiyaIcon />
       </button>
     </div>
   );

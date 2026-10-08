@@ -50,7 +50,7 @@ export function GoogleReviewsSection({
           </div>
 
           <a className="google-reviews-cta" href={href} target="_blank" rel="noreferrer">
-            View reviews on Google <span aria-hidden="true">↗</span>
+            View reviews on Google
           </a>
         </div>
 
@@ -79,7 +79,7 @@ export function GoogleReviewsSection({
               )}
               {review.reviewUrl && (
                 <a href={review.reviewUrl} target="_blank" rel="noreferrer" aria-label={`Read ${review.reviewerName}'s review on Google`}>
-                  View original <span aria-hidden="true">↗</span>
+                  View original
                 </a>
               )}
             </article>

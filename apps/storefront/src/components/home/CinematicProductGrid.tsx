@@ -5,7 +5,7 @@ import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurcha
 import { HorizontalProductShelf } from "@/components/home/HorizontalProductShelf";
 import { genderLabel, productCardTitle } from "@/lib/product-labels";
 import { getProductBadge } from "@/lib/product-badge";
-import { ProductBadgeIcon } from "@/components/product/ProductBadgeIcon";
+
 
 export function CinematicProductGrid({
   heading,
@@ -44,7 +44,7 @@ export function CinematicProductGrid({
                   )}
                   {badge && (
                     <small className={`cinematic-product-badge product-badge-${badge.tone}`}>
-                      <ProductBadgeIcon /> {badge.label}
+                      {badge.label}
                     </small>
                   )}
                   {product.amazonRating && product.amazonRatingCount ? (

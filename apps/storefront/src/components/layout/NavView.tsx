@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -48,8 +48,24 @@ const links: NavLink[] = [
 // at the same collection), so the parent itself is dropped here — its first
 // child stands in as the top-level entry, and the rest are indented under it.
 export function NavView({ announcementMessages }: { announcementMessages?: string[] } = {}) {
+  const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   const isHome = pathname === "/";
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const updateHeight = () => {
+      document.documentElement.style.setProperty("--site-header-height", `${header.getBoundingClientRect().height}px`);
+    };
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(header);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--site-header-height");
+    };
+  }, []);
   const announcements = announcementMessages?.length ? announcementMessages : DEFAULT_ANNOUNCEMENT_MESSAGES;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -156,7 +172,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
   // One header on every page, homepage included: announcement strip, logo,
   // links, icons.
   return (
-    <header className="site-header">
+    <header className="site-header" ref={headerRef}>
       {(
         <div className="announcement" aria-label="Store announcements">
           <div className="announcement-track">
@@ -206,14 +222,16 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
               <button type="button" aria-label="Close search" className="nav-search-close" onClick={() => setIsSearchOpen(false)}>×</button>
             </form>
           ) : (
-            <button type="button" aria-label="Search fragrances" className="nav-search-trigger" onClick={() => setIsSearchOpen(true)}><span>Search</span><span aria-hidden="true">⌕</span></button>
+            <button type="button" aria-label="Search fragrances" className="nav-search-trigger" onClick={() => setIsSearchOpen(true)}>
+              <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg>
+            </button>
           )}
           <Link href={accountHref} onClick={openAccount} aria-label={accountLabel} className="nav-account-link" aria-haspopup="dialog">
-            <span className="nav-account-icon" aria-hidden="true" />
-            <span className="nav-account-text">{accountLabel}</span>
+            <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M5 21v-2a7 7 0 0 1 14 0v2" /></svg>
           </Link>
           <button type="button" onClick={openDrawer} aria-label={`Shopping bag, ${bagCount} item${bagCount === 1 ? "" : "s"}`} className="bag-link cursor-pointer">
-            <span className="bag-outline" aria-hidden="true" /><span className="bag-text">Bag</span><span className="bag-count">{bagCount}</span>
+            <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l1 14H4L5 7Z" /><path d="M9 7V5a3 3 0 0 1 6 0v2" /></svg>
+            {bagCount > 0 && <span className="bag-count">{bagCount}</span>}
           </button>
           <details className="mobile-menu">
             <summary aria-label="Open menu">Explore</summary>

@@ -13898,15 +13898,19 @@ html body .storefront-home .signature-hero + .home-new-arrivals { margin-top: 0;
   html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .cinematic-product-copy h3,
   html body .product-card.product-card .product-card-body h3,
   html body .product-card.product-card .product-name {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    white-space: normal;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
     font-size: 1.2rem !important;
     line-height: 1.1 !important;
-    height: 2.2em;
-    min-height: 2.2em;
+    height: 1.1em;
+    min-height: 1.1em;
+  }
+  html body .product-card.product-card .product-card-purchase,
+  html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .home-signature-scents) .product-card-purchase {
+    margin-top: 5px;
+    padding-top: 0;
   }
   html body .product-card-purchase .product-card-sizes { gap: 4px; }
   html body .product-card-purchase .product-card-size { min-height: 44px !important; padding-inline: 4px; font-size: .875rem !important; }

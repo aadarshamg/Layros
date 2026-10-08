@@ -13649,8 +13649,8 @@ html body .collection-product-grid {
 }
 @media (max-width: 600px) {
   .storefront-home .bundle-steps-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .storefront-home .bundle-steps-list li { min-width: 0; min-height: 0; padding: 28px 8px 16px; gap: 12px; }
-  .storefront-home .bundle-steps-list h3 { font-size: .95rem; line-height: 1.2; overflow-wrap: break-word; }
+  .storefront-home .bundle-steps-list li { min-width: 0; min-height: 0; padding: 28px 8px 16px; gap: 12px; grid-template-rows: 3.6em 40px 1fr; font-size: .95rem; }
+  .storefront-home .bundle-steps-list h3 { margin: 0; font-size: inherit; line-height: 1.2; overflow-wrap: break-word; align-self: start; }
   .storefront-home .bundle-steps-list p { font-size: .7rem; line-height: 1.5; }
   .storefront-home .bundle-steps-number { width: 36px; height: 36px; top: -18px; font-size: 1rem; }
   .storefront-home .bundle-steps-icon { width: 40px; height: 40px; }

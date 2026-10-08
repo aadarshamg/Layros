@@ -13370,3 +13370,39 @@ html body .product-gallery .product-gallery-main {
   border-color: var(--ley-line) !important;
   outline: 0 !important;
 }
+
+/* No glows: flat surfaces, no shadows or light halos; header links show a
+   thin cream line only for keyboard focus (no browser focus box). */
+html body *,
+html body *::before,
+html body *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+html body .wordmark-logo,
+html body .footer-brand-logo {
+  filter: none !important;
+}
+html body header a:focus:not(:focus-visible),
+html body header button:focus:not(:focus-visible),
+html body header summary:focus:not(:focus-visible) {
+  outline: none !important;
+}
+html body header :is(a, button, summary):focus-visible {
+  outline: 1px solid var(--ley-cream) !important;
+  outline-offset: 3px;
+}
+
+/* The header now sits above the banner (not over it), so the banner needs no
+   top band, and fills the width at its natural height. */
+html body .storefront-home .hero-banner {
+  height: auto !important;
+  margin: 0 !important;
+  padding-top: 0 !important;
+}
+html body .storefront-home .hero-banner-link { height: auto !important; }
+html body .storefront-home .hero-banner-link::before { display: none !important; }
+html body .storefront-home .hero-banner-link img {
+  height: auto !important;
+  object-fit: contain !important;
+}

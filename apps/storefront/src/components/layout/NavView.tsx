@@ -153,9 +153,11 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
     </>
   );
 
+  // One header on every page, homepage included: announcement strip, logo,
+  // links, icons.
   return (
-    <header className={isHome ? `home-header${isScrolled ? " is-scrolled" : ""}` : "site-header"}>
-      {!isHome && (
+    <header className="site-header">
+      {(
         <div className="announcement" aria-label="Store announcements">
           <div className="announcement-track">
             <div className="announcement-group">

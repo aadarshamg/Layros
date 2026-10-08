@@ -41,6 +41,8 @@ export default async function Home() {
         variant="new-arrivals"
       />
 
+      <BundleSteps />
+
       <VideoShowcase />
 
       <ShopByCategory entries={categoryShowcase} />
@@ -54,8 +56,6 @@ export default async function Home() {
         products={bestSellers}
         variant="signature-scents"
       />
-
-      <BundleSteps />
 
       <GoogleReviewsSection
         rating={storeSettings.googleRating}

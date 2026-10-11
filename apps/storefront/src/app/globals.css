@@ -13970,3 +13970,6 @@ html body header.site-header.site-header :is(.desktop-nav a, .desktop-nav summar
     height: 68px;
   }
 }
+
+/* Diwali fireworks canvas, laid over the homepage hero (FestiveCrackers) */
+.hero-fireworks { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }

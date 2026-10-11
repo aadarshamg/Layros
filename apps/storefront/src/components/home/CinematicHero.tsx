@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FestiveCrackers } from "@/components/home/FestiveCrackers";
 import { DEFAULT_TAGLINE, DEFAULT_HERO_VIDEO_URL, DEFAULT_HERO_POSTER_URL, HERO_BANNER } from "@/lib/site-defaults";
 
 export function CinematicHero({ tagline, videoUrl, posterUrl }: { tagline?: string; videoUrl?: string; posterUrl?: string }) {
   if (HERO_BANNER) {
     return (
       <section className="signature-hero" aria-labelledby="signature-hero-title">
+        <FestiveCrackers />
         <div className="signature-hero-stage">
           <h1 id="signature-hero-title">LEYROS</h1>
           <Link href={HERO_BANNER.href} className="signature-hero-bottle" aria-label="Discover Leyros signature fragrances">

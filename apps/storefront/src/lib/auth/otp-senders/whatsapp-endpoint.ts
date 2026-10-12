@@ -6,8 +6,8 @@ import "server-only";
  * pick the approved Authentication template, and paste the generated URL
  * into WHATSAPP_OTP_ENDPOINT. It looks like:
  *
- *   https://<panel>/api/v1/whatsapp/send/template?apiToken=…&phoneNumberID=…
- *     &botTemplateID=…&templateVariable-OTP-1=…&sendToPhoneNumber=…
+ *   https://<panel>/api/v1/whatsapp/send/template?apiToken=…&phone_number_id=…&template_id=…
+ *     &templateVariable-OTP-1=…&templateVariable-BRAND-2=…&templateVariable-OTP-3=…&phone_number=…
  *
  * Each send fills the template variable with the code and the recipient with
  * the shopper's number (country code, no "+"), keeping everything else as-is.
@@ -27,13 +27,15 @@ export async function sendViaWhatsAppEndpoint(phone: string, code: string): Prom
     return { ok: false, error: "WHATSAPP_OTP_ENDPOINT is not a valid URL" };
   }
 
-  // Every template-variable parameter gets the code: authentication templates only have the
-  // code (body + copy-code button), so there's nothing else they could mean. Panels name these
-  // differently (BotSailor: templateVariable-OTP-1; others: variable…/otp/code).
+  // The code goes into the template variables named for it (WaSarathi/BotSailor:
+  // templateVariable-OTP-1 for the body, templateVariable-OTP-3 for the copy-code button).
+  // Other variables, e.g. templateVariable-BRAND-2 ("…your OTP code for Leyros Perfume"), keep
+  // the value saved in the link. If no variable is named for the code, every variable gets it.
   const keys = [...url.searchParams.keys()];
-  const variableKeys = keys.filter((key) => /^templateVariable/i.test(key) || /variable/i.test(key) || /^(otp|code)$/i.test(key));
+  const variableKeys = keys.filter((key) => /variable/i.test(key) || /^(otp|code)$/i.test(key));
+  const codeKeys = variableKeys.filter((key) => /otp|code/i.test(key));
   if (variableKeys.length === 0) return { ok: false, error: "WHATSAPP_OTP_ENDPOINT has no template-variable parameter for the code" };
-  for (const key of variableKeys) url.searchParams.set(key, code);
+  for (const key of codeKeys.length ? codeKeys : variableKeys) url.searchParams.set(key, code);
   // Recipient, with country code and digits only. WaSarathi calls it phone_number; BotSailor sendToPhoneNumber.
   const recipientKeys = keys.filter((key) => key === "phone_number" || key === "sendToPhoneNumber");
   for (const key of recipientKeys.length ? recipientKeys : ["phone_number"]) url.searchParams.set(key, `91${phone}`);

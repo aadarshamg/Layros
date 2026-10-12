@@ -4,7 +4,8 @@ import { cookies } from "next/headers";
 import { signPayload, verifyPayload, sha256Hex, timingSafeStringEqual } from "./crypto";
 
 const CHALLENGE_COOKIE = "leyros_otp_challenge";
-const CHALLENGE_TTL_SECONDS = 5 * 60;
+// Matches the WhatsApp login template, which tells the shopper "Expires in 10 minutes".
+const CHALLENGE_TTL_SECONDS = 10 * 60;
 const MAX_ATTEMPTS = 5;
 
 interface OtpChallengePayload {

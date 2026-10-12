@@ -61,7 +61,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${bebasNeue.variable} ${roboto.variable} ${reviewScript.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      {/* Browser extensions (e.g. Grammarly) add attributes to <body> before React loads;
+          this stops the dev overlay reporting that as a hydration error. */}
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>{children}</body>
     </html>
   );
 }

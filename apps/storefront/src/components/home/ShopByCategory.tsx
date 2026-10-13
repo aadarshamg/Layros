@@ -4,7 +4,6 @@ import type { PerfumeProduct } from "@leyros/types";
 import { getCandleShowcaseImages, pickProductImages, type CategoryShowcaseEntry } from "@/lib/data/products";
 import { CANDLE_COLLECTIONS } from "@/lib/data/candle-collections";
 
-const textOf = (product: PerfumeProduct) => `${product.title} ${product.description}`.toLowerCase();
 const inCategory = (keyword: string) => (product: PerfumeProduct) => (product.category ?? "").toLowerCase().includes(keyword);
 const isPerfume = inCategory("collections");
 
@@ -38,57 +37,49 @@ const NOTE_COLLECTIONS = [
     label: "Tobacco",
     description: "Smoky, warm, and richly textured.",
     href: "/collections/all?q=tobacco",
-    match: (product: PerfumeProduct) => isPerfume(product) && textOf(product).includes("tobacco"),
-    fallbackImage: "/leyros/about-old/premium-attar.webp",
+    image: "/leyros/notes/tobacco.jpeg",
   },
   {
     label: "Vanilla",
     description: "Creamy, comforting, and softly sweet.",
     href: "/collections/all?q=vanilla",
-    match: (product: PerfumeProduct) => isPerfume(product) && textOf(product).includes("vanilla"),
-    fallbackImage: "/leyros/about-old/car-perfume.webp",
+    image: "/leyros/notes/vanilla.jpeg",
   },
   {
     label: "Woody",
     description: "Sandalwood, cedar, vetiver, and warm forest tones.",
     href: "/collections/all?category=woody",
-    match: inCategory("woody"),
-    fallbackImage: "/leyros/sandalwood.jpg",
+    image: "/leyros/notes/woody.jpeg",
   },
   {
     label: "Amber",
     description: "Golden resins, soft spice, musk, and enveloping warmth.",
     href: "/collections/all?category=ambry",
-    match: inCategory("ambry"),
-    fallbackImage: "/leyros/saffron.jpg",
+    image: "/leyros/notes/amber.jpeg",
   },
   {
     label: "Floral",
     description: "Rose, jasmine, iris, and luminous petal-led bouquets.",
     href: "/collections/all?category=floral",
-    match: inCategory("floral"),
-    fallbackImage: "/leyros/rose.jpg",
+    image: "/leyros/notes/floral.jpeg",
   },
   {
     label: "Fresh Citrus",
     description: "Bright citrus, clean aromatics, and airy freshness.",
     href: "/collections/all?category=citrus",
-    match: inCategory("citrus"),
-    fallbackImage: "/leyros/about-old/premium-perfume.webp",
+    image: "/leyros/notes/fresh-citrus.jpeg",
   },
   {
     label: "Gourmand",
     description: "Vanilla, sweetness, spice, and deliciously rich notes.",
     href: "/collections/all?category=gourmand",
-    match: inCategory("gourmand"),
-    fallbackImage: "/leyros/about-old/daily-wear.webp",
+    image: "/leyros/notes/gourmand.jpeg",
   },
   {
     label: "Oud",
     description: "Deep, resinous, and confidently intense.",
     href: "/collections/all?category=oud",
-    match: inCategory("oud"),
-    fallbackImage: "/leyros/about-old/gift-pack.webp",
+    image: "/leyros/notes/oud.webp",
   },
 ] as const;
 
@@ -97,7 +88,6 @@ const TILE_IMAGE_RULES: Record<string, (product: PerfumeProduct) => boolean> = O
     `gender:${collection.gender}`,
     (product: PerfumeProduct) => isPerfume(product) && product.details.gender === collection.gender,
   ]),
-  ...NOTE_COLLECTIONS.map((note) => [`note:${note.label}`, note.match]),
 ]);
 
 export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }) {
@@ -142,7 +132,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
             {NOTE_COLLECTIONS.map((note) => (
               <Link key={note.label} href={note.href} className="home-note-card" aria-label={`${note.label}: ${note.description}`}>
                 <div className="home-note-image">
-                  <Image src={tileImages[`note:${note.label}`] ?? note.fallbackImage} alt="" fill sizes="(max-width: 650px) 46vw, (max-width: 1000px) 30vw, 20vw" />
+                  <Image src={note.image} alt={`${note.label} fragrance notes`} fill sizes="(max-width: 650px) 46vw, (max-width: 1000px) 30vw, 20vw" />
                 </div>
                 <div className="home-note-copy">
                   <h4>{note.label}</h4>

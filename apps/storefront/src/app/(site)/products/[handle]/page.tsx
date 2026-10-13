@@ -18,7 +18,7 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { CategoryCouponOffers } from "@/components/product/CategoryCouponOffers";
 import { getProductCouponCategory, isBuyTwoGetOneEligible } from "@/lib/promotions";
-import { genderLabel, productNotePyramid, productShortDescription } from "@/lib/product-labels";
+import { genderLabel, productNotePyramid } from "@/lib/product-labels";
 import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr, formatSize } from "@/lib/format";
@@ -102,7 +102,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               image={images[0]}
               variants={product.variants}
               tagline={tagline}
-              summary={productShortDescription(product.description)}
               perks={perks}
             />
             {topFacts.length > 0 && <RotatingHighlights highlights={product.highlights} seed={product.id} />}

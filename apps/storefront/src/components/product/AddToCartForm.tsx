@@ -32,8 +32,6 @@ interface AddToCartFormProps {
   variants: PerfumeVariant[];
   /** Short capitals line under the sizes, e.g. "Neroli. Lavender. Amber." */
   tagline?: string;
-  /** One short sentence about the product; the full description sits lower on the page. */
-  summary?: string;
   perks?: PurchasePerk[];
 }
 
@@ -59,7 +57,7 @@ const PERK_ICONS: Record<PurchasePerk["icon"], React.ReactNode> = {
   ),
 };
 
-export function AddToCartForm({ productId, handle, title, category, image, variants, tagline, summary, perks = [] }: AddToCartFormProps) {
+export function AddToCartForm({ productId, handle, title, category, image, variants, tagline, perks = [] }: AddToCartFormProps) {
   const { addItem, items, subtotal } = useCart();
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id ?? "");
   const [quantity, setQuantity] = useState(1);
@@ -124,7 +122,6 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
       </div>
 
       {tagline && <p className="purchase-tagline">{tagline}</p>}
-      {summary && <p className="purchase-summary">{summary}</p>}
 
       {perks.length > 0 && (
         <ul className="purchase-perks" aria-label="Offers you unlock">

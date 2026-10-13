@@ -66,7 +66,7 @@ export function ProductCardPurchasePanel({ product, homepage = false }: { produc
         <p className="product-card-scent" aria-label={notesLabel ? (gender ? "Perfume notes" : "Fragrance profile") : undefined} aria-hidden={!notesLabel || undefined}>{notesLabel}</p>
       )}
 
-      <div className="product-card-info-group product-card-size-group">
+      {!homepage && <div className="product-card-info-group product-card-size-group">
         <div className="product-card-sizes" aria-label="Choose product size">
           {sortedVariants.map((item) => (
             <button
@@ -79,7 +79,7 @@ export function ProductCardPurchasePanel({ product, homepage = false }: { produc
             </button>
           ))}
         </div>
-      </div>
+      </div>}
 
       <div className="product-card-pricing" aria-label="Product pricing">
         {/* Price and MRP on the left; the % off pill on the right. */}

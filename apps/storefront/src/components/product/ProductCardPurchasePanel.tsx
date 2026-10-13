@@ -7,9 +7,11 @@ import { formatInr, formatSize } from "@/lib/format";
 import { genderLabel, productScentLine } from "@/lib/product-labels";
 import { DiyaIcon } from "@/components/product/DiyaIcon";
 
-export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct }) {
+export function ProductCardPurchasePanel({ product, homepage = false }: { product: PerfumeProduct; homepage?: boolean }) {
   const { addItem, openDrawer } = useCart();
-  const sortedVariants = [...product.variants].sort((a, b) => a.price - b.price);
+  const sortedVariants = product.variants
+    .filter((item) => !homepage || (item.sizeMl !== 100 && item.sizeMl !== 200))
+    .sort((a, b) => a.price - b.price);
   const [selectedId, setSelectedId] = useState(sortedVariants[0]?.id);
   const [justAdded, setJustAdded] = useState(false);
   const variant = sortedVariants.find((item) => item.id === selectedId) ?? sortedVariants[0];

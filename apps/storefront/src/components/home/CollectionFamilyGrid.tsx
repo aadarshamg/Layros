@@ -38,7 +38,7 @@ export function CollectionFamilyGrid({ entries }: { entries: FamilyShowcaseEntry
                 </Link>
                 <div className="cinematic-product-copy">
                   <h3><Link href={`/products/${product.handle}`} aria-label={product.title} title={product.title}>{productCardTitle(product)}</Link></h3>
-                  <ProductCardPurchasePanel product={product} />
+                  <ProductCardPurchasePanel product={product} homepage />
                 </div>
               </article>
             );

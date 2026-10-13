@@ -56,7 +56,7 @@ export function CinematicProductGrid({
                 </Link>
                 <div className="cinematic-product-copy">
                   <h3 title={product.title}>{displayTitle}</h3>
-                  <ProductCardPurchasePanel product={product} />
+                  <ProductCardPurchasePanel product={product} homepage />
                 </div>
               </article>
             );

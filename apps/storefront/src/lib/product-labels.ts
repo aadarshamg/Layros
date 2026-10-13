@@ -114,13 +114,14 @@ function layerNotesFromDescription(description: string, layer: RegExp): string[]
   const notes = match[1]
     .split(/,|\band\b|&|\//i)
     .map((part) => part
+      .replace(/\s*\([^)]*(?:\)|$)/g, "")
       .replace(/[.:;|]+$/, "")
       // "Spicy opening of Saffron" -> "Saffron"
       .replace(/^.*\bof\s+/i, "")
       .replace(/^(?:rich|premium|refreshing|ripe)\s+/i, "")
       .replace(/\s+(?:notes?|accords?)$/i, "")
       .trim())
-    .filter((part) => part && part.length < 30 && !NOT_A_NOTE.test(part));
+    .filter((part) => part && part.length < 30 && !NOT_A_NOTE.test(part) && !/^(?:juicy|sophisticated|transparent\b)/i.test(part));
   return [...new Set(notes)];
 }
 

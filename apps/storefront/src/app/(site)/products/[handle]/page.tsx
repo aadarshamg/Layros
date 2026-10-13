@@ -148,6 +148,9 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 </article>
               ))}
             </div>
+            <p style={{ fontSize: "11px", marginTop: "16px", color: "#4f6354" }}>
+              Ingredient photos: Pexels. <a href="https://commons.wikimedia.org/wiki/File:Bergamot_orange_-_whole_and_slice.jpg">Bergamot: Ivar Leidus</a>; <a href="https://commons.wikimedia.org/wiki/File:GT-Sandelholzmehl-Oman-2009.jpg">sandalwood: GeoTrinity</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Resized and cropped. Abstract accords are illustrated with fragrance oils.
+            </p>
           </div>
         </section>
       )}

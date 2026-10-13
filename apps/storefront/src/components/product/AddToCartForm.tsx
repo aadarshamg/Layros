@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import type { PerfumeVariant } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatSize } from "@/lib/format";
 import { DiyaIcon } from "@/components/product/DiyaIcon";
+import { calculateBuyTwoGetOne } from "@/lib/promotions";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
@@ -59,16 +60,18 @@ const PERK_ICONS: Record<PurchasePerk["icon"], React.ReactNode> = {
 };
 
 export function AddToCartForm({ productId, handle, title, category, image, variants, tagline, summary, perks = [] }: AddToCartFormProps) {
-  const { addItem } = useCart();
+  const { addItem, items, subtotal } = useCart();
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id ?? "");
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
   const selected = variants.find((variant) => variant.id === selectedVariantId);
   const compareAtPrice = selected?.compareAtPrice && selected.compareAtPrice > selected.price ? selected.compareAtPrice : undefined;
   const discountPercent = compareAtPrice && selected ? Math.round(((compareAtPrice - selected.price) / compareAtPrice) * 100) : 0;
-  const amount = (selected?.price ?? 0) * quantity;
-  const isReached = (perk: PurchasePerk) =>
-    (perk.minAmount !== undefined && amount >= perk.minAmount) || (perk.minQuantity !== undefined && quantity >= perk.minQuantity);
+  const eligibleQuantity = calculateBuyTwoGetOne(items).eligibleItemCount;
+  const perkProgress = (perk: PurchasePerk) => Math.min(1, Math.max(0,
+    perk.minAmount !== undefined ? subtotal / perk.minAmount
+      : perk.minQuantity !== undefined ? eligibleQuantity / perk.minQuantity : 0));
+  const isReached = (perk: PurchasePerk) => perkProgress(perk) >= 1;
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -126,12 +129,12 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
       {perks.length > 0 && (
         <ul className="purchase-perks" aria-label="Offers you unlock">
           {perks.map((perk) => (
-            <li key={perk.key} className={isReached(perk) ? "is-reached" : undefined}>
+            <li key={perk.key} className={isReached(perk) ? "is-reached" : undefined} style={{ "--perk-progress": `${perkProgress(perk) * 100}%` } as CSSProperties}>
               <span className="purchase-perk-icon">{PERK_ICONS[perk.icon]}</span>
               <b>{perk.value}</b>
               <small>{perk.label}</small>
               <i className="purchase-perk-dot" aria-hidden="true" />
-              {isReached(perk) && <span className="sr-only">Unlocked</span>}
+              <span className="sr-only">{isReached(perk) ? "Unlocked" : `${Math.round(perkProgress(perk) * 100)}% progress`}</span>
             </li>
           ))}
         </ul>

@@ -65,6 +65,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
   const selected = variants.find((variant) => variant.id === selectedVariantId);
   const compareAtPrice = selected?.compareAtPrice && selected.compareAtPrice > selected.price ? selected.compareAtPrice : undefined;
   const discountPercent = compareAtPrice && selected ? Math.round(((compareAtPrice - selected.price) / compareAtPrice) * 100) : 0;
+  const amount = (selected?.price ?? 0) * quantity;
   const eligibleQuantity = calculateBuyTwoGetOne(items).eligibleItemCount;
   const perkProgress = (perk: PurchasePerk) => Math.min(1, Math.max(0,
     perk.minAmount !== undefined ? subtotal / perk.minAmount

@@ -32,6 +32,28 @@ export function VideoShowcaseCarousel({ videos }: { videos: ShoppableVideo[] }) 
 
 function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () => void }) {
   const variant = video.product.variants[0];
+  const previewRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const preview = previewRef.current;
+    if (!preview) return;
+    let inView = false;
+    const updatePlayback = () => {
+      if (inView && !document.hidden) void preview.play().catch(() => {});
+      else preview.pause();
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      updatePlayback();
+    }, { threshold: .2 });
+    observer.observe(preview);
+    document.addEventListener("visibilitychange", updatePlayback);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updatePlayback);
+      preview.pause();
+    };
+  }, [video.videoUrl]);
 
   return (
     <article className="home-reel-card">
@@ -41,7 +63,7 @@ function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () =>
         onClick={onExpand}
         aria-label={`Watch ${video.product.title}`}
       >
-        <video src={video.videoUrl} autoPlay muted loop playsInline />
+        <video ref={previewRef} src={video.videoUrl} preload="none" muted loop playsInline poster={video.product.images[0]} />
       </button>
       <Link href={`/products/${video.product.handle}`} className="home-reel-product">
         <h3>{video.product.title}</h3>

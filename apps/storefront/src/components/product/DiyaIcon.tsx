@@ -1,6 +1,7 @@
 export function DiyaIcon() {
   return (
     <svg className="cart-diya" viewBox="0 0 40 44" width="28" height="30" aria-hidden="true" focusable="false">
+      <g className="cart-diya-movement">
       <g className="cart-diya-flame">
         <path fill="#ffb52e" d="M20 2c-1 6-8 9-8 16a8 8 0 0 0 16 0c0-6-5-10-8-16Z" />
         <path fill="#ffe995" d="M20 10c-1 4-4 6-4 10a4 4 0 0 0 8 0c0-4-3-6-4-10Z" />
@@ -12,6 +13,7 @@ export function DiyaIcon() {
       <path d="M7 32c4 5 8 7 13 7s9-2 13-7" fill="none" stroke="#f7aa50" strokeWidth="1.5" />
       <path d="m12 34 2 2 2-2m8 0 2 2 2-2" fill="none" stroke="#ffe0a0" strokeWidth="1.5" strokeLinejoin="round" />
       <circle cx="20" cy="37" r="1.3" fill="#ffe0a0" />
+      </g>
     </svg>
   );
 }

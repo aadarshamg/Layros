@@ -24,6 +24,7 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
     : 0;
   const gender = genderLabel(product);
   const notesLabel = productScentLine(product);
+  const rotateNotes = /collections|perfume/i.test(product.category ?? "") && !/car|attar/i.test(product.category ?? "");
 
   function handleQuickAdd() {
     addItem({
@@ -47,8 +48,21 @@ export function ProductCardPurchasePanel({ product }: { product: PerfumeProduct 
 
   return (
     <div className="product-card-purchase">
-      {/* Scent line right under the name: just the notes (or family), no label. */}
-      <p className="product-card-scent" aria-label={notesLabel ? (gender ? "Perfume notes" : "Fragrance profile") : undefined} aria-hidden={!notesLabel || undefined}>{notesLabel}</p>
+      {rotateNotes ? (
+        <div className="product-card-scent product-card-rotating-notes">
+          <span className="sr-only">Fragrance Family. Daily Use. Eau de Parfum.</span>
+          <span className="product-notes-window" aria-hidden="true">
+            <span className="product-notes-track">
+              <span>Fragrance Family</span>
+              <span>Daily Use</span>
+              <span>Eau de Parfum</span>
+              <span>Fragrance Family</span>
+            </span>
+          </span>
+        </div>
+      ) : (
+        <p className="product-card-scent" aria-label={notesLabel ? (gender ? "Perfume notes" : "Fragrance profile") : undefined} aria-hidden={!notesLabel || undefined}>{notesLabel}</p>
+      )}
 
       <div className="product-card-info-group product-card-size-group">
         <div className="product-card-sizes" aria-label="Choose product size">

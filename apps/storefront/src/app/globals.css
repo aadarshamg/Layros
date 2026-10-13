@@ -12569,7 +12569,6 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
   html body .storefront-home .cinematic-product-grid,
   html body .storefront-home .home-category-track,
   html body .storefront-home .trial-sets-grid,
-  html body .storefront-home .home-reel-track,
   html body .cart-drawer .cart-recommendation-track {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -12582,14 +12581,9 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
     scroll-snap-type: none !important;
     transform: none !important;
   }
-  /* A lone reel spans the row instead of sitting in half of it */
-  html body .storefront-home .home-reel-track {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
-  }
   html body .storefront-home .cinematic-product-grid > *,
   html body .storefront-home .home-category-track > *,
   html body .storefront-home .trial-sets-grid > *,
-  html body .storefront-home .home-reel-track > *,
   html body .cart-drawer .cart-recommendation-track > * {
     width: auto !important;
     min-width: 0 !important;
@@ -12712,15 +12706,6 @@ html body .storefront-home :is(.home-signature-collection, .home-new-arrivals, .
     display: none;
   }
 
-  /* The Leyros Reels: two per row; a lone reel is a smaller centred card */
-  html body .storefront-home .home-reel-track {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-  html body .storefront-home .home-reel-track > .home-reel-card:only-child {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: min(62%, 240px) !important;
-  }
   html body .storefront-home .home-reel-track .home-reel-card {
     border-radius: 18px;
   }
@@ -13946,6 +13931,64 @@ html body .storefront-home .home-notes-heading h3 {
   word-spacing: .12em;
 }
 
+/* Lighter size choices, stronger pricing hierarchy. */
+.hero-fireworks { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.cart-diya-movement {
+  transform-box: view-box;
+  transform-origin: 20px 35px;
+  animation: diya-sway 2.4s ease-in-out infinite;
+}
+.cart-diya:last-child .cart-diya-movement { animation-delay: -1.2s; }
+@keyframes diya-sway {
+  0%, 100% { transform: translateY(1px) rotate(-5deg); }
+  50% { transform: translateY(-2px) rotate(5deg); }
+}
+.festive-crackers { position: absolute; inset: auto 24px 18px; display: flex; justify-content: space-between; pointer-events: none; z-index: 2; }
+.festive-crackers > svg { width: clamp(46px, 5vw, 80px); height: auto; overflow: visible; }
+.festive-cracker-sparks { transform-box: view-box; transform-origin: 50px 57px; animation: cracker-burst 3s ease-out infinite; }
+.festive-cracker-fuse { animation: cracker-fuse 3s ease-out infinite; }
+.festive-crackers > svg:last-child :is(.festive-cracker-sparks, .festive-cracker-fuse) { animation-delay: -1.5s; }
+@keyframes cracker-burst {
+  0%, 15% { opacity: 0; transform: scale(.15); }
+  25% { opacity: 1; transform: scale(.6); }
+  60% { opacity: 0; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+@keyframes cracker-fuse { 0%, 15% { opacity: 1; } 25%, 75% { opacity: .2; } 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .cart-diya-movement, .festive-cracker-sparks, .festive-cracker-fuse { animation: none; }
+}
+
+html body .product-card-purchase .product-card-scent.product-card-rotating-notes {
+  display: flex;
+  align-items: flex-start;
+  height: 3em;
+  min-height: 3em;
+  margin: 0;
+  font-size: .6875rem !important;
+  line-height: 1.5 !important;
+}
+.product-notes-window { display: block; width: 100%; height: 1.5em; overflow: hidden; }
+.product-notes-track { display: block; animation: product-notes-rotate 9s ease-in-out infinite; }
+.product-notes-track > span { display: block; height: 1.5em; line-height: 1.5; white-space: nowrap; }
+@keyframes product-notes-rotate {
+  0%, 27% { transform: translateY(0); }
+  33%, 60% { transform: translateY(-1.5em); }
+  66%, 93% { transform: translateY(-3em); }
+  100% { transform: translateY(-4.5em); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-notes-track { animation: none; }
+}
+
+html body .product-card-purchase .product-card-size {
+  font-family: var(--font-primary) !important;
+  font-weight: 400 !important;
+}
+html body .product-card-purchase :is(.product-card-price-now, .product-card-price-mrp, .product-card-price-off) {
+  font-weight: 700 !important;
+}
+
 @media (max-width: 360px) {
   html body .storefront-home .home-notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -13964,12 +14007,40 @@ html body header.site-header.site-header :is(.desktop-nav a, .desktop-nav summar
   font-size: 1.25rem;
 }
 
+/* Keep phone reels in one compact, swipeable row. */
+@media (max-width: 820px) {
+  html body .storefront-home .home-reel-track {
+    display: flex !important;
+    flex-wrap: nowrap;
+    gap: 12px !important;
+    width: 100%;
+    min-width: 0;
+    margin-inline: 0 !important;
+    padding: 0 0 10px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+  html body .storefront-home .home-reel-track > .home-reel-card {
+    flex: 0 0 clamp(160px, 54vw, 220px) !important;
+    width: clamp(160px, 54vw, 220px) !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    scroll-snap-align: start !important;
+  }
+  html body .storefront-home .home-reel-product h3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+}
+
 @media (max-width: 820px) {
   html body header.site-header.site-header .wordmark-logo {
     width: 90px;
     height: 68px;
   }
 }
-
-/* Diwali fireworks canvas, laid over the homepage hero (FestiveCrackers) */
-.hero-fireworks { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }

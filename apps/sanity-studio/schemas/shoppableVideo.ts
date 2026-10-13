@@ -6,6 +6,12 @@ export default defineType({
   type: "document",
   fields: [
     defineField({
+      name: "title",
+      title: "Reel title",
+      type: "string",
+      description: "Optional internal name to identify imported reels before linking a product.",
+    }),
+    defineField({
       name: "videoFile",
       title: "Video",
       description: "Upload directly. Takes priority over the URL field below if both are set. Recommended: portrait/vertical 1080×1920px (9:16), MP4, under 30s, ideally under 20MB.",
@@ -58,9 +64,9 @@ export default defineType({
     }),
   ],
   preview: {
-    select: { title: "product.title", handle: "creatorHandle", media: "creatorAvatar" },
-    prepare({ title, handle, media }) {
-      return { title: title ?? "(no product linked)", subtitle: handle, media };
+    select: { title: "product.title", reelTitle: "title", handle: "creatorHandle", media: "creatorAvatar" },
+    prepare({ title, reelTitle, handle, media }) {
+      return { title: reelTitle ?? title ?? "(no product linked)", subtitle: title ? (handle ?? title) : "Link a product before publishing", media };
     },
   },
 });

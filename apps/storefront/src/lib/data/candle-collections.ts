@@ -1,20 +1,19 @@
-// `image` is only a fallback — the tiles show a real candle from that type
-// (getCandleShowcaseImages) whenever the catalogue has one.
+// Curated category photography for the homepage candle collection cards.
 export const CANDLE_COLLECTIONS = [
   {
     slug: "concrete",
     label: "Concrete Candles",
-    image: "/leyros/about-old/scented-candle.webp",
+    image: "/leyros/candle-collections/concrete.jpg",
   },
   {
     slug: "soy",
     label: "Soy Wax Candles",
-    image: "/leyros/about-old/scented-candle.webp",
+    image: "/leyros/candle-collections/soy.jpg",
   },
   {
     slug: "gel",
     label: "Gel Wax Candles",
-    image: "/leyros/atelier.jpg",
+    image: "/leyros/candle-collections/gel.jpg",
   },
 ] as const;
 

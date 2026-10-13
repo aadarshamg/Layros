@@ -119,7 +119,7 @@ export default async function Home() {
             <Link href="/story" className="cinematic-outline-button">Discover our story</Link>
           </div>
           <div className="cinematic-service-image about-leyros-logo">
-            <Image src="/leyros/leyros-logo-about.webp" alt="Leyros gold logo on ivory marble" fill sizes="(max-width: 800px) 90vw, 42vw" />
+            <Image src="/leyros/about-perfumery.jpg" alt="Fragrance oils and botanical ingredients being blended at a perfumery workbench" fill sizes="(max-width: 800px) 90vw, 42vw" />
           </div>
         </div>
       </section>

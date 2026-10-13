@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { PerfumeProduct } from "@leyros/types";
-import { getCandleShowcaseImages, pickProductImages, type CategoryShowcaseEntry } from "@/lib/data/products";
+import { pickProductImages, type CategoryShowcaseEntry } from "@/lib/data/products";
 import { CANDLE_COLLECTIONS } from "@/lib/data/candle-collections";
 
 const inCategory = (keyword: string) => (product: PerfumeProduct) => (product.category ?? "").toLowerCase().includes(keyword);
@@ -91,7 +91,7 @@ const TILE_IMAGE_RULES: Record<string, (product: PerfumeProduct) => boolean> = O
 ]);
 
 export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEntry[] }) {
-  const [tileImages, candleImages] = await Promise.all([pickProductImages(TILE_IMAGE_RULES), getCandleShowcaseImages()]);
+  const tileImages = await pickProductImages(TILE_IMAGE_RULES);
   const categoryHref = (value: string) => value === "candle"
     ? "/candles"
     : `/collections/all?category=${encodeURIComponent(value)}`;
@@ -156,7 +156,7 @@ export async function ShopByCategory({ entries }: { entries: CategoryShowcaseEnt
             {CANDLE_COLLECTIONS.map((collection) => (
               <Link key={collection.label} href={`/candles?type=${collection.slug}#candle-products`} className="home-candle-card">
                 <span className="home-candle-card-image">
-                  <Image src={candleImages[collection.slug] ?? collection.image} alt="" fill sizes="(max-width: 700px) 92vw, 33vw" />
+                  <Image src={collection.image} alt={collection.label} fill sizes="(max-width: 700px) 92vw, 33vw" />
                 </span>
                 <div className="home-candle-card-copy">
                   <h4>{collection.label}</h4>

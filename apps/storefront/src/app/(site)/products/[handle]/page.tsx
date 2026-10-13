@@ -1,5 +1,4 @@
 import "./product-page.css";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -10,7 +9,8 @@ import { productBreadcrumbJsonLd } from "@/lib/seo/jsonld/breadcrumb";
 import { getProductSeo } from "@/lib/seo/product-seo";
 import { getProductByHandle, getSimilarProducts } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
-import { AddToCartForm } from "@/components/product/AddToCartForm";
+import { AddToCartForm, type PurchasePerk } from "@/components/product/AddToCartForm";
+import { NoteIcon } from "@/components/product/NoteIcon";
 import { ProductInterestTracker } from "@/components/product/ProductInterestTracker";
 import { ProductRatingLine } from "@/components/product/ProductRatingLine";
 import { ProductReviews } from "@/components/product/ProductReviews";
@@ -18,11 +18,10 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { CategoryCouponOffers } from "@/components/product/CategoryCouponOffers";
 import { getProductCouponCategory, isBuyTwoGetOneEligible } from "@/lib/promotions";
-import { genderLabel } from "@/lib/product-labels";
+import { genderLabel, productNotePyramid, productShortDescription } from "@/lib/product-labels";
 import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr, formatSize } from "@/lib/format";
-import { scentNoteImage } from "@/lib/scent-story";
 import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/shipping";
 import { RotatingHighlights } from "@/components/product/RotatingHighlights";
 
@@ -54,17 +53,23 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const seo = getProductSeo(product);
   const shortProductName = seo.name;
   const couponCategory = getProductCouponCategory(product);
+  const gender = genderLabel(product);
+  const kicker = !gender ? seo.category : gender === "Unisex" ? `Unisex ${seo.category}` : `${seo.category} for ${gender}`;
   // Only the "when to wear" highlights managed in admin; category, family,
   // gender and sizes are already shown elsewhere on the page.
-  const featureList = (isFragrance ? [...details.notesTop, ...details.notesHeart, ...details.notesBase] : product.tags).filter(Boolean);
   const topFacts = product.highlights?.map((highlight) => highlight.title) ?? [];
-  const noteGroups = isFragrance
-    ? [
-        { title: "Top notes", notes: details.notesTop },
-        { title: "Heart notes", notes: details.notesHeart },
-        { title: "Base notes", notes: details.notesBase },
-      ]
-    : [];
+  const noteGroups = isFragrance ? productNotePyramid(product) : [];
+  // One lead note per layer, e.g. "Neroli. Lavender. Amber."
+  const tagline = noteGroups.length > 1 ? `${noteGroups.map((group) => group.notes[0]).join(". ")}.` : undefined;
+  // Real offers only: the free-shipping threshold, Buy 2 Get 1 on perfumes and
+  // attars, and the gift from Store Settings when it is switched on.
+  const perks: PurchasePerk[] = [
+    { key: "shipping", value: formatInr(FREE_SHIPPING_THRESHOLD), label: "Free shipping", icon: "truck", minAmount: FREE_SHIPPING_THRESHOLD },
+    ...(isFragrance ? [{ key: "b2g1", value: "Any 3", label: "1 of them free", icon: "bottles" as const, minQuantity: 3 }] : []),
+    ...(rewardSettings.rewardEnabled && rewardSettings.rewardThreshold
+      ? [{ key: "gift", value: formatInr(rewardSettings.rewardThreshold), label: "Free gift", icon: "gift" as const, minAmount: rewardSettings.rewardThreshold }]
+      : []),
+  ];
   return (
     <div className="product-page">
       <JsonLd data={productJsonLd(product, product.reviewCount && product.reviewAverage ? { value: product.reviewAverage, count: product.reviewCount } : undefined)} />
@@ -78,10 +83,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
           <ProductGallery title={product.title} images={images} videoUrl={product.videoUrl} />
           <aside className="product-info">
             <header className="product-identity">
-              <div className="product-kicker-row">
-                <p>{seo.category} · {genderLabel(product) ?? "Leyros collection"}</p>
-                {isFragrance && <span className="product-kicker-badge">Buy 2, get 1 free</span>}
-              </div>
+              <p className="product-kicker">{kicker}</p>
               <h1>{shortProductName}</h1>
               <ProductRatingLine
                 handle={product.handle}
@@ -92,15 +94,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 amazonUrl={product.amazonUrl}
               />
             </header>
-            {isFragrance && (
-              <div className="product-quick-facts" aria-label="Product summary">
-                <div><span>Profile</span><strong>{details.family}</strong></div>
-                <div><span>Concentration</span><strong>{details.concentration}</strong></div>
-                <div><span>Presence</span><strong>{details.intensity}</strong></div>
-              </div>
-            )}
-            {topFacts.length > 0 && <RotatingHighlights highlights={product.highlights} seed={product.id} />}
-            {couponCategory && <CategoryCouponOffers category={couponCategory} />}
             <AddToCartForm
               productId={product.id}
               handle={product.handle}
@@ -108,7 +101,12 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               category={product.category}
               image={images[0]}
               variants={product.variants}
+              tagline={tagline}
+              summary={productShortDescription(product.description)}
+              perks={perks}
             />
+            {topFacts.length > 0 && <RotatingHighlights highlights={product.highlights} seed={product.id} />}
+            {couponCategory && <CategoryCouponOffers category={couponCategory} />}
             <div className="product-service-line"><span>Small-batch blended</span><span>Secure checkout</span><span>Order tracking</span></div>
             <div className="product-purchase-details">
               <details>
@@ -131,27 +129,44 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
         </div>
       </section>
 
-      {isFragrance && (
+      {noteGroups.length > 0 && (
         <section className="product-notes-section" aria-labelledby="fragrance-notes-title">
           <div className="page-shell">
-            <h2 id="fragrance-notes-title">Fragrance notes</h2>
+            <h2 id="fragrance-notes-title">Notes</h2>
             <div className="product-note-grid">
               {noteGroups.map((group) => (
                 <article key={group.title} className="product-note-group">
                   <h3>{group.title}</h3>
-                  <div className="product-note-list">
-                    {group.notes.length ? group.notes.map((note) => (
-                      <div className="product-note" key={note}>
-                        <span className="product-note-image">
-                          <Image src={scentNoteImage([note], images[0])} alt="" fill sizes="92px" />
-                        </span>
+                  <ul className="product-note-list">
+                    {group.notes.map((note) => (
+                      <li className="product-note" key={note}>
+                        <NoteIcon note={note} />
                         <span>{note}</span>
-                      </div>
-                    )) : <p>A carefully composed impression</p>}
-                  </div>
+                      </li>
+                    ))}
+                  </ul>
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {isFragrance && (
+        <section className="product-offer-band" aria-label="Buy 2, get 1 free">
+          <div className="page-shell product-offer-band-inner">
+            <div className="product-offer-band-copy">
+              <span>Buy any 2</span>
+              <strong>Get 1 free</strong>
+              <small>On perfumes and attars. The lowest-priced of every 3 is free.</small>
+              <Link href="/collections/all?category=collections">Shop now</Link>
+            </div>
+            <ul className="product-offer-band-perks">
+              <li><b>Free</b><span>Shipping over {formatInr(FREE_SHIPPING_THRESHOLD)}</span></li>
+              {rewardSettings.rewardEnabled && rewardSettings.rewardThreshold && (
+                <li><b>Free</b><span>Gift over {formatInr(rewardSettings.rewardThreshold)}</span></li>
+              )}
+            </ul>
           </div>
         </section>
       )}
@@ -166,15 +181,21 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
           <div>
             <div className="product-detail-summary" aria-label="Key product details">
               {isFragrance && <article><span>Fragrance profile</span><strong>{details.family}</strong></article>}
-              <article><span>For</span><strong>{genderLabel(product) ?? "Everyone"}</strong></article>
+              <article><span>For</span><strong>{gender ?? "Everyone"}</strong></article>
               {isFragrance && <article><span>Concentration</span><strong>{details.concentration}</strong></article>}
               <article><span>Available sizes</span><strong>{product.variants.map((variant) => formatSize(variant.sizeMl, variant.sizeLabel)).join(" · ")}</strong></article>
             </div>
             <div className="product-disclosures">
-              {featureList.length > 0 && (
+              {product.description && (
+                <details open>
+                  <summary>Product description</summary>
+                  <p className="product-full-description">{product.description}</p>
+                </details>
+              )}
+              {!isFragrance && product.tags.length > 0 && (
                 <details>
-                  <summary>{isFragrance ? "Complete fragrance notes" : "Product features"}</summary>
-                  <p>{featureList.join(", ")}.</p>
+                  <summary>Product features</summary>
+                  <p>{product.tags.join(", ")}.</p>
                 </details>
               )}
               <details><summary>Delivery, tracking and returns</summary><p>Track your order from dispatch to delivery. Standard delivery across India takes 3 to 5 business days. Shipping is free on orders of {formatInr(FREE_SHIPPING_THRESHOLD)} or more and {formatInr(STANDARD_SHIPPING_FEE)} below that. Returns are accepted for items that arrive damaged, incorrect or faulty. Contact us within 7 days of delivery.</p></details>

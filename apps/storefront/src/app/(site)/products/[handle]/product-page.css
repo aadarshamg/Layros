@@ -294,3 +294,246 @@ html body .product-page.product-page a:focus-visible { outline: 2px solid var(--
   html body .product-page.product-page .acquire-button,
   html body .product-page.product-page .acquire-button::before { transition: none; }
 }
+
+/* Clean reference layout: title, rating, price, compact variant choices. */
+html body .product-page.product-page .product-kicker-row { display: none; }
+html body .product-page.product-page .product-identity { margin-bottom: 32px; }
+html body .product-page.product-page .product-identity h1 { font-size: clamp(32px, 3vw, 46px); line-height: 1.08; margin-bottom: 8px; }
+html body .product-page.product-page .product-rating { font-size: 12px; }
+html body .product-page.product-page .purchase-price { margin-bottom: 18px; }
+html body .product-page.product-page .purchase-price strong { font-size: 36px; }
+html body .product-page.product-page .purchase-price s { color: #888; font-size: 22px; }
+html body .product-page.product-page .purchase-price b { font-size: 24px; font-weight: 700; color: #db2439; }
+html body .product-page.product-page .purchase-price strong,
+html body .product-page.product-page .purchase-price s { font-weight: 700; }
+html body .product-page.product-page .size-label { font-family: var(--font-display); font-size: 18px; font-weight: 400; margin: 0; }
+html body .product-page.product-page .size-grid { gap: 8px; margin-bottom: 0; }
+html body .product-page.product-page .size-option { min-width: 68px; min-height: 40px; padding: 8px 12px; }
+html body .product-page.product-page .size-option b { font-family: var(--font-primary); font-weight: 400; font-size: 14px; text-transform: none; }
+html body .product-page.product-page .variant-copy { display: block; }
+html body .product-page.product-page .purchase-description { margin: 28px 0 20px; color: #222; font-size: 15px; line-height: 1.5; white-space: pre-line; }
+html body .product-page.product-page .purchase-form { margin-bottom: 22px; }
+@media (max-width: 520px) {
+  html body .product-page.product-page .product-identity h1 { font-size: 34px; }
+  html body .product-page.product-page .product-identity { margin-bottom: 30px; }
+  html body .product-page.product-page .size-option { min-height: 44px; }
+}
+
+/* ── Reference product layout ────────────────────────────────────────────
+   Kicker, title, rating; price with the quantity stepper beside it; sizes;
+   a short tagline and one-line summary; an offer strip; then Add to cart.
+   Notes with ingredient icons and an offer band follow below the fold. */
+html body .product-page.product-page .product-gallery-stage {
+  border-width: 4px !important;
+  border-color: var(--pdp-ink) !important;
+}
+html body .product-page.product-page .product-identity { margin-bottom: 16px; }
+html body .product-page.product-page .product-kicker {
+  margin: 0 0 6px;
+  color: var(--pdp-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: lowercase;
+}
+
+html body .product-page.product-page .purchase-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+html body .product-page.product-page .purchase-top .purchase-price { margin: 0; }
+html body .product-page.product-page .purchase-top .quantity-control {
+  flex: none;
+  width: 108px;
+  min-height: 0;
+  height: 40px;
+  border: 1px solid #cfcfcf;
+  background: #fff;
+}
+html body .product-page.product-page .size-label {
+  font-family: var(--font-primary), sans-serif !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+html body .product-page.product-page .purchase-tagline {
+  margin: 22px 0 6px;
+  color: var(--pdp-ink);
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: .05em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+html body .product-page.product-page .purchase-summary {
+  max-width: 60ch;
+  margin: 0 0 18px;
+  color: #333;
+  font-size: 15px;
+  line-height: 1.5;
+}
+html body .product-page.product-page .size-grid + .purchase-summary { margin-top: 22px; }
+
+/* Offer strip: what this selection unlocks, joined by a progress line */
+html body .product-page.product-page .purchase-perks {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  margin: 0 0 14px;
+  padding: 16px 8px 14px;
+  background: #f6f6f3;
+  list-style: none;
+}
+html body .product-page.product-page .purchase-perks li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  text-align: center;
+}
+html body .product-page.product-page .purchase-perk-icon { width: 40px; height: 40px; margin-bottom: 4px; }
+html body .product-page.product-page .purchase-perk-icon svg { width: 100%; height: 100%; fill: var(--pdp-ink); }
+html body .product-page.product-page .purchase-perk-wheel { fill: #fff; stroke: var(--pdp-ink); stroke-width: 3; }
+html body .product-page.product-page .purchase-perk-ribbon { fill: #fff; opacity: .55; }
+html body .product-page.product-page .purchase-perks b { font-size: 15px; font-weight: 800; line-height: 1.2; }
+html body .product-page.product-page .purchase-perks small { color: var(--pdp-muted); font-size: 11px; line-height: 1.3; }
+html body .product-page.product-page .purchase-perk-dot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  margin-top: 10px;
+  place-items: center;
+  border: 1.5px solid var(--pdp-ink);
+  border-radius: 50% !important;
+  background: #fff;
+}
+html body .product-page.product-page .purchase-perks li.is-reached .purchase-perk-dot { background: var(--pdp-ink); }
+html body .product-page.product-page .purchase-perks li.is-reached .purchase-perk-dot::after {
+  content: "\2713";
+  color: #fff;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1;
+}
+html body .product-page.product-page .purchase-perks li + li::before {
+  content: "";
+  position: absolute;
+  bottom: 7px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: #cfcfcf;
+}
+html body .product-page.product-page .purchase-perks li + li.is-reached::before { background: var(--pdp-ink); }
+
+/* Add to cart: full width, a diya at each end */
+html body .product-page.product-page .purchase-form > .acquire-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  padding: 8px 18px;
+}
+html body .product-page.product-page .purchase-form > .acquire-button .acquire-button-label { flex: 1; text-align: center; }
+html body .product-page.product-page .purchase-form > .acquire-button .cart-diya {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 26px;
+  height: 28px;
+}
+
+/* Notes */
+html body .product-page.product-page .product-notes-section { padding: 34px 0 44px; }
+html body .product-page.product-page .product-notes-section h2 { margin-bottom: 16px; font-size: clamp(26px, 2.4vw, 34px); }
+html body .product-page.product-page .product-note-group { padding: 18px 10px 0; border-top: 1px solid #d9d9d9; }
+html body .product-page.product-page .product-note-group h3 { margin-bottom: 16px; font-size: 20px; }
+html body .product-page.product-page .product-note-list { gap: 10px 26px; margin: 0; padding: 0; list-style: none; }
+html body .product-page.product-page .product-note { width: 86px; }
+html body .product-page.product-page .product-note-icon {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border-radius: 50% !important;
+}
+html body .product-page.product-page .product-note-icon svg { width: 46px !important; height: 46px !important; }
+
+/* Offer band */
+html body .product-page.product-page .product-offer-band { padding: 34px 0; background: var(--pdp-ink); color: #fff; }
+html body .product-page.product-page .product-offer-band-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+html body .product-page.product-page .product-offer-band-copy span,
+html body .product-page.product-page .product-offer-band-copy strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+}
+html body .product-page.product-page .product-offer-band-copy span { font-size: 28px; letter-spacing: .04em; line-height: 1; }
+html body .product-page.product-page .product-offer-band-copy strong { font-size: clamp(54px, 7vw, 96px); letter-spacing: .01em; line-height: .92; }
+html body .product-page.product-page .product-offer-band-copy small { display: block; margin: 10px 0 18px; font-size: 13px; opacity: .85; }
+html body .product-page.product-page .product-offer-band-copy a {
+  display: inline-block;
+  padding: 12px 28px;
+  background: #fff;
+  color: var(--pdp-ink);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+html body .product-page.product-page .product-offer-band-perks { display: flex; gap: 14px; margin: 0; padding: 0; list-style: none; }
+html body .product-page.product-page .product-offer-band-perks li {
+  min-width: 170px;
+  padding: 18px 16px;
+  border: 2px solid rgba(255, 255, 255, .55);
+  text-align: center;
+}
+html body .product-page.product-page .product-offer-band-perks b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: .03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+html body .product-page.product-page .product-offer-band-perks span { font-size: 13px; }
+
+html body .product-page.product-page .product-full-description { white-space: pre-line; }
+
+@media (max-width: 820px) {
+  /* No sideways scrolling on phones: thumbnails wrap into rows instead */
+  html body .product-page.product-page .product-gallery-thumbnails {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+    gap: 8px;
+    overflow: visible !important;
+  }
+  html body .product-page.product-page .product-gallery-thumbnails button { width: auto; height: auto; aspect-ratio: 1; flex: none; }
+  html body .product-page.product-page .product-offer-band-inner { align-items: flex-start; flex-direction: column; }
+  html body .product-page.product-page .product-offer-band-perks { width: 100%; }
+  html body .product-page.product-page .product-offer-band-perks li { min-width: 0; flex: 1; }
+}
+@media (max-width: 520px) {
+  html body .product-page.product-page .purchase-top .quantity-control { width: 96px; }
+  html body .product-page.product-page .purchase-perks { padding-inline: 2px; }
+  html body .product-page.product-page .purchase-perks b { font-size: 13px; }
+  html body .product-page.product-page .purchase-perks small { font-size: 10px; }
+  html body .product-page.product-page .product-note-list { gap: 10px 14px; }
+  html body .product-page.product-page .product-note { width: 78px; }
+  html body .product-page.product-page .product-note-group { padding-bottom: 14px; }
+}

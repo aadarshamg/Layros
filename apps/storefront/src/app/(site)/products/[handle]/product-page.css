@@ -324,7 +324,7 @@ html body .product-page.product-page .purchase-form { margin-bottom: 22px; }
    a short tagline and one-line summary; an offer strip; then Add to cart.
    Notes with ingredient icons and an offer band follow below the fold. */
 html body .product-page.product-page .product-gallery-stage {
-  border-width: 4px !important;
+  border-width: 6px !important;
   border-color: var(--pdp-ink) !important;
 }
 html body .product-page.product-page .product-identity { margin-bottom: 16px; }

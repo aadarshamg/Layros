@@ -14043,7 +14043,7 @@ html body header.site-header.site-header :is(.desktop-nav a, .desktop-nav summar
 @media (max-width: 820px) {
   html body .storefront-home .home-category-track {
     display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     grid-auto-flow: row;
     gap: 16px 10px !important;
     width: 100%;
@@ -14057,7 +14057,13 @@ html body header.site-header.site-header :is(.desktop-nav a, .desktop-nav summar
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
-    grid-column: auto;
+    grid-column: span 2;
+  }
+  html body .storefront-home .home-category-track > .home-category-card:nth-child(4):nth-last-child(2) {
+    grid-column: 2 / span 2;
+  }
+  html body .storefront-home .home-category-track > .home-category-card:nth-child(5):last-child {
+    grid-column: 4 / span 2;
   }
   html body .storefront-home .home-category-card .home-category-image {
     aspect-ratio: 1 / 1;

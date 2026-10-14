@@ -13565,7 +13565,51 @@ html body .collection-product-grid {
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-.storefront-home .bundle-steps-intro a:hover { background: #fff; color: #1a422f; }
+.storefront-home .bundle-steps-intro button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.storefront-home .bundle-steps-intro a:hover,
+.storefront-home .bundle-steps-intro button:hover { background: #fff; color: #1a422f; }
+/* Whole card is the click target: the heading's link/button stretches over it. */
+.storefront-home .bundle-steps-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+.storefront-home .bundle-steps-link::after { content: ""; position: absolute; inset: 0; }
+.storefront-home .bundle-steps-link:focus-visible { outline: none; }
+.storefront-home .bundle-steps-list li:has(.bundle-steps-link:focus-visible) { outline: 3px solid #fff; outline-offset: 3px; }
+.storefront-home .bundle-steps-list li { transition: transform .2s ease, box-shadow .2s ease; }
+.storefront-home .bundle-steps-list li:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(0, 0, 0, .25); }
+.storefront-home .bundle-steps-list li.is-current { box-shadow: inset 0 0 0 3px #2c5b44; }
+.storefront-home .bundle-steps-list li.is-current:hover { box-shadow: inset 0 0 0 3px #2c5b44, 0 14px 28px rgba(0, 0, 0, .25); }
+.storefront-home .bundle-steps-list li.is-done .bundle-steps-number { background: #4a8a66; }
+.storefront-home .bundle-steps-progress { display: flex; gap: 6px; }
+.storefront-home .bundle-steps-progress i {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #2c5b44;
+  border-radius: 50% !important;
+  transition: background .2s ease;
+}
+.storefront-home .bundle-steps-progress i.is-filled { background: #2c5b44; }
 .storefront-home .bundle-steps-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

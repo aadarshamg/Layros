@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import styles from "./collection-banner.module.css";
 import { CollectionControls } from "@/components/collection/CollectionControls";
 import { ProductCard } from "@/components/product/ProductCard";
 import { getCollectionPresentation } from "@/lib/data/collection-presentation";
@@ -98,7 +99,7 @@ export default async function CollectionPage({ params, searchParams }: {
   return (
     <div className="collection-page">
       <div className="page-shell">
-        <header className="collection-intro">
+        <header className={`collection-intro ${presentation.title.toLowerCase() === "all perfumes" ? styles.perfumeBanner : ""}`}>
           <div className="collection-intro-copy">
             <h1>{presentation.title}</h1>
           </div>

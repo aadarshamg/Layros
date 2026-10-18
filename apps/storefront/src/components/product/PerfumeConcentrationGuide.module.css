@@ -1,0 +1,26 @@
+.guide { margin: 0 14px; padding: 0 0 28px; background: #faf8ef; color: #1a422f; }
+.heading { position: relative; width: fit-content; max-width: 100%; margin: 0 auto 36px; padding: 18px 48px; background: #1a422f; color: #fffaf1; font-family: var(--font-display); font-size: clamp(25px, 3vw, 44px); font-weight: 400; text-align: center; text-transform: uppercase; line-height: 1.15; }
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+.item { display: flex; flex-direction: column; align-items: center; min-width: 0; padding: 0 18px 14px; text-align: center; color: #8b9a8b; }
+.item + .item { border-left: 1px dashed #b5c1b4; }
+.featured { color: #1a422f; }
+.range { display: block; min-width: 110px; padding: 7px 16px; border: 1px solid #a7b8a6; color: #1a422f; font-family: var(--font-display); font-size: 29px; line-height: 1.15; }
+.featured .range { border-color: #1a422f; background: #e5eddf; }
+.bottle { display: block; width: 96px; height: 116px; margin: 22px auto 14px; }
+.item h3 { margin: 0 0 7px; color: #1a422f; font-size: clamp(15px, 1.5vw, 23px); font-weight: 600; text-transform: uppercase; line-height: 1.25; }
+.wear { margin: 0; color: #526358; font-size: 13px; line-height: 1.5; }
+.brand { display: block; margin-top: 12px; padding: 6px 10px; background: #1a422f; color: #fff; font-size: 10px; letter-spacing: .04em; }
+.note { max-width: 850px; margin: 24px auto 0; color: #657465; font-size: 10px; line-height: 1.7; text-align: center; }
+.note a { color: inherit; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+@media (max-width: 700px) {
+  .guide { margin-inline: 12px; }
+  .heading { padding: 16px 18px; margin-bottom: 26px; font-size: 27px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; }
+  .item { padding-inline: 10px; }
+  .item:nth-child(3) { border-left: 0; }
+  .item:nth-child(n + 3) { border-top: 1px dashed #b5c1b4; padding-top: 24px; }
+  .range { min-width: 94px; font-size: 25px; }
+  .item h3 { font-size: 15px; }
+  .brand { font-size: 9px; }
+  .note { padding-inline: 8px; }
+}

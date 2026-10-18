@@ -460,14 +460,14 @@ html body .product-page.product-page .product-note-list { gap: 10px 26px; margin
 html body .product-page.product-page .product-note { width: 86px; }
 html body .product-page.product-page .product-note-icon {
   display: grid;
-  width: 64px;
-  height: 64px;
+  width: 88px;
+  height: 76px;
   place-items: center;
-  border-radius: 50% !important;
+  border-radius: 0 !important;
 }
 html body .product-page.product-page .product-note-icon svg { width: 46px !important; height: 46px !important; }
-html body .product-page.product-page .product-note-photo { position: relative; overflow: hidden; background: #f2f2f2; }
-html body .product-page.product-page .product-note-photo img { object-fit: cover; }
+html body .product-page.product-page .product-note-photo { position: relative; overflow: visible; background: transparent; border: 0; box-shadow: none; }
+html body .product-page.product-page .product-note-photo img { object-fit: contain; }
 
 /* Offer band */
 html body .product-page.product-page .product-offer-band { padding: 34px 0; background: var(--pdp-ink); color: #fff; }
@@ -516,6 +516,65 @@ html body .product-page.product-page .product-offer-band-perks b {
 html body .product-page.product-page .product-offer-band-perks span { font-size: 13px; }
 
 html body .product-page.product-page .product-full-description { white-space: pre-line; }
+html body .product-page.product-page .product-description-section { padding: clamp(32px, 4vw, 56px) 0; background: #fff; color: #1a422f; }
+html body .product-page.product-page .product-description-section h2 { margin: 0 0 16px; font-family: var(--font-display); font-size: clamp(24px, 2.2vw, 30px); font-weight: 400; text-transform: uppercase; letter-spacing: .015em; }
+html body .product-page.product-page .product-description-section .product-full-description { margin: 0; font-size: 14px; line-height: 1.8; color: #394f40; }
+html body .product-page.product-page .product-quality-highlights { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; margin: 0; padding: 38px 0; list-style: none; }
+html body .product-page.product-page .product-quality-highlights li { display: flex; align-items: center; justify-content: center; gap: 18px; color: #1a422f; }
+html body .product-page.product-page .product-quality-highlights svg { flex: 0 0 66px; width: 66px; height: 66px; }
+html body .product-page.product-page .product-quality-highlights li > span { font-size: clamp(14px, 1.45vw, 21px); font-weight: 500; line-height: 1.3; text-transform: uppercase; }
+html body .product-page.product-page .product-key-features { border-top: 1px solid #d9ded9; padding-top: 24px; }
+html body .product-page.product-page .product-key-features > ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 48px; margin: 0; padding: 0; list-style: none; }
+html body .product-page.product-page .product-key-features li { display: grid; gap: 6px; }
+html body .product-page.product-page .product-key-features strong { font-size: 13px; font-weight: 600; }
+html body .product-page.product-page .product-key-features li > span { font-size: 13px; color: #526358; line-height: 1.7; }
+@media (max-width: 800px) {
+  html body .product-page.product-page .product-quality-highlights { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 18px; padding-block: 30px; }
+  html body .product-page.product-page .product-quality-highlights li { justify-content: flex-start; gap: 12px; }
+  html body .product-page.product-page .product-quality-highlights svg { flex-basis: 52px; width: 52px; height: 52px; }
+}
+@media (max-width: 520px) {
+  html body .product-page.product-page .product-key-features > ul { grid-template-columns: 1fr; gap: 20px; }
+  html body .product-page.product-page .product-quality-highlights svg { flex-basis: 42px; width: 42px; height: 42px; }
+  html body .product-page.product-page .product-quality-highlights li > span { font-size: 12px; }
+}
+
+/* Three-panel campaign banner, directly after the fragrance notes. */
+html body .product-page.product-page .product-offer-band { margin: 0 14px; padding: 0; overflow: hidden; background: #123021; }
+html body .product-page.product-page .product-offer-band-inner { width: min(100%, 1600px); display: grid; grid-template-columns: 1fr 1.35fr .9fr; align-items: stretch; gap: 0; }
+html body .product-page.product-page .product-offer-band-copy { position: relative; z-index: 1; align-self: center; padding: 38px 0 38px clamp(24px, 4vw, 70px); }
+html body .product-page.product-page .product-offer-band-copy span { margin-bottom: 8px; color: #fff; font-size: clamp(22px, 2.2vw, 32px); }
+html body .product-page.product-page .product-offer-band-copy strong { color: #fff; font-size: clamp(48px, 5.8vw, 88px); white-space: nowrap; }
+html body .product-page.product-page .product-offer-band-copy small { margin: 16px 0 22px; color: #f2f2f2; font-size: 12px; line-height: 1.6; }
+html body .product-page.product-page .product-offer-band-copy a { padding: 14px 30px; background: #fff; color: #1a422f; transition: background .2s, color .2s; }
+html body .product-page.product-page .product-offer-band-copy a:hover { background: #e2efdf; }
+html body .product-page.product-page .product-offer-band-copy a:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
+html body .product-page.product-page .product-offer-band-image { position: relative; min-height: 350px; mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+html body .product-page.product-page .product-offer-band-image img { object-fit: cover; object-position: center 52%; }
+html body .product-page.product-page .product-offer-band-reward { align-self: center; padding: 28px 26px; text-align: center; color: #fff; }
+html body .product-page.product-page .offer-reward-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .13em; }
+html body .product-page.product-page .product-offer-band-reward > strong { display: block; margin-top: 8px; color: #fff; font-family: var(--font-display); font-size: clamp(48px, 5vw, 76px); font-weight: 400; line-height: 1; text-transform: uppercase; }
+html body .product-page.product-page .offer-reward-gift { display: grid; place-items: center; width: 48px; margin: 16px auto; }
+html body .product-page.product-page .offer-reward-gift svg { width: 48px; height: 48px; }
+html body .product-page.product-page .product-offer-band-reward p { margin: 0 0 8px; font-size: 12px; line-height: 1.65; }
+html body .product-page.product-page .product-offer-band-reward > small { color: #cbd9cf; font-size: 10px; line-height: 1.5; }
+@media (max-width: 950px) and (min-width: 651px) {
+  html body .product-page.product-page .product-offer-band-inner { grid-template-columns: 1fr 1.1fr; }
+  html body .product-page.product-page .product-offer-band-reward { grid-column: 1 / -1; padding: 18px 24px 24px; border-top: 1px solid #ffffff26; }
+  html body .product-page.product-page .product-offer-band-reward > strong { display: inline; margin-left: 12px; font-size: 32px; }
+  html body .product-page.product-page .offer-reward-gift { display: none; }
+  html body .product-page.product-page .product-offer-band-reward p { margin-top: 10px; }
+}
+@media (max-width: 650px) {
+  html body .product-page.product-page .product-offer-band { margin-inline: 12px; }
+  html body .product-page.product-page .product-offer-band-inner { grid-template-columns: 1fr; }
+  html body .product-page.product-page .product-offer-band-copy { padding: 32px 20px 12px; text-align: center; }
+  html body .product-page.product-page .product-offer-band-copy strong { font-size: clamp(48px, 13vw, 72px); }
+  html body .product-page.product-page .product-offer-band-image { min-height: 0; aspect-ratio: 1.5; mask-image: linear-gradient(180deg, transparent, #000 12%, #000 85%, transparent); }
+  html body .product-page.product-page .product-offer-band-reward { padding: 18px 20px 30px; }
+  html body .product-page.product-page .offer-reward-gift { display: none; }
+  html body .product-page.product-page .product-offer-band-reward > strong { margin: 8px 0 12px; font-size: 46px; }
+}
 
 @media (max-width: 820px) {
   /* No sideways scrolling on phones: thumbnails wrap into rows instead */

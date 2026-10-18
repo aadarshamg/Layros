@@ -71,11 +71,6 @@ export default async function Home() {
 
       <EditorialMarquee />
 
-      <section className="cinematic-manifesto">
-        <h2>The Chosen One</h2>
-        <span>Forged through age-old hydro-distillation in Kannauj. An indelible olfactory sovereignty.</span>
-      </section>
-
       <FaqSection />
 
       <section className="cinematic-service about-leyros">

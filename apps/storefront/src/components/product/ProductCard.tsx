@@ -4,6 +4,7 @@ import type { PerfumeProduct } from "@leyros/types";
 import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurchasePanel";
 import { genderLabel, productCardTitle } from "@/lib/product-labels";
 import { getProductBadge } from "@/lib/product-badge";
+import { RotatingHighlights } from "@/components/product/RotatingHighlights";
 
 
 // The % off is shown once, in the price box (ProductCardPurchasePanel), not
@@ -31,6 +32,7 @@ export function ProductCard({ product }: { product: PerfumeProduct }) {
       </Link>
       <div className="product-card-body">
         <h3><Link href={`/products/${product.handle}`} className="product-name" aria-label={product.title} title={product.title}>{displayTitle}</Link></h3>
+        <RotatingHighlights highlights={product.highlights} seed={product.id} />
         <ProductCardPurchasePanel product={product} />
       </div>
     </article>

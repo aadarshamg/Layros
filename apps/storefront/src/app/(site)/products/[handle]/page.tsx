@@ -1,4 +1,5 @@
 import "./product-page.css";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -11,6 +12,8 @@ import { getProductByHandle, getSimilarProducts } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 import { AddToCartForm, type PurchasePerk } from "@/components/product/AddToCartForm";
 import { NoteIcon } from "@/components/product/NoteIcon";
+import { ProductQualityHighlights } from "@/components/product/ProductQualityHighlights";
+import { PerfumeConcentrationGuide } from "@/components/product/PerfumeConcentrationGuide";
 import { ProductInterestTracker } from "@/components/product/ProductInterestTracker";
 import { ProductRatingLine } from "@/components/product/ProductRatingLine";
 import { ProductReviews } from "@/components/product/ProductReviews";
@@ -23,7 +26,6 @@ import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr, formatSize } from "@/lib/format";
 import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/shipping";
-import { RotatingHighlights } from "@/components/product/RotatingHighlights";
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
   const { handle } = await params;
@@ -50,6 +52,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const images = product.images.length ? product.images : ["/leyros/nuit-doree-hero.jpg"];
 
   const isFragrance = isBuyTwoGetOneEligible(product);
+  const isPerfume = isFragrance && !/attar/i.test(product.category ?? "");
   const seo = getProductSeo(product);
   const shortProductName = seo.name;
   const couponCategory = getProductCouponCategory(product);
@@ -57,7 +60,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const kicker = !gender ? seo.category : gender === "Unisex" ? `Unisex ${seo.category}` : `${seo.category} for ${gender}`;
   // Only the "when to wear" highlights managed in admin; category, family,
   // gender and sizes are already shown elsewhere on the page.
-  const topFacts = product.highlights?.map((highlight) => highlight.title) ?? [];
   const noteGroups = isFragrance ? productNotePyramid(product) : [];
   // One lead note per layer, e.g. "Neroli. Lavender. Amber."
   const tagline = noteGroups.length > 1 ? `${noteGroups.map((group) => group.notes[0]).join(". ")}.` : undefined;
@@ -104,9 +106,8 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               tagline={tagline}
               perks={perks}
             />
-            {topFacts.length > 0 && <RotatingHighlights highlights={product.highlights} seed={product.id} />}
             {couponCategory && <CategoryCouponOffers category={couponCategory} />}
-            <div className="product-service-line"><span>Small-batch blended</span><span>Secure checkout</span><span>Order tracking</span></div>
+            <div className="product-service-line"><span>Secure checkout</span><span>Order tracking</span></div>
             <div className="product-purchase-details">
               <details>
                 <summary>Delivery & shipping <span>From {formatInr(FREE_SHIPPING_THRESHOLD)}, shipping is on us</span></summary>
@@ -147,9 +148,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 </article>
               ))}
             </div>
-            <p style={{ fontSize: "11px", marginTop: "16px", color: "#4f6354" }}>
-              Ingredient photos: Pexels. <a href="https://commons.wikimedia.org/wiki/File:Bergamot_orange_-_whole_and_slice.jpg">Bergamot: Ivar Leidus</a>; <a href="https://commons.wikimedia.org/wiki/File:GT-Sandelholzmehl-Oman-2009.jpg">sandalwood: GeoTrinity</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Resized and cropped. Abstract accords are illustrated with fragrance oils.
-            </p>
           </div>
         </section>
       )}
@@ -160,18 +158,43 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
             <div className="product-offer-band-copy">
               <span>Buy any 2</span>
               <strong>Get 1 free</strong>
-              <small>On perfumes and attars. The lowest-priced of every 3 is free.</small>
+              <small>Three scents. Endless possibilities.</small>
               <Link href="/collections/all?category=collections">Shop now</Link>
             </div>
-            <ul className="product-offer-band-perks">
-              <li><b>Free</b><span>Shipping over {formatInr(FREE_SHIPPING_THRESHOLD)}</span></li>
-              {rewardSettings.rewardEnabled && rewardSettings.rewardThreshold && (
-                <li><b>Free</b><span>Gift over {formatInr(rewardSettings.rewardThreshold)}</span></li>
-              )}
-            </ul>
+            <div className="product-offer-band-image">
+              <Image src="/leyros/hero-products-green-v3.png" alt="Leyros Aventra, Aqualis and Veloria fragrances" fill sizes="(max-width: 650px) 100vw, 45vw" />
+            </div>
+            <div className="product-offer-band-reward">
+              <span className="offer-reward-eyebrow">Your third fragrance</span>
+              <strong>On us.</strong>
+              <div className="offer-reward-gift" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M8 23h32v19H8zM5 15h38v8H5zM24 15v27M24 15C8 15 9 2 17 6c5 2 7 9 7 9Zm0 0C40 15 39 2 31 6c-5 2-7 9-7 9Z" /></svg>
+              </div>
+              <p>Add any 3 perfumes or attars.<br />The lowest-priced one is free.</p>
+              <small>Applied automatically in your bag.</small>
+            </div>
           </div>
         </section>
       )}
+
+      <section className="product-description-section" aria-labelledby="product-description-title">
+        <div className="page-shell">
+          <h2 id="product-description-title">Product description</h2>
+          {product.description && <p className="product-full-description">{product.description}</p>}
+          {isPerfume && <ProductQualityHighlights />}
+          {isPerfume && (
+            <div className="product-key-features">
+              <h2>Key features &amp; benefits</h2>
+              <ul>
+                <li><strong>30% perfume concentration</strong><span>A concentrated composition with a lasting scent trail.</span></li>
+                <li><strong>Up to 12 hours of wear</strong><span>Wear time varies with skin, weather, and application.</span></li>
+                {noteGroups.length > 0 && <li><strong>A fragrance that unfolds</strong><span>{noteGroups.map((group) => `${group.title}: ${group.notes.join(", ")}`).join(". ")}.</span></li>}
+                {product.highlights?.some((highlight) => highlight.title) && <li><strong>Made for your moments</strong><span>{product.highlights.map((highlight) => highlight.title).filter(Boolean).join(" · ")}</span></li>}
+              </ul>
+            </div>
+          )}
+        </div>
+      </section>
 
       <section className="product-detail-section" aria-labelledby="product-details-title">
         <div className="page-shell product-detail-layout">
@@ -184,16 +207,10 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
             <div className="product-detail-summary" aria-label="Key product details">
               {isFragrance && <article><span>Fragrance profile</span><strong>{details.family}</strong></article>}
               <article><span>For</span><strong>{gender ?? "Everyone"}</strong></article>
-              {isFragrance && <article><span>Concentration</span><strong>{details.concentration}</strong></article>}
+              {isFragrance && <article><span>Concentration</span><strong>{isPerfume ? "30% Pure Parfum" : details.concentration}</strong></article>}
               <article><span>Available sizes</span><strong>{product.variants.map((variant) => formatSize(variant.sizeMl, variant.sizeLabel)).join(" · ")}</strong></article>
             </div>
             <div className="product-disclosures">
-              {product.description && (
-                <details open>
-                  <summary>Product description</summary>
-                  <p className="product-full-description">{product.description}</p>
-                </details>
-              )}
               {!isFragrance && product.tags.length > 0 && (
                 <details>
                   <summary>Product features</summary>
@@ -205,6 +222,8 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
           </div>
         </div>
       </section>
+
+      {isPerfume && <PerfumeConcentrationGuide />}
 
       <ProductReviews productId={product.id} productName={shortProductName} count={product.reviewCount} average={product.reviewAverage} />
       <RelatedProducts products={relatedProducts} />

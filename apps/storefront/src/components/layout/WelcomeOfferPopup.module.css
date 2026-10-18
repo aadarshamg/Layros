@@ -1,0 +1,45 @@
+.festive.festive {
+  --festive-gold: #dfbd78;
+  width: min(100%, 440px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: 34px 22px 22px;
+  border: 1px solid rgba(223,189,120,.55);
+  border-radius: 8px;
+  background: radial-gradient(ellipse at 50% 20%, #28533c 0, #183e2b 44%, #123021 100%);
+  box-shadow: 0 30px 100px #061a1266, inset 0 0 0 6px #dfbd7809;
+}
+.garland { position: absolute; inset: 0 0 auto; height: 40px; overflow: hidden; pointer-events: none; display: flex; justify-content: space-around; padding: 0 18px; }
+.garland::before { content: ""; position: absolute; top: -24px; left: -5%; width: 110%; height: 46px; border-bottom: 1px solid #dfbd7866; border-radius: 50%; }
+.garland i { position: relative; width: 6px; height: 10px; margin-top: 23px; border-radius: 50%; background: var(--festive-gold); box-shadow: 0 0 12px #dfbd7855; transform: rotate(25deg); }
+.garland i:nth-child(2n) { margin-top: 18px; width: 4px; height: 7px; opacity: .65; }
+.festive :global(.welcome-offer-close) { top: 15px; right: 15px; width: 32px; height: 32px; border: 1px solid #dfbd7855; background: #123021; color: #f6ead4; }
+.festive :global(.welcome-offer-brand) { min-height: 76px; margin-top: 6px; }
+.festive :global(.welcome-offer-brand img) { width: 98px; }
+.festive :global(.welcome-offer-brand span) { color: #e6ce9e; font-size: 9px; font-weight: 500; letter-spacing: .18em; border-color: #dfbd784d; }
+.celebration { position: relative; padding: 12px 0 22px; text-align: center; }
+.eyebrow { color: #e6ce9e; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+.diya { display: block; width: 150px; height: 75px; margin: 12px auto 6px; color: var(--festive-gold); }
+.celebration p { margin: 0 0 7px; font-family: Georgia, serif; font-size: 27px; font-weight: 400; letter-spacing: -.035em; color: #fff7e8; }
+.subline { color: #d1ddcf; font-size: 11px; letter-spacing: .025em; }
+.festive :global(.welcome-offer-form-card) { padding: 24px 20px 19px; border: 1px solid #dfbd7866; border-radius: 4px; background: #fffaf1; }
+.cardEyebrow { display: block; margin-bottom: 10px; color: #82622b; font-size: 9px; text-transform: uppercase; letter-spacing: .16em; }
+.festive :global(.welcome-offer-form-card h2) { max-width: 280px; font-family: Georgia, serif; font-size: 28px; font-weight: 400; letter-spacing: -.035em; line-height: 1.16; text-transform: none; color: #183e2b; }
+.festive :global(.welcome-offer-form-card > p) { max-width: 280px; margin: 10px auto 20px; font-size: 12px; line-height: 1.65; }
+.festive :global(.welcome-phone-field), .festive :global(.welcome-code-field input) { background: #fffdf8; border-color: #d8d7c9; border-radius: 3px; }
+.festive :global(.welcome-offer-form-card form > button[type="submit"]) { border: 1px solid #dfbd7877; border-radius: 3px; background: #183e2b; color: #fff7e8; font-weight: 600; letter-spacing: .04em; transition: background .2s; }
+.festive :global(.welcome-offer-form-card form > button[type="submit"]:hover:not(:disabled)) { background: #28533c; }
+.festive :global(.welcome-offer-form-card form > button:disabled) { opacity: .65; cursor: wait; }
+.festive :global(.welcome-consent) { text-align: left; font-size: 11px; line-height: 1.5; }
+.festive :global(.welcome-offer-form-card > small) { font-size: 10px; line-height: 1.7; }
+.festive button:focus-visible, .festive input:focus-visible, .festive a:focus-visible { outline: 2px solid #caa35e; outline-offset: 3px; }
+@media (max-width: 480px) {
+  .festive.festive { padding: 30px 14px 14px; max-height: calc(100dvh - 24px); }
+  .festive :global(.welcome-offer-form-card) { padding: 21px 16px 17px; }
+  .celebration p { font-size: 25px; }
+}
+@media (max-height: 740px) {
+  .festive :global(.welcome-offer-brand) { min-height: 60px; }
+  .celebration { padding: 5px 0 17px; }
+  .diya { height: 50px; margin: 6px auto; }
+}

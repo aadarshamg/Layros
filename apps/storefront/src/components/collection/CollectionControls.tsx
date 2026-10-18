@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CATEGORY_FILTER_OPTIONS } from "@/lib/data/categories";
+import styles from "./CollectionControls.module.css";
 
 const families = ["floral", "woody", "oriental", "fresh", "gourmand"];
 const GENDER_OPTIONS = [
@@ -49,7 +50,7 @@ export function CollectionControls() {
   return (
     <div className="collection-controls">
       <div className="collection-controls-bar">
-        <div className="collection-control-actions">
+        <div className={`collection-control-actions ${styles.hiddenActions}`}>
           <button
             type="button"
             className={`stock-filter-chip${inStock ? " is-active" : ""}`}

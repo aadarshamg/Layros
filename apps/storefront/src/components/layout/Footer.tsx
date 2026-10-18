@@ -138,7 +138,7 @@ export function Footer({
       </div>
 
       <div className="footer-wordmark-wrap">
-        <Link href="/" className="footer-wordmark" aria-label="LEYROS home">LEYROS</Link>
+        <Link href="/" className="footer-wordmark footer-tagline" aria-label="LEYROS home — The Chosen One">The Chosen One</Link>
       </div>
 
       <div className="footer-bottom">

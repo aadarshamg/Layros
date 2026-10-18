@@ -71,27 +71,22 @@ export function WelcomeOfferPopup() {
         <button type="button" className="welcome-offer-close" onClick={close} aria-label="Close">×</button>
         <div className="welcome-offer-brand">
           <Image src="/leyros/leyros-logo-white.png" alt="Leyros" width={110} height={72} />
-          <span>Festive edit</span>
         </div>
         <div className={styles.celebration}>
-          <span className={styles.eyebrow}>A little light. A lasting memory.</span>
           <svg className={styles.diya} viewBox="0 0 180 90" fill="none" aria-hidden="true">
             <path d="M90 47C65 33 87 17 90 4c5 13 25 29 0 43Z" fill="currentColor" />
             <path d="M90 46c-9-7-2-14 0-20 3 7 10 14 0 20Z" fill="#fff7e8" />
             <path d="M44 53h92c-7 22-24 31-46 31S51 75 44 53Z" stroke="currentColor" strokeWidth="1.5" />
             <path d="M52 59c23 9 53 9 76 0M60 69c18 5 42 5 60 0M90 47v6M22 37v10m-5-5h10m127-5v10m-5-5h10M37 18l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6ZM143 12l2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-          <p>Let the celebrations linger.</p>
-          <span className={styles.subline}>Beautiful fragrances. Thoughtful gifting.</span>
         </div>
         <div className="welcome-offer-form-card">
-          <span className={styles.cardEyebrow}>Your festive invitation</span>
-          <h2 id="welcome-offer-title">A season of little luxuries</h2>
-          <p>Sign in for Leyros offers and find a scent to celebrate with.</p>
+          <h2 id="welcome-offer-title">{step === "phone" ? "A little festive luxury." : "You're almost in."}</h2>
+          <p>{step === "phone" ? "Sign in for exclusive offers." : "Enter your verification code."}</p>
           {step === "phone" ? (
             <form onSubmit={submitPhone}>
               <label className="welcome-phone-field"><span>🇮🇳 +91</span><input type="tel" inputMode="numeric" autoFocus maxLength={10} value={phone} onChange={(event) => setPhone(event.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="Enter mobile number" aria-label="Mobile number" /></label>
-              <label className="welcome-consent"><input type="checkbox" checked={marketingOptIn} onChange={(event) => setMarketingOptIn(event.target.checked)} /><span>Notify me about offers and new launches</span></label>
+              <label className="welcome-consent"><input type="checkbox" checked={marketingOptIn} onChange={(event) => setMarketingOptIn(event.target.checked)} /><span>Send me offers &amp; new launches</span></label>
               <button type="submit" disabled={isLoading}>{isLoading ? "Sending…" : "Send OTP"}</button>
             </form>
           ) : (

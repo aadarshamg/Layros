@@ -1937,7 +1937,7 @@ body:not(:has(.cinematic-home)) .note-register { border-radius: 18px; background
   transition: color .4s ease, transform .6s cubic-bezier(.22,1,.36,1);
 }
 .footer-wordmark:hover { color: rgba(255,255,255,.17); transform: scale(1.012); }
-.site-footer .footer-wordmark.footer-tagline { width: auto; font-size: clamp(32px, 10vw, 180px); line-height: 1.05; letter-spacing: -.04em; text-align: center; white-space: normal; text-transform: uppercase; }
+.site-footer .footer-wordmark.footer-tagline { width: auto; font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 10vw, 180px); line-height: 1.05; letter-spacing: .01em; text-align: center; white-space: normal; text-transform: uppercase; }
 .footer-wordmark:focus-visible { outline: 2px solid #1a422f; outline-offset: 8px; }
 
 @media (max-width: 650px) {

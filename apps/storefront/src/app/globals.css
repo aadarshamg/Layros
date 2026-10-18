@@ -12738,8 +12738,8 @@ body .site-footer .footer-links ul {
     padding-block: 6px;
     line-height: 1.3;
   }
-  /* The oversized faded wordmark only adds height on phones */
-  body .site-footer .footer-wordmark-wrap { display: none; }
+  body .site-footer .footer-wordmark-wrap { display: block; padding: 20px 16px 24px; }
+  body .site-footer .footer-wordmark.footer-tagline { font-size: clamp(30px, 10vw, 76px); line-height: 1.1; }
 }
 
 /* Candles page style cards on phones: three small tiles in one row, matching

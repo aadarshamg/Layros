@@ -67,7 +67,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
     };
   }, []);
   const announcements = announcementMessages?.length ? announcementMessages : DEFAULT_ANNOUNCEMENT_MESSAGES;
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isPastHero, setIsPastHero] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   // Reads 0 until the cart hydrates from localStorage on mount — same as
   // the old server-computed count showing 0 before Medusa responded.
@@ -89,16 +89,25 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
     openAccountDrawer();
   };
 
+  // The homepage header is see-through while the hero sits behind it (see
+  // "Homepage hero under a see-through header" in globals.css) and turns
+  // solid once the hero has scrolled out from under the bar. Other pages have
+  // no hero, so the CSS keeps them solid whatever this flag says.
   useEffect(() => {
-    if (!isHome) {
-      setIsScrolled(false);
-      return;
-    }
+    if (!isHome) return;
 
-    const updateHeader = () => setIsScrolled(window.scrollY > 48);
+    const updateHeader = () => {
+      const hero = document.querySelector(".signature-hero");
+      const headerBottom = headerRef.current?.getBoundingClientRect().bottom ?? 0;
+      setIsPastHero(!hero || hero.getBoundingClientRect().bottom <= headerBottom);
+    };
     updateHeader();
     window.addEventListener("scroll", updateHeader, { passive: true });
-    return () => window.removeEventListener("scroll", updateHeader);
+    window.addEventListener("resize", updateHeader);
+    return () => {
+      window.removeEventListener("scroll", updateHeader);
+      window.removeEventListener("resize", updateHeader);
+    };
   }, [isHome]);
 
   // The menus are <details> elements, which only close when their own button
@@ -172,7 +181,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
   // One header on every page, homepage included: announcement strip, logo,
   // links, icons.
   return (
-    <header className="site-header" ref={headerRef}>
+    <header className={`site-header${isPastHero ? " is-past-hero" : ""}`} ref={headerRef}>
       {(
         <div className="announcement" aria-label="Store announcements">
           <div className="announcement-track">

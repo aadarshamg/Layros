@@ -14118,3 +14118,28 @@ html body header.site-header.site-header :is(.desktop-nav a, .desktop-nav summar
     padding: 8px 0 0;
   }
 }
+
+/* Homepage hero under a see-through header: the hero slides up beneath the
+   sticky header (its padding keeps the content where it was), and the green
+   nav bar is transparent until NavView marks it .is-past-hero on scroll. The
+   announcement strip keeps its own solid background. */
+html body .storefront-home:has(.signature-hero) {
+  margin-top: calc(-1 * var(--site-header-height, 120px));
+}
+html body .storefront-home .signature-hero {
+  height: 100svh;
+  margin-top: 0;
+  padding-top: calc(var(--site-header-height, 120px) + 24px);
+}
+@media (max-width: 700px) {
+  html body .storefront-home .signature-hero { padding-top: calc(var(--site-header-height, 100px) + 20px); }
+}
+@media (max-width: 600px) {
+  html body .storefront-home .signature-hero { padding-top: calc(var(--site-header-height, 100px) + 14px); }
+}
+html body header.site-header.site-header { transition: background-color .3s ease, box-shadow .3s ease; }
+html body:has(.storefront-home .signature-hero) header.site-header.site-header:not(.is-past-hero) {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

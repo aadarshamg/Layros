@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { timingSafeStringEqual } from "@/lib/auth/crypto";
-import { isShiprocketConfigured, retryUnsentOrders } from "@/lib/shipping/shiprocket";
+import { isShiprocketConfigured, retryUnsentOrders, syncOpenOrders } from "@/lib/shipping/shiprocket";
 
 export const dynamic = "force-dynamic";
 
@@ -20,5 +20,9 @@ function isAuthorized(request: NextRequest) {
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!isShiprocketConfigured()) return NextResponse.json({ skipped: "Shiprocket is not configured." });
-  return NextResponse.json({ retried: await retryUnsentOrders(MAX_PER_RUN) });
+  const retried = await retryUnsentOrders(MAX_PER_RUN);
+  // Also refresh open orders, so cancellations made in Shiprocket before an
+  // AWB (which the webhook never reports) reach admin without anyone looking.
+  await syncOpenOrders({ limit: 100 });
+  return NextResponse.json({ retried });
 }

@@ -47,12 +47,12 @@ async function getToken(forceRefresh = false) {
   return data.token;
 }
 
-async function shiprocketPost<T>(path: string, body: unknown): Promise<T> {
+async function shiprocketRequest<T>(path: string, body?: unknown): Promise<T> {
   for (const forceRefresh of [false, true]) {
     const response = await fetch(`${API}${path}`, {
-      method: "POST",
+      method: body === undefined ? "GET" : "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${await getToken(forceRefresh)}` },
-      body: JSON.stringify(body),
+      body: body === undefined ? undefined : JSON.stringify(body),
       cache: "no-store",
     });
     if (response.status === 401 && !forceRefresh) continue;
@@ -186,7 +186,7 @@ export async function sendOrderToShiprocket(orderDocId: string) {
   }
 
   try {
-    const result = await shiprocketPost<{ order_id?: number; shipment_id?: number; status?: string }>(
+    const result = await shiprocketRequest<{ order_id?: number; shipment_id?: number; status?: string }>(
       "/orders/create/adhoc",
       buildPayload(order),
     );
@@ -258,30 +258,105 @@ export interface CourierUpdate {
   current_timestamp?: string;
 }
 
+interface ShipmentStatus {
+  status?: string;
+  awb?: string;
+  courierName?: string;
+  etd?: string;
+}
+
+/** Writes a shipment status onto the order, only touching fields that changed. */
+async function applyShipmentStatus(id: string, current: Record<string, unknown>, next: ShipmentStatus) {
+  if (!writeClient) return;
+  const fulfillment = next.status ? fulfillmentFromShiprocket(next.status) : null;
+  const changes: Record<string, string> = {
+    ...(next.status && { shiprocketStatus: next.status }),
+    ...(fulfillment && { fulfillmentStatus: fulfillment }),
+    ...(next.awb && { awbCode: next.awb, trackingUrl: trackingUrlFor(next.awb) }),
+    ...(next.courierName && { courierName: next.courierName }),
+    ...(next.etd && { estimatedDelivery: next.etd }),
+  };
+  const changed = Object.fromEntries(Object.entries(changes).filter(([key, value]) => current[key] !== value));
+  await writeClient
+    .patch(id)
+    .set({
+      ...changed,
+      lastShiprocketCheckAt: new Date().toISOString(),
+      ...(Object.keys(changed).length && { lastTrackingUpdateAt: new Date().toISOString() }),
+    })
+    .commit();
+}
+
+const TRACKED_FIELDS = "_id, shiprocketOrderId, shiprocketStatus, fulfillmentStatus, awbCode, trackingUrl, courierName, estimatedDelivery";
+
 /** Applies a Shiprocket tracking webhook to the matching order. Returns whether one matched. */
 export async function applyCourierUpdate(update: CourierUpdate) {
   if (!writeClient) return false;
   const srOrderId = update.sr_order_id ? String(update.sr_order_id) : "";
   const orderNumber = update.order_id ? String(update.order_id) : "";
-  const id = await writeClient.fetch<string | null>(
-    `*[_type == "order" && ((defined($srOrderId) && $srOrderId != "" && shiprocketOrderId == $srOrderId) || orderNumber == $orderNumber)][0]._id`,
+  const order = await writeClient.fetch<Record<string, unknown> & { _id: string } | null>(
+    `*[_type == "order" && (($srOrderId != "" && shiprocketOrderId == $srOrderId) || orderNumber == $orderNumber)][0]{${TRACKED_FIELDS}}`,
     { srOrderId, orderNumber },
   );
-  if (!id) return false;
-
-  const status = update.current_status || update.shipment_status || "";
-  const fulfillment = status ? fulfillmentFromShiprocket(status) : null;
-  const awb = update.awb ? String(update.awb) : "";
-  await writeClient
-    .patch(id)
-    .set({
-      ...(status && { shiprocketStatus: status }),
-      ...(fulfillment && { fulfillmentStatus: fulfillment }),
-      ...(awb && { awbCode: awb, trackingUrl: trackingUrlFor(awb) }),
-      ...(update.courier_name && { courierName: update.courier_name }),
-      ...(update.etd && { estimatedDelivery: update.etd }),
-      lastTrackingUpdateAt: new Date().toISOString(),
-    })
-    .commit();
+  if (!order) return false;
+  await applyShipmentStatus(order._id, order, {
+    status: update.current_status || update.shipment_status,
+    awb: update.awb ? String(update.awb) : undefined,
+    courierName: update.courier_name,
+    etd: update.etd,
+  });
   return true;
+}
+
+// ── Status checks ───────────────────────────────────────────────────────
+// The webhook only fires once a shipment has an AWB, so an order cancelled
+// (or edited) in Shiprocket before that never reports back. These ask
+// Shiprocket directly for orders that aren't finished yet.
+
+const FINISHED = ["Delivered", "Cancelled", "Returned"];
+/** Don't ask Shiprocket about the same order more often than this. */
+const CHECK_INTERVAL_MS = 5 * 60 * 1000;
+
+interface ShiprocketOrderDetails {
+  data?: {
+    status?: string;
+    courier_name?: string;
+    etd?: string;
+    awb_data?: { awb?: string | number; courier_name?: string; etd?: string };
+    shipments?: { status?: string; awb?: string | number; courier?: string; etd?: string };
+  };
+}
+
+async function checkOrder(order: Record<string, unknown> & { _id: string; shiprocketOrderId: string }) {
+  try {
+    const { data } = await shiprocketRequest<ShiprocketOrderDetails>(`/orders/show/${encodeURIComponent(order.shiprocketOrderId)}`);
+    if (!data) return;
+    const awb = data.awb_data?.awb || data.shipments?.awb;
+    await applyShipmentStatus(order._id, order, {
+      status: data.shipments?.status || data.status,
+      awb: awb ? String(awb) : undefined,
+      courierName: data.awb_data?.courier_name || data.shipments?.courier || data.courier_name,
+      etd: data.awb_data?.etd || data.shipments?.etd || data.etd,
+    });
+  } catch (error) {
+    console.error("Shiprocket status check failed:", order.shiprocketOrderId, error);
+  }
+}
+
+/**
+ * Refreshes unfinished orders from Shiprocket — all of them (cron) or one
+ * customer's (My Orders page). Never throws; a slow or failing Shiprocket
+ * just leaves the last known status in place.
+ */
+export async function syncOpenOrders({ customerId, limit }: { customerId?: string; limit: number }) {
+  if (!isShiprocketConfigured() || !writeClient) return;
+  const checkedBefore = new Date(Date.now() - CHECK_INTERVAL_MS).toISOString();
+  const orders = await writeClient.fetch<Array<Record<string, unknown> & { _id: string; shiprocketOrderId: string }>>(
+    `*[_type == "order" && defined(shiprocketOrderId) && !(fulfillmentStatus in $finished)
+      && (!defined($customerId) || customer._ref == $customerId)
+      && (!defined(lastShiprocketCheckAt) || lastShiprocketCheckAt < $checkedBefore)
+    ] | order(_createdAt desc)[0...$limit]{${TRACKED_FIELDS}}`,
+    { finished: FINISHED, customerId: customerId ?? null, checkedBefore, limit },
+  ).catch(() => []);
+  await Promise.all(orders.map(checkOrder));
 }

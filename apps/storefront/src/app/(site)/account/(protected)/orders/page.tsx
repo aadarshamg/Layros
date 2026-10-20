@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSessionCustomerId } from "@/lib/auth/session";
 import { sanityClient } from "@/lib/sanity";
 import { formatInr } from "@/lib/format";
+import { syncOpenOrders } from "@/lib/shipping/shiprocket";
 import { OrderTrackingStatus, type OrderShipment } from "@/components/checkout/OrderTrackingStatus";
 
 interface CustomerOrder {
@@ -18,6 +19,11 @@ interface CustomerOrder {
 
 export default async function OrdersPage() {
   const customerId = await getSessionCustomerId();
+  // Pull the latest Shiprocket status first (e.g. a cancellation, which the
+  // tracking webhook never reports), but never hold the page up for long.
+  if (customerId) {
+    await Promise.race([syncOpenOrders({ customerId, limit: 10 }), new Promise((resolve) => setTimeout(resolve, 4000))]);
+  }
   const orders = customerId
     ? await sanityClient.fetch<CustomerOrder[]>(
         `*[_type == "order" && customer._ref == $customerId] | order(_createdAt desc){

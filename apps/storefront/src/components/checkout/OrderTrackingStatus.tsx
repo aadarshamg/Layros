@@ -27,7 +27,10 @@ export function OrderTrackingStatus({ status = "Order placed", shipment }: { sta
   const activeIndex = statusIndex(status);
   const normalized = status.toLowerCase();
   const stopped = normalized === "cancelled" || normalized === "returned";
-  const liveStatus = shipment?.shiprocketStatus && !stopped && normalized !== "delivered" ? shipment.shiprocketStatus.toLowerCase() : "";
+  // Shiprocket's own words ("out for delivery") add detail once the order
+  // ships; its pre-shipping statuses like "NEW" mean nothing to a shopper.
+  const raw = shipment?.shiprocketStatus?.toLowerCase() ?? "";
+  const liveStatus = raw && shipment?.awbCode && !stopped && normalized !== "delivered" ? raw : "";
   return (
     <section className={`order-tracking-status${stopped ? " is-cancelled" : ""}`} aria-label="Order tracking status">
       <header>

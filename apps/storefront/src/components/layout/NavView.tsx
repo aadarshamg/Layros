@@ -226,7 +226,9 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
         <div className={`nav-actions${isSearchOpen ? " search-active" : ""}`}>
           {isSearchOpen ? (
             <form action="/collections/all" method="get" className="nav-search-form" onSubmit={() => setIsSearchOpen(false)}>
-              <button type="submit" aria-label="Submit search" className="nav-search-submit"><span aria-hidden="true" /></button>
+              <button type="submit" aria-label="Submit search" className="nav-search-submit">
+                <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg>
+              </button>
               <input type="search" name="q" placeholder="Search fragrances…" autoFocus aria-label="Search fragrances" />
               <button type="button" aria-label="Close search" className="nav-search-close" onClick={() => setIsSearchOpen(false)}>×</button>
             </form>

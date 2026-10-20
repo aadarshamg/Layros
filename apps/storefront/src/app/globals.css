@@ -14168,3 +14168,5 @@ html body header.site-header.site-header .nav-actions > .nav-search-form:focus-w
 }
 html body header.site-header.site-header .nav-search-form :is(input, .nav-search-submit, .nav-search-close) { color: #1a422f !important; }
 html body header.site-header.site-header .nav-search-form input::placeholder { color: #4f6354 !important; opacity: 1; }
+/* Same magnifier as the header's search button, a touch smaller in the field. */
+html body header.site-header.site-header .nav-search-submit .header-simple-icon { width: 19px; height: 19px; stroke-width: 1.8; }

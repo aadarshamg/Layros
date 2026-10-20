@@ -96,12 +96,15 @@ export default async function CollectionPage({ params, searchParams }: {
     return aPrice - bPrice;
   });
 
+  const searchQuery = typeof query.q === "string" ? query.q.trim() : "";
+
   return (
     <div className="collection-page">
       <div className="page-shell">
         <header className={`collection-intro ${presentation.title.toLowerCase() === "all perfumes" ? styles.perfumeBanner : ""}`}>
           <div className="collection-intro-copy">
-            <h1>{presentation.title}</h1>
+            <h1>{searchQuery ? `Results for “${searchQuery}”` : presentation.title}</h1>
+            {searchQuery && <p>{visibleProducts.length} {visibleProducts.length === 1 ? "product" : "products"} found</p>}
           </div>
         </header>
 

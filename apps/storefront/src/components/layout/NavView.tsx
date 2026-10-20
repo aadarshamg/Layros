@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
 import { DEFAULT_ANNOUNCEMENT_MESSAGES } from "@/lib/site-defaults";
@@ -50,6 +50,7 @@ const links: NavLink[] = [
 export function NavView({ announcementMessages }: { announcementMessages?: string[] } = {}) {
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
   const isHome = pathname === "/";
 
   useEffect(() => {
@@ -155,6 +156,15 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [isSearchOpen]);
 
+  // Navigate ourselves: closing the field unmounts the form, and a form
+  // removed during its own submit event is never submitted by the browser.
+  const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const query = String(new FormData(event.currentTarget).get("q") ?? "").trim();
+    setIsSearchOpen(false);
+    router.push(query ? `/collections/all?q=${encodeURIComponent(query)}` : "/collections/all");
+  };
+
   const renderCompactMenu = () => (
     <>
       {links.map((link) =>
@@ -225,7 +235,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
         </nav>
         <div className={`nav-actions${isSearchOpen ? " search-active" : ""}`}>
           {isSearchOpen ? (
-            <form action="/collections/all" method="get" className="nav-search-form" onSubmit={() => setIsSearchOpen(false)}>
+            <form action="/collections/all" method="get" className="nav-search-form" onSubmit={submitSearch}>
               <button type="submit" aria-label="Submit search" className="nav-search-submit">
                 <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg>
               </button>

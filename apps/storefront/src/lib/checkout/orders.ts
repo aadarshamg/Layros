@@ -2,7 +2,9 @@ import "server-only";
 import { createClient } from "next-sanity";
 import type { PricedItem } from "@/lib/checkout/pricing";
 import type { CheckoutDetailsFormData } from "@leyros/types";
+import { after } from "next/server";
 import { markCartConverted } from "@/lib/cart-recovery/store";
+import { sendOrderToShiprocket } from "@/lib/shipping/shiprocket";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -82,8 +84,13 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
       discountAmount: input.discountAmount,
       totalAmount: input.totalAmount,
     };
-    if (input.documentId) await writeClient.createIfNotExists({ _id: input.documentId, ...doc });
-    else await writeClient.create(doc);
+    const saved = input.documentId
+      ? await writeClient.createIfNotExists({ _id: input.documentId, ...doc })
+      : await writeClient.create(doc);
+    // After the response, so a slow Shiprocket never delays the confirmation.
+    // sendOrderToShiprocket sends each order at most once, so the browser and
+    // the Razorpay webhook both landing here is fine.
+    after(() => sendOrderToShiprocket(saved._id));
     // Customer ids are `customer-<phone>`, so a logged-in order covers both numbers.
     await markCartConverted([input.details.phone, input.customerId?.replace(/^customer-/, "")], input.orderNumber);
     return true;

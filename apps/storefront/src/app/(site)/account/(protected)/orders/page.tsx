@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getSessionCustomerId } from "@/lib/auth/session";
 import { sanityClient } from "@/lib/sanity";
 import { formatInr } from "@/lib/format";
-import { OrderTrackingStatus } from "@/components/checkout/OrderTrackingStatus";
+import { OrderTrackingStatus, type OrderShipment } from "@/components/checkout/OrderTrackingStatus";
 
 interface CustomerOrder {
   _id: string;
@@ -13,6 +13,7 @@ interface CustomerOrder {
   fulfillmentStatus?: string;
   totalAmount: number;
   items: { title: string; quantity: number }[];
+  shipment?: OrderShipment;
 }
 
 export default async function OrdersPage() {
@@ -21,7 +22,8 @@ export default async function OrdersPage() {
     ? await sanityClient.fetch<CustomerOrder[]>(
         `*[_type == "order" && customer._ref == $customerId] | order(_createdAt desc){
           _id, orderNumber, _createdAt, paymentMethod, paymentStatus, fulfillmentStatus, totalAmount,
-          items[]{title, quantity}
+          items[]{title, quantity},
+          "shipment": {courierName, awbCode, trackingUrl, shiprocketStatus, estimatedDelivery}
         }`,
         { customerId },
         { cache: "no-store" },
@@ -58,7 +60,7 @@ export default async function OrdersPage() {
             </span>
             <span className="font-medium">{formatInr(order.totalAmount)}</span>
           </div>
-          <OrderTrackingStatus status={order.fulfillmentStatus} />
+          <OrderTrackingStatus status={order.fulfillmentStatus} shipment={order.shipment} />
         </li>
       ))}
     </ul>

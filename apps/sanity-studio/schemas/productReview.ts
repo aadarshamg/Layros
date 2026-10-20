@@ -30,6 +30,14 @@ export default defineType({
     }),
     defineField({ name: "comment", title: "Review", type: "text", rows: 4, validation: (Rule) => Rule.max(1000) }),
     defineField({ name: "submittedAt", title: "Submitted", type: "datetime", readOnly: true }),
+    defineField({
+      name: "source",
+      title: "Source",
+      description: "Where the review was written. Google reviews are shown with a \"via Google\" label; only add one here when the reviewer named this product.",
+      type: "string",
+      options: { list: [{ title: "This website", value: "website" }, { title: "Google review", value: "google" }] },
+      initialValue: "website",
+    }),
   ],
   orderings: [{ title: "Newest first", name: "submittedDesc", by: [{ field: "submittedAt", direction: "desc" }] }],
   preview: {

@@ -45,6 +45,7 @@ export async function ProductReviews({ productId, productName, count, average }:
                       {new Date(review.submittedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                     </time>
                   )}
+                  {review.source === "google" && <span className="product-review-source">via Google</span>}
                 </p>
                 {review.comment && <p className="product-review-comment">{review.comment}</p>}
               </li>

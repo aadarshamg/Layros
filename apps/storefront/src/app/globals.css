@@ -14170,3 +14170,5 @@ html body header.site-header.site-header .nav-search-form :is(input, .nav-search
 html body header.site-header.site-header .nav-search-form input::placeholder { color: #4f6354 !important; opacity: 1; }
 /* Same magnifier as the header's search button, a touch smaller in the field. */
 html body header.site-header.site-header .nav-search-submit .header-simple-icon { width: 19px; height: 19px; stroke-width: 1.8; }
+/* Product reviews imported from Google (the reviewer named this product). */
+html body .product-review-source { padding: 1px 7px; border: 1px solid rgba(26, 66, 47, .25); color: #4f6354; font-size: .65rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }

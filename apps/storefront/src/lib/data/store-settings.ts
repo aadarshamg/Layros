@@ -52,6 +52,7 @@ interface RawStoreSettings {
   googleReviewCount?: number | null;
   googleReviewsUrl?: string | null;
   googleReviewHighlights?: GoogleReviewHighlight[] | null;
+  importedGoogleReviews?: { authorName?: string; rating?: number; text?: string; publishTime?: string }[] | null;
   cartPromoBanner?: string | null;
   trustBadgeText?: string | null;
   rewardEnabled?: boolean | null;
@@ -74,6 +75,29 @@ const EMPTY_SETTINGS: StoreSettings = { rewardEnabled: false };
  * sensible fallbacks before an admin configures anything in Sanity (Store
  * Settings).
  */
+/**
+ * Reviews for the homepage Google section: the ones hand-picked in Store
+ * Settings, or else the newest imported Google reviews (the "Google Review"
+ * documents) that actually talk about the products, since some Google
+ * reviews are about events or the shop rather than the fragrances.
+ */
+function pickGoogleHighlights(settings: RawStoreSettings): GoogleReviewHighlight[] {
+  const picked = (settings.googleReviewHighlights ?? []).filter(
+    (review) => review.reviewerName?.trim() && review.reviewText?.trim() && typeof review.rating === "number",
+  );
+  if (picked.length) return picked;
+  return (settings.importedGoogleReviews ?? [])
+    .filter((review) => review.authorName && review.text && typeof review.rating === "number")
+    .filter((review) => (review.text as string).trim().length >= 15 && /perfume|parfum|fragran|scent|smell|candle|long[ -]?lasting|oud/i.test(review.text as string))
+    .slice(0, 6)
+    .map((review) => ({
+      reviewerName: review.authorName as string,
+      rating: review.rating as number,
+      reviewText: (review.text as string).trim(),
+      reviewDate: review.publishTime?.slice(0, 10),
+    }));
+}
+
 export async function getStoreSettings(): Promise<StoreSettings> {
   if (!sanityConfigured) return EMPTY_SETTINGS;
   try {
@@ -94,6 +118,7 @@ export async function getStoreSettings(): Promise<StoreSettings> {
         googleReviewCount,
         googleReviewsUrl,
         googleReviewHighlights[]{reviewerName, rating, reviewText, reviewDate, reviewUrl},
+        "importedGoogleReviews": *[_type == "review" && rating >= 4 && defined(text)] | order(publishTime desc) [0...60]{authorName, rating, text, publishTime},
         cartPromoBanner,
         trustBadgeText,
         rewardEnabled,
@@ -129,9 +154,7 @@ export async function getStoreSettings(): Promise<StoreSettings> {
       googleRating: settings.googleRating ?? undefined,
       googleReviewCount: settings.googleReviewCount ?? undefined,
       googleReviewsUrl: settings.googleReviewsUrl ?? undefined,
-      googleReviewHighlights: (settings.googleReviewHighlights ?? []).filter(
-        (review) => review.reviewerName?.trim() && review.reviewText?.trim() && typeof review.rating === "number",
-      ),
+      googleReviewHighlights: pickGoogleHighlights(settings),
       cartPromoBanner: settings.cartPromoBanner ?? undefined,
       trustBadgeText: settings.trustBadgeText ?? undefined,
       dispatchDays: settings.dispatchDays ?? undefined,

@@ -9,6 +9,8 @@ export interface ProductReview {
   rating: number;
   comment?: string;
   submittedAt?: string;
+  /** "google" when imported from a Google review that names this product. */
+  source?: "website" | "google";
 }
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -23,7 +25,7 @@ export async function getApprovedReviews(productId: string): Promise<ProductRevi
   try {
     return await sanityClient.fetch<ProductReview[]>(
       `*[_type == "productReview" && approved == true && product._ref == $productId] | order(submittedAt desc) [0...30] {
-        "id": _id, name, rating, comment, submittedAt
+        "id": _id, name, rating, comment, submittedAt, source
       }`,
       { productId },
       SANITY_FETCH_OPTIONS,

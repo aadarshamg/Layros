@@ -142,15 +142,16 @@ export default defineType({
             defineField({
               name: "inventoryQuantity",
               title: "Stock on hand",
+              description: "Leave blank to not track stock for this size. Once a number is set, each order counts it down (cancelled orders put it back), it shows Sold out at 0, and you're alerted at 5 or fewer.",
               type: "number",
-              initialValue: 0,
-              validation: (Rule) => Rule.required().min(0),
+              validation: (Rule) => Rule.integer().min(0),
             }),
           ],
           preview: {
-            select: { sizeMl: "sizeMl", price: "price", sku: "sku" },
-            prepare({ sizeMl, price, sku }) {
-              return { title: `${sizeMl}ml — ₹${price}`, subtitle: sku };
+            select: { sizeMl: "sizeMl", sizeLabel: "sizeLabel", price: "price", sku: "sku", stock: "inventoryQuantity" },
+            prepare({ sizeMl, sizeLabel, price, sku, stock }) {
+              const stockText = typeof stock === "number" ? (stock <= 0 ? "SOLD OUT" : stock <= 5 ? `${stock} left — refill` : `${stock} in stock`) : "stock not tracked";
+              return { title: `${sizeLabel || `${sizeMl}ml`} — ₹${price}`, subtitle: `${sku} · ${stockText}` };
             },
           },
         },

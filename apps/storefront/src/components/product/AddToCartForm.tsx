@@ -6,6 +6,7 @@ import { useCart } from "@/lib/cart-context";
 import { formatSize } from "@/lib/format";
 import { DiyaIcon } from "@/components/product/DiyaIcon";
 import { calculateBuyTwoGetOne } from "@/lib/promotions";
+import { availableQuantity, isSoldOut } from "@/lib/stock";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
@@ -59,13 +60,16 @@ const PERK_ICONS: Record<PurchasePerk["icon"], React.ReactNode> = {
 
 export function AddToCartForm({ productId, handle, title, category, image, variants, tagline, perks = [] }: AddToCartFormProps) {
   const { addItem, items, subtotal } = useCart();
-  const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id ?? "");
+  const [selectedVariantId, setSelectedVariantId] = useState((variants.find((variant) => !isSoldOut(variant)) ?? variants[0])?.id ?? "");
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
   const selected = variants.find((variant) => variant.id === selectedVariantId);
   const compareAtPrice = selected?.compareAtPrice && selected.compareAtPrice > selected.price ? selected.compareAtPrice : undefined;
   const discountPercent = compareAtPrice && selected ? Math.round(((compareAtPrice - selected.price) / compareAtPrice) * 100) : 0;
   const amount = (selected?.price ?? 0) * quantity;
+  const soldOut = selected ? isSoldOut(selected) : false;
+  // A tracked size can't be added past what's left; checkout checks again on the server.
+  const maxQuantity = Math.min(5, (selected && availableQuantity(selected)) || 5);
   const eligibleQuantity = calculateBuyTwoGetOne(items).eligibleItemCount;
   const perkProgress = (perk: PurchasePerk) => Math.min(1, Math.max(0,
     perk.minAmount !== undefined ? subtotal / perk.minAmount
@@ -74,7 +78,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (!selected) return;
+    if (!selected || soldOut) return;
     addItem({
       productId,
       handle,
@@ -107,7 +111,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
         <div className="quantity-control" aria-label="Quantity">
           <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((value) => Math.max(1, value - 1))}>−</button>
           <span aria-live="polite">{quantity}</span>
-          <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => Math.min(5, value + 1))}>+</button>
+          <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => Math.min(maxQuantity, value + 1))}>+</button>
         </div>
       </div>
 
@@ -116,8 +120,8 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
       </div>
       <div className="size-grid">
         {variants.map((variant) => (
-          <button key={variant.id} type="button" aria-pressed={selectedVariantId === variant.id} onClick={() => setSelectedVariantId(variant.id)} className={`size-option ${selectedVariantId === variant.id ? "selected" : ""}`}>
-            <span className="variant-copy"><b>{formatSize(variant.sizeMl, variant.sizeLabel)}</b></span>
+          <button key={variant.id} type="button" aria-pressed={selectedVariantId === variant.id} onClick={() => { setSelectedVariantId(variant.id); setQuantity(1); }} className={`size-option ${selectedVariantId === variant.id ? "selected" : ""}${isSoldOut(variant) ? " is-sold-out" : ""}`}>
+            <span className="variant-copy"><b>{formatSize(variant.sizeMl, variant.sizeLabel)}</b>{isSoldOut(variant) && <small> Sold out</small>}</span>
           </button>
         ))}
       </div>
@@ -138,10 +142,10 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
         </ul>
       )}
 
-      <button type="submit" disabled={!selectedVariantId} className={`acquire-button${justAdded ? " added" : ""}`}>
+      <button type="submit" disabled={!selectedVariantId || soldOut} className={`acquire-button${justAdded ? " added" : ""}`}>
         <DiyaIcon />
         <span className="acquire-button-label">
-          {justAdded ? "Added ✓" : `Add to cart – ${formatInr(amount)}`}
+          {soldOut ? "Sold out" : justAdded ? "Added ✓" : `Add to cart – ${formatInr(amount)}`}
         </span>
         <DiyaIcon />
       </button>

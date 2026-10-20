@@ -33,6 +33,10 @@ export function createStudioConfig(options: { projectId: string; dataset: string
                 .title("Customers")
                 .child(S.documentList().title("Customers").filter('_type == "customer"').defaultOrdering([{ field: "_createdAt", direction: "desc" }])),
               S.documentTypeListItem("product").title("Products"),
+              S.listItem()
+                .title("Low stock (5 or fewer)")
+                .schemaType("product")
+                .child(S.documentList().title("Low stock: please refill").schemaType("product").filter('_type == "product" && count(variants[inventoryQuantity <= 5]) > 0').defaultOrdering([{ field: "title", direction: "asc" }])),
               S.documentTypeListItem("productHighlight")
                 .title("Product Highlights")
                 .child(S.documentList().title("Product Highlights").filter('_type == "productHighlight"').defaultOrdering([{ field: "order", direction: "asc" }])),

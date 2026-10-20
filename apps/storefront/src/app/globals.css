@@ -14145,3 +14145,10 @@ html body:has(.storefront-home .signature-hero) header.site-header.site-header:n
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
+/* Sold-out sizes (tracked stock at 0): still visible, clearly unavailable. */
+html body :is(.size-option, .product-card-size).is-sold-out { opacity: .5; }
+html body :is(.size-option, .product-card-size).is-sold-out b,
+html body .product-card-size.is-sold-out { text-decoration: line-through; }
+html body .size-option.is-sold-out small { display: block; font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+html body :is(.product-card-quick-add, .acquire-button):disabled { opacity: .55; cursor: not-allowed; }

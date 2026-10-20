@@ -33,7 +33,8 @@ export interface PerfumeVariant {
   price: number;
   /** Struck-through "original" price shown alongside `price` when the variant is on sale. */
   compareAtPrice?: number;
-  inventoryQuantity: number;
+  /** Units in stock; undefined when stock isn't tracked for this size (always buyable). */
+  inventoryQuantity?: number;
 }
 
 export interface ShoppableVideo {

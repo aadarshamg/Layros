@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { timingSafeStringEqual } from "@/lib/auth/crypto";
 import { isShiprocketConfigured, retryUnsentOrders, syncOpenOrders } from "@/lib/shipping/shiprocket";
+import { restoreCancelledOrders } from "@/lib/checkout/stock";
 
 export const dynamic = "force-dynamic";
 
@@ -24,5 +25,7 @@ export async function GET(request: NextRequest) {
   // Also refresh open orders, so cancellations made in Shiprocket before an
   // AWB (which the webhook never reports) reach admin without anyone looking.
   await syncOpenOrders({ limit: 100 });
-  return NextResponse.json({ retried });
+  // Orders cancelled by hand in admin get their stock back here.
+  const restocked = await restoreCancelledOrders(50);
+  return NextResponse.json({ retried, restocked });
 }

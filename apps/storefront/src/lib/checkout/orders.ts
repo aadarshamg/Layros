@@ -5,6 +5,8 @@ import type { CheckoutDetailsFormData } from "@leyros/types";
 import { after } from "next/server";
 import { markCartConverted } from "@/lib/cart-recovery/store";
 import { retryUnsentOrders, sendOrderToShiprocket } from "@/lib/shipping/shiprocket";
+import { deductStockForOrder } from "@/lib/checkout/stock";
+import { invoiceLinkFor, isInvoiceLinkConfigured } from "@/lib/invoices/link";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -78,6 +80,8 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
         sizeLabel: item.sizeLabel,
         unitPrice: item.unitPrice,
         quantity: item.quantity,
+        productId: item.productId,
+        variantKey: item.variantKey,
       })),
       subtotalAmount: input.subtotalAmount,
       couponCode: input.couponCode,
@@ -92,6 +96,12 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
     // the Razorpay webhook both landing here is fine. Each new order also
     // retries a few earlier ones that failed, between the daily cron runs.
     after(async () => {
+      // Once per order as well, however many paths save it.
+      await deductStockForOrder(saved._id);
+      // The signed invoice link, so admin can open the PDF from the order.
+      if (isInvoiceLinkConfigured()) {
+        await writeClient?.patch(saved._id).setIfMissing({ invoiceUrl: invoiceLinkFor(saved._id) }).commit().catch(() => undefined);
+      }
       await sendOrderToShiprocket(saved._id);
       await retryUnsentOrders(3);
     });

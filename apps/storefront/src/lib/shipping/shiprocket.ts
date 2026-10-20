@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "next-sanity";
+import { restoreStockForOrder } from "@/lib/checkout/stock";
 
 // Sends saved website orders to Shiprocket as "New" orders. Courier choice,
 // AWB and pickup are then done by hand in the Shiprocket panel; tracking
@@ -285,6 +286,8 @@ async function applyShipmentStatus(id: string, current: Record<string, unknown>,
       ...(Object.keys(changed).length && { lastTrackingUpdateAt: new Date().toISOString() }),
     })
     .commit();
+  // A cancellation in Shiprocket puts the items back on the shelf.
+  if (changed.fulfillmentStatus === "Cancelled") await restoreStockForOrder(id);
 }
 
 const TRACKED_FIELDS = "_id, shiprocketOrderId, shiprocketStatus, fulfillmentStatus, awbCode, trackingUrl, courierName, estimatedDelivery";

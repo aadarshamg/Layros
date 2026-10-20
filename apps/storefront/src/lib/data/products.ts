@@ -4,6 +4,7 @@ import type { FragranceFamily, PerfumeProduct, PerfumeVariant } from "@leyros/ty
 import { editorialProducts } from "@/lib/data/editorial-products";
 import { CANDLE_COLLECTIONS, type CandleCollectionSlug } from "@/lib/data/candle-collections";
 import type { SanityImageSource } from "@sanity/image-url";
+import { isSoldOut } from "@/lib/stock";
 
 /** Raw shape returned by the GROQ projection below — mirrors the `product` schema. */
 export interface RawSanityProduct {
@@ -124,7 +125,7 @@ export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
     sku: variant.sku ?? "",
     price: variant.price ?? 0,
     compareAtPrice: variant.compareAtPrice ?? undefined,
-    inventoryQuantity: variant.inventoryQuantity ?? 0,
+    inventoryQuantity: variant.inventoryQuantity ?? undefined,
   }));
 
   const images = (raw.images ?? [])
@@ -551,7 +552,7 @@ export async function listProducts(params: {
       products = products.filter((product) => (product.category ?? "").toLowerCase().includes(keyword));
     }
     if (params.inStock) {
-      products = products.filter((product) => product.variants.some((variant) => variant.inventoryQuantity > 0));
+      products = products.filter((product) => product.variants.some((variant) => !isSoldOut(variant)));
     }
     if (!params.sort || params.sort === "recommended") {
       products = [...products].sort((a, b) => {
@@ -588,7 +589,7 @@ export async function listProducts(params: {
       products = products.filter((product) => (product.category ?? "").toLowerCase().includes(keyword));
     }
     if (params.inStock) {
-      products = products.filter((product) => product.variants.some((variant) => variant.inventoryQuantity > 0));
+      products = products.filter((product) => product.variants.some((variant) => !isSoldOut(variant)));
     }
     if (!params.sort || params.sort === "recommended") {
       products = [...products].sort((a, b) => {

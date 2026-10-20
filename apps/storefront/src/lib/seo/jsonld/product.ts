@@ -1,4 +1,5 @@
 import type { PerfumeProduct } from "@leyros/types";
+import { isSoldOut } from "@/lib/stock";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -37,10 +38,7 @@ export function productJsonLd(
       priceCurrency: "INR",
       price: variant.price,
       sku: variant.sku,
-      availability:
-        variant.inventoryQuantity > 0
-          ? "https://schema.org/InStock"
-          : "https://schema.org/OutOfStock",
+      availability: isSoldOut(variant) ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: { "@type": "Organization", name: "LEYROS" },
       url: `${siteUrl}/products/${product.handle}`,

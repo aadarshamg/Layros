@@ -1,4 +1,5 @@
 import type { PerfumeProduct } from "@leyros/types";
+import { availableQuantity, isStockTracked } from "@/lib/stock";
 
 export type ProductBadge = {
   label: string;
@@ -25,10 +26,12 @@ function displayTag(tag: string) {
  * repeating the same badge.
  */
 export function getProductBadge(product: PerfumeProduct): ProductBadge | null {
-  const availableUnits = product.variants.reduce(
-    (total, variant) => total + Math.max(0, variant.inventoryQuantity),
-    0,
-  );
+  // Only when every size is tracked: an untracked size has no known count,
+  // so a low total would wrongly claim scarcity.
+  const allTracked = product.variants.length > 0 && product.variants.every(isStockTracked);
+  const availableUnits = allTracked
+    ? product.variants.reduce((total, variant) => total + (availableQuantity(variant) ?? 0), 0)
+    : 0;
 
   if (availableUnits > 0 && availableUnits <= 5) {
     return { label: `Only ${availableUnits} Left`, tone: "stock" };

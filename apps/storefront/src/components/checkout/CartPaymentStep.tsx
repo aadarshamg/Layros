@@ -40,6 +40,7 @@ export function CartPaymentStep({
 
   function cartItemsPayload() {
     return items.map((item) => ({
+      productId: item.productId,
       variantId: item.variantId,
       sku: item.sku,
       title: item.title,

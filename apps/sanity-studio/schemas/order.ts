@@ -69,6 +69,9 @@ export default defineType({
             defineField({ name: "sizeLabel", title: "Size", type: "string" }),
             defineField({ name: "unitPrice", title: "Unit price (INR)", type: "number" }),
             defineField({ name: "quantity", title: "Quantity", type: "number" }),
+            // Which product size this line was, for stock counting.
+            defineField({ name: "productId", title: "Product ID", type: "string", readOnly: true, hidden: true }),
+            defineField({ name: "variantKey", title: "Variant key", type: "string", readOnly: true, hidden: true }),
           ],
           preview: {
             select: { title: "title", quantity: "quantity", unitPrice: "unitPrice" },
@@ -85,6 +88,17 @@ export default defineType({
     defineField({ name: "totalAmount", title: "Total (INR)", type: "number", validation: (Rule) => Rule.required().min(0) }),
     defineField({ name: "giftWrap", title: "Gift wrap requested", type: "boolean", description: "The shopper ticked complimentary gift wrap at checkout." }),
     defineField({ name: "giftWrapMessage", title: "Gift wrap message", type: "text", rows: 2 }),
+    defineField({
+      name: "invoiceUrl",
+      title: "Invoice (PDF)",
+      description: "Opens this order's GST tax invoice. The same invoice the customer downloads from My Orders.",
+      type: "url",
+      readOnly: true,
+    }),
+    defineField({ name: "invoiceNumber", title: "Invoice number", type: "string", readOnly: true, description: "Given the first time the invoice is opened, counting up per financial year." }),
+    defineField({ name: "invoiceIssuedAt", title: "Invoice issued", type: "datetime", readOnly: true, hidden: true }),
+    defineField({ name: "stockDeducted", title: "Stock counted down", type: "boolean", readOnly: true, hidden: true }),
+    defineField({ name: "stockRestored", title: "Stock put back (cancelled)", type: "boolean", readOnly: true, hidden: true }),
     defineField({
       name: "shiprocketSyncStatus",
       title: "Sent to Shiprocket",

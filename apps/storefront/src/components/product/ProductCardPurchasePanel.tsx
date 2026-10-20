@@ -6,13 +6,14 @@ import { useCart } from "@/lib/cart-context";
 import { formatInr, formatSize } from "@/lib/format";
 import { genderLabel, productScentLine } from "@/lib/product-labels";
 import { DiyaIcon } from "@/components/product/DiyaIcon";
+import { isSoldOut } from "@/lib/stock";
 
 export function ProductCardPurchasePanel({ product, homepage = false }: { product: PerfumeProduct; homepage?: boolean }) {
   const { addItem, openDrawer } = useCart();
   const sortedVariants = product.variants
     .filter((item) => !homepage || (item.sizeMl !== 100 && item.sizeMl !== 200))
     .sort((a, b) => a.price - b.price);
-  const [selectedId, setSelectedId] = useState(sortedVariants[0]?.id);
+  const [selectedId, setSelectedId] = useState((sortedVariants.find((item) => !isSoldOut(item)) ?? sortedVariants[0])?.id);
   const [justAdded, setJustAdded] = useState(false);
   const variant = sortedVariants.find((item) => item.id === selectedId) ?? sortedVariants[0];
 
@@ -28,7 +29,10 @@ export function ProductCardPurchasePanel({ product, homepage = false }: { produc
   const notesLabel = productScentLine(product);
   const rotateNotes = /collections|perfume/i.test(product.category ?? "") && !/car|attar/i.test(product.category ?? "");
 
+  const soldOut = isSoldOut(variant);
+
   function handleQuickAdd() {
+    if (soldOut) return;
     addItem({
       productId: product.id,
       handle: product.handle,
@@ -73,7 +77,8 @@ export function ProductCardPurchasePanel({ product, homepage = false }: { produc
               key={item.id}
               type="button"
               onClick={() => setSelectedId(item.id)}
-              className={`product-card-size${item.id === variant.id ? " is-selected" : ""}`}
+              className={`product-card-size${item.id === variant.id ? " is-selected" : ""}${isSoldOut(item) ? " is-sold-out" : ""}`}
+              aria-label={isSoldOut(item) ? `${formatSize(item.sizeMl, item.sizeLabel)}, sold out` : undefined}
             >
               {formatSize(item.sizeMl, item.sizeLabel)}
             </button>
@@ -92,9 +97,9 @@ export function ProductCardPurchasePanel({ product, homepage = false }: { produc
         {discount > 0 && <span className="product-card-price-off">{discount}% OFF</span>}
       </div>
 
-      <button type="button" onClick={handleQuickAdd} className="product-card-quick-add">
+      <button type="button" onClick={handleQuickAdd} disabled={soldOut} className="product-card-quick-add">
         <DiyaIcon />
-        <span>{justAdded ? "Added ✓" : "Add to cart"}</span>
+        <span>{soldOut ? "Sold out" : justAdded ? "Added ✓" : "Add to cart"}</span>
         <DiyaIcon />
       </button>
     </div>

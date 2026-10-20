@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
   let pricing;
   try {
-    pricing = await priceItems(body.items ?? []);
+    pricing = await priceItems(body.items ?? [], { checkStock: true });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Invalid cart." }, { status: 400 });
   }

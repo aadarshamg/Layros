@@ -3,6 +3,7 @@ import { getSessionCustomerId } from "@/lib/auth/session";
 import { sanityClient } from "@/lib/sanity";
 import { formatInr } from "@/lib/format";
 import { syncOpenOrders } from "@/lib/shipping/shiprocket";
+import { invoiceLinkFor, isInvoiceLinkConfigured } from "@/lib/invoices/link";
 import { OrderTrackingStatus, type OrderShipment } from "@/components/checkout/OrderTrackingStatus";
 
 interface CustomerOrder {
@@ -15,7 +16,13 @@ interface CustomerOrder {
   totalAmount: number;
   items: { title: string; quantity: number }[];
   shipment?: OrderShipment;
+  invoiceNumber?: string;
 }
+
+// Same rule as the invoice route: none for failed payments, nor for orders
+// cancelled before an invoice was ever issued.
+const hasInvoice = (order: CustomerOrder) =>
+  isInvoiceLinkConfigured() && order.paymentStatus !== "failed" && (order.fulfillmentStatus !== "Cancelled" || Boolean(order.invoiceNumber));
 
 export default async function OrdersPage() {
   const customerId = await getSessionCustomerId();
@@ -28,7 +35,7 @@ export default async function OrdersPage() {
     ? await sanityClient.fetch<CustomerOrder[]>(
         `*[_type == "order" && customer._ref == $customerId] | order(_createdAt desc){
           _id, orderNumber, _createdAt, paymentMethod, paymentStatus, fulfillmentStatus, totalAmount,
-          items[]{title, quantity},
+          items[]{title, quantity}, invoiceNumber,
           "shipment": {courierName, awbCode, trackingUrl, shiprocketStatus, estimatedDelivery}
         }`,
         { customerId },
@@ -67,6 +74,11 @@ export default async function OrdersPage() {
             <span className="font-medium">{formatInr(order.totalAmount)}</span>
           </div>
           <OrderTrackingStatus status={order.fulfillmentStatus} shipment={order.shipment} />
+          {hasInvoice(order) && (
+            <a href={invoiceLinkFor(order._id)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-xs font-medium uppercase tracking-widest underline underline-offset-4">
+              Download invoice{order.invoiceNumber ? ` (${order.invoiceNumber})` : ""}
+            </a>
+          )}
         </li>
       ))}
     </ul>

@@ -4,7 +4,7 @@ import type { PricedItem } from "@/lib/checkout/pricing";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 import { after } from "next/server";
 import { markCartConverted } from "@/lib/cart-recovery/store";
-import { sendOrderToShiprocket } from "@/lib/shipping/shiprocket";
+import { retryUnsentOrders, sendOrderToShiprocket } from "@/lib/shipping/shiprocket";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -89,8 +89,12 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
       : await writeClient.create(doc);
     // After the response, so a slow Shiprocket never delays the confirmation.
     // sendOrderToShiprocket sends each order at most once, so the browser and
-    // the Razorpay webhook both landing here is fine.
-    after(() => sendOrderToShiprocket(saved._id));
+    // the Razorpay webhook both landing here is fine. Each new order also
+    // retries a few earlier ones that failed, between the daily cron runs.
+    after(async () => {
+      await sendOrderToShiprocket(saved._id);
+      await retryUnsentOrders(3);
+    });
     // Customer ids are `customer-<phone>`, so a logged-in order covers both numbers.
     await markCartConverted([input.details.phone, input.customerId?.replace(/^customer-/, "")], input.orderNumber);
     return true;

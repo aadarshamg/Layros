@@ -222,6 +222,14 @@ export async function findUnsentOrderIds(limit: number) {
   );
 }
 
+/** Re-sends up to `limit` orders that never reached Shiprocket. Returns how many were tried. */
+export async function retryUnsentOrders(limit: number) {
+  if (!isShiprocketConfigured()) return 0;
+  const ids = await findUnsentOrderIds(limit);
+  for (const id of ids) await sendOrderToShiprocket(id);
+  return ids.length;
+}
+
 // ── Tracking updates ────────────────────────────────────────────────────
 
 export type FulfillmentStatus = "Unfulfilled" | "Processing" | "Shipped" | "Delivered" | "Cancelled" | "Returned";

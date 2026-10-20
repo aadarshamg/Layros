@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { timingSafeStringEqual } from "@/lib/auth/crypto";
-import { findUnsentOrderIds, isShiprocketConfigured, sendOrderToShiprocket } from "@/lib/shipping/shiprocket";
+import { isShiprocketConfigured, retryUnsentOrders } from "@/lib/shipping/shiprocket";
 
 export const dynamic = "force-dynamic";
 
@@ -14,13 +14,11 @@ function isAuthorized(request: NextRequest) {
 }
 
 // Re-sends orders that never reached Shiprocket (it was down, or the address
-// was rejected and has since been fixed in admin). Call it from the same
-// scheduler as /api/cron/abandoned-carts, e.g. every 30 minutes.
+// was rejected and has since been fixed in admin). Vercel Cron calls it daily
+// (see vercel.json; Hobby plans allow no more often), and every new order
+// also retries a few in lib/checkout/orders.ts, so busy days catch up sooner.
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!isShiprocketConfigured()) return NextResponse.json({ skipped: "Shiprocket is not configured." });
-
-  const ids = await findUnsentOrderIds(MAX_PER_RUN);
-  for (const id of ids) await sendOrderToShiprocket(id);
-  return NextResponse.json({ retried: ids.length });
+  return NextResponse.json({ retried: await retryUnsentOrders(MAX_PER_RUN) });
 }

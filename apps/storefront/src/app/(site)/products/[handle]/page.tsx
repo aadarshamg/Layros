@@ -14,6 +14,7 @@ import { AddToCartForm, type PurchasePerk } from "@/components/product/AddToCart
 import { NoteIcon } from "@/components/product/NoteIcon";
 import { ProductQualityHighlights } from "@/components/product/ProductQualityHighlights";
 import { PerfumeConcentrationGuide } from "@/components/product/PerfumeConcentrationGuide";
+import { ProductFaqs } from "@/components/product/ProductFaqs";
 import { ProductInterestTracker } from "@/components/product/ProductInterestTracker";
 import { ProductRatingLine } from "@/components/product/ProductRatingLine";
 import { ProductReviews } from "@/components/product/ProductReviews";
@@ -224,6 +225,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       </section>
 
       {isPerfume && <PerfumeConcentrationGuide />}
+      <ProductFaqs product={product} />
 
       <ProductReviews productId={product.id} productName={shortProductName} count={product.reviewCount} average={product.reviewAverage} />
       <RelatedProducts products={relatedProducts} />

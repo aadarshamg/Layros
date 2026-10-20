@@ -303,9 +303,9 @@ html body .product-page.product-page .product-rating { font-size: 12px; }
 html body .product-page.product-page .purchase-price { margin-bottom: 18px; }
 html body .product-page.product-page .purchase-price strong { font-size: 36px; }
 html body .product-page.product-page .purchase-price s { color: #888; font-size: 22px; }
-html body .product-page.product-page .purchase-price b { font-size: 24px; font-weight: 700; color: #db2439; }
+html body .product-page.product-page .purchase-price b { font-size: 24px; font-weight: 400; color: #db2439; }
 html body .product-page.product-page .purchase-price strong,
-html body .product-page.product-page .purchase-price s { font-weight: 700; }
+html body .product-page.product-page .purchase-price s { font-weight: 400; }
 html body .product-page.product-page .size-label { font-family: var(--font-display); font-size: 18px; font-weight: 400; margin: 0; }
 html body .product-page.product-page .size-grid { gap: 8px; margin-bottom: 0; }
 html body .product-page.product-page .size-option { min-width: 68px; min-height: 40px; padding: 8px 12px; }

@@ -1937,7 +1937,7 @@ body:not(:has(.cinematic-home)) .note-register { border-radius: 18px; background
   transition: color .4s ease, transform .6s cubic-bezier(.22,1,.36,1);
 }
 .footer-wordmark:hover { color: rgba(255,255,255,.17); transform: scale(1.012); }
-.site-footer .footer-wordmark.footer-tagline { width: auto; font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 10vw, 180px); line-height: 1.05; letter-spacing: .01em; text-align: center; white-space: normal; text-transform: uppercase; }
+.site-footer .footer-wordmark.footer-tagline { width: auto; font-family: var(--font-display); font-weight: 400; font-size: 14vw; line-height: 1.05; letter-spacing: .01em; text-align: center; white-space: nowrap; text-transform: uppercase; }
 .footer-wordmark:focus-visible { outline: 2px solid #1a422f; outline-offset: 8px; }
 
 @media (max-width: 650px) {
@@ -9776,7 +9776,8 @@ body:not(:has(.cinematic-home)) .site-header .wordmark-logo {
 .private-blends-veil { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 48, 33, .94) 0%, rgba(18, 48, 33, .7) 45%, rgba(18, 48, 33, .2)), linear-gradient(transparent 55%, rgba(18, 48, 33, .8)); }
 .private-blends-hero .page-shell { position: relative; z-index: 1; width: 100%; padding-block: clamp(110px, 16vw, 190px) clamp(54px, 8vw, 90px); color: #ffffff; }
 .private-blends-hero p { color: #f2f2f2; font-size: .72rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
-.private-blends-hero h1 { margin: 8px 0; font-size: clamp(4.2rem, 12vw, 10rem); line-height: .82; letter-spacing: -.075em; }
+.private-blends-hero h1 { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .18em; margin: 8px 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(52px, 10vw, 144px); line-height: 1.05; letter-spacing: .02em; }
+.private-blends-hero h1 > span { font: inherit; letter-spacing: inherit; }
 .private-blends-hero strong { display: block; margin: 20px 0 8px; font-size: clamp(1.1rem, 2vw, 1.7rem); }
 .private-blends-hero .page-shell > span { display: block; max-width: 560px; color: rgba(255,255,255,.67); line-height: 1.65; }
 .private-blends-hero a { display: inline-block; margin-top: 24px; color: #f2f2f2; }
@@ -12741,7 +12742,7 @@ body .site-footer .footer-links ul {
     line-height: 1.3;
   }
   body .site-footer .footer-wordmark-wrap { display: block; padding: 20px 16px 24px; }
-  body .site-footer .footer-wordmark.footer-tagline { font-size: clamp(30px, 10vw, 76px); line-height: 1.1; }
+  body .site-footer .footer-wordmark.footer-tagline { font-size: 14vw; line-height: 1.1; }
 }
 
 /* Candles page style cards on phones: three small tiles in one row, matching
@@ -14027,7 +14028,7 @@ html body .product-card-purchase .product-card-size {
   font-weight: 400 !important;
 }
 html body .product-card-purchase :is(.product-card-price-now, .product-card-price-mrp, .product-card-price-off) {
-  font-weight: 700 !important;
+  font-weight: 400 !important;
 }
 
 @media (max-width: 360px) {
@@ -14122,7 +14123,7 @@ html body header.site-header.site-header :is(.desktop-nav a, .desktop-nav summar
 }
 
 /* Homepage hero under a see-through header: the hero slides up beneath the
-   sticky header (its padding keeps the content where it was), and the green
+   sticky header, and the green
    nav bar is transparent until NavView marks it .is-past-hero on scroll. The
    announcement strip keeps its own solid background. */
 html body .storefront-home:has(.signature-hero) {
@@ -14131,19 +14132,92 @@ html body .storefront-home:has(.signature-hero) {
 html body .storefront-home .signature-hero {
   height: 100svh;
   margin-top: 0;
-  padding-top: calc(var(--site-header-height, 120px) + 24px);
+  padding-top: 24px;
 }
 @media (max-width: 700px) {
-  html body .storefront-home .signature-hero { padding-top: calc(var(--site-header-height, 100px) + 20px); }
+  html body .storefront-home .signature-hero { padding-top: 20px; }
 }
 @media (max-width: 600px) {
-  html body .storefront-home .signature-hero { padding-top: calc(var(--site-header-height, 100px) + 14px); }
+  html body .storefront-home .signature-hero { padding-top: 14px; }
 }
+@media (max-width: 700px) {
+  html body .storefront-home .home-new-arrivals .cinematic-product:nth-child(n + 5) {
+    display: none !important;
+  }
+}
+
+/* Reel product thumbnails overlap the lower left of the video. */
+html body .storefront-home .home-reel-card .home-reel-product:has(.home-reel-thumbnail) {
+  padding-top: 36px;
+}
+html body .storefront-home .home-reel-card .home-reel-thumbnail {
+  top: -28px;
+  left: 12px;
+  width: 56px;
+  height: 56px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px #0000001f;
+}
+html body .storefront-home .home-reel-card .home-reel-product .home-reel-price,
+html body .video-modal-details .home-reel-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 7px;
+  margin: 4px 0 0;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+html body .storefront-home .home-reel-price strong,
+html body .video-modal-details .home-reel-price strong {
+  color: #15251b;
+  font-size: 14px;
+  font-weight: 500;
+}
+html body .storefront-home .home-reel-price s,
+html body .video-modal-details .home-reel-price s {
+  color: #8a918d;
+  font-size: 12px;
+  font-weight: 400;
+}
+html body .storefront-home .home-reel-price .home-reel-discount,
+html body .video-modal-details .home-reel-price .home-reel-discount {
+  color: #159447;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* The display font has one real weight; avoid synthesized bold and tight
+   legacy serif tracking that makes these hero titles run together. */
+html body .private-blends-hero h1,
+html body .candles-page-hero-copy h1 {
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important;
+  letter-spacing: .02em !important;
+  line-height: 1.05;
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+
 html body header.site-header.site-header { transition: background-color .3s ease, box-shadow .3s ease; }
 html body:has(.storefront-home .signature-hero) header.site-header.site-header:not(.is-past-hero) {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
+  border: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html body:has(.storefront-home .signature-hero) header.site-header.site-header:not(.is-past-hero) .nav-shell {
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html body:has(.storefront-home .signature-hero) header.site-header.site-header:not(.is-past-hero)::before,
+html body:has(.storefront-home .signature-hero) header.site-header.site-header:not(.is-past-hero)::after {
+  content: none !important;
 }
 
 /* Sold-out sizes (tracked stock at 0): still visible, clearly unavailable. */

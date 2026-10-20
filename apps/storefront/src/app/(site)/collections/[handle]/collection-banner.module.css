@@ -1,23 +1,23 @@
 /* Keep the heading as real text; the still life is decorative. */
-html body .perfumeBanner.perfumeBanner {
+html body .collectionBanner.collectionBanner {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   background: #f0e5d2 !important;
-  background-image: linear-gradient(90deg, #f0e5d2 0%, #f0e5d2 38%, rgba(240,229,210,.85) 52%, rgba(240,229,210,0) 72%), url('/leyros/all-perfumes-background.png') !important;
+  background-image: linear-gradient(90deg, #f0e5d2 0%, #f0e5d2 38%, rgba(240,229,210,.85) 52%, rgba(240,229,210,0) 72%), var(--collection-banner-image) !important;
   background-repeat: no-repeat !important;
   background-position: center, right center !important;
   background-size: 100% 100%, auto 145% !important;
 }
-html body .perfumeBanner.perfumeBanner::before,
-html body .perfumeBanner.perfumeBanner::after { display: none !important; }
-html body .perfumeBanner.perfumeBanner h1 { position: relative; z-index: 1; max-width: 60%; color: #1a422f !important; }
+html body .collectionBanner.collectionBanner::before,
+html body .collectionBanner.collectionBanner::after { display: none !important; }
+html body .collectionBanner.collectionBanner h1 { position: relative; z-index: 1; max-width: 60%; color: #1a422f !important; }
 @media (max-width: 600px) {
-  html body .perfumeBanner.perfumeBanner {
+  html body .collectionBanner.collectionBanner {
     min-height: 190px;
     background-size: 100% 100%, auto 115% !important;
     background-position: center, right center !important;
-    background-image: linear-gradient(90deg, #f0e5d2 0%, rgba(240,229,210,.95) 32%, rgba(240,229,210,.5) 62%, rgba(240,229,210,0) 85%), url('/leyros/all-perfumes-background.png') !important;
+    background-image: linear-gradient(90deg, #f0e5d2 0%, rgba(240,229,210,.95) 32%, rgba(240,229,210,.5) 62%, rgba(240,229,210,0) 85%), var(--collection-banner-image) !important;
   }
-  html body .perfumeBanner.perfumeBanner h1 { max-width: 65%; }
+  html body .collectionBanner.collectionBanner h1 { max-width: 65%; }
 }

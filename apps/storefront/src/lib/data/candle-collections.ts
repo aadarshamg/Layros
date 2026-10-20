@@ -1,19 +1,19 @@
-// Curated category photography for the homepage candle collection cards.
+// Coordinated generated category imagery, shared by homepage and candle landing page.
 export const CANDLE_COLLECTIONS = [
   {
     slug: "concrete",
     label: "Concrete Candles",
-    image: "/leyros/candle-collections/concrete.jpg",
+    image: "/leyros/candle-collections/concrete-v2.webp",
   },
   {
     slug: "soy",
     label: "Soy Wax Candles",
-    image: "/leyros/candle-collections/soy.jpg",
+    image: "/leyros/candle-collections/soy-v2.webp",
   },
   {
     slug: "gel",
     label: "Gel Wax Candles",
-    image: "/leyros/candle-collections/gel.jpg",
+    image: "/leyros/candle-collections/gel-v2.webp",
   },
 ] as const;
 

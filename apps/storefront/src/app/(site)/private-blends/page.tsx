@@ -24,7 +24,7 @@ export default async function PrivateBlendsPage() {
         <span className="private-blends-veil" aria-hidden="true" />
         <div className="page-shell">
           <p>Composed away from the expected</p>
-          <h1>Private Blends</h1>
+          <h1><span>Private</span>{" "}<span>Blends</span></h1>
           <strong>Not introduced. Uncovered.</strong>
           <span>Rare-feeling compositions chosen to reveal their character in chapters, from first impression to lasting trail.</span>
           <a href="#the-reveal">Begin the reveal ↓</a>

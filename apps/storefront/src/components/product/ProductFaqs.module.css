@@ -1,0 +1,16 @@
+.section { padding: clamp(36px, 5vw, 64px) 0; background: #fff; color: #1a422f; }
+.title { margin: 0 0 20px; font-family: var(--font-display); font-size: clamp(28px, 3vw, 38px); font-weight: 400; line-height: 1.1; }
+.list { border-top: 1px solid #1a422f; }
+.item { border-bottom: 1px solid #dce2dc; }
+.item summary { display: grid; grid-template-columns: 28px minmax(0,1fr) 16px; align-items: center; gap: 12px; padding: 20px 0; cursor: pointer; list-style: none; font-family: var(--font-display); font-size: clamp(18px, 1.7vw, 23px); font-weight: 400; line-height: 1.3; letter-spacing: .015em; }
+.item summary::-webkit-details-marker { display: none; }
+.number { color: #6b7d6d; font-size: 16px; }
+.toggle { width: 9px; height: 9px; justify-self: center; border-right: 2px solid #1a422f; border-bottom: 2px solid #1a422f; transform: rotate(45deg); }
+.item[open] .toggle { transform: rotate(225deg); }
+.item p { max-width: 90ch; margin: 0 28px 22px 40px; font-size: 14px; line-height: 1.85; white-space: pre-line; color: #4f6354; }
+.item summary:focus-visible { outline: 2px solid #1a422f; outline-offset: 4px; }
+@media (max-width: 600px) {
+  .item summary { gap: 8px; grid-template-columns: 22px minmax(0,1fr) 16px; padding: 17px 0; font-size: 19px; }
+  .item p { margin-left: 30px; margin-right: 16px; font-size: 13px; line-height: 1.75; }
+  .number { font-size: 14px; }
+}

@@ -99,11 +99,28 @@ function accordsIn(text: string): string[] {
 
 // Not notes: descriptive filler some descriptions use ("A zesty ...", "Deep").
 const NOT_A_NOTE = /^(?:an?|the)\s|^(?:deep|warm|clean|fresh|rich|soft|earthy|spicy|zesty|vibrant|elegant|sweet|woody)$/i;
+const NOTE_DESCRIPTION_TAIL = /\s+(?:for|to create|creating|providing|delivering|offering|leaving|blended with|perfectly balanced|that|undertones?|textures?|elements?)\b[\s\S]*$/i;
+const NOTE_FILLER = /\b(?:core|finish|impact|lingering|impression|character|presence|touch|trail)\b/i;
+
+function cleanNote(note: string): string {
+  return note
+    .replace(NOTE_DESCRIPTION_TAIL, "")
+    .replace(/\s*\([^)]*(?:\)|$)/g, "")
+    .replace(/[.:;|]+$/, "")
+    .replace(/^.*\bof\s+/i, "")
+    .replace(/^(?:rich|premium|refreshing|ripe)\s+/i, "")
+    .replace(/\s+(?:notes?|accords?)$/i, "")
+    .trim();
+}
+
+function isNote(note: string): boolean {
+  return Boolean(note) && note.length < 60 && !NOT_A_NOTE.test(note) && !NOTE_FILLER.test(note) && !/^(?:juicy|sophisticated|transparent)\b/i.test(note);
+}
 
 const LAYERS = {
-  top: /(?:top|head)(?:\s*notes?)?\s*[:\-–]\s*([^\n.]+)/i,
-  heart: /(?:heart|middle)(?:\s*notes?)?\s*[:\-–]\s*([^\n.]+)/i,
-  base: /base(?:\s*notes?)?\s*[:\-–]\s*([^\n.]+)/i,
+  top: /(?:^|\n)\s*[-•*]?\s*(?:top|head)(?:\s*notes?)?\s*(?::|[-–](?=\s))\s*([^\n.]+)/i,
+  heart: /(?:^|\n)\s*[-•*]?\s*(?:heart|middle)(?:\s*notes?)?\s*(?::|[-–](?=\s))\s*([^\n.]+)/i,
+  base: /(?:^|\n)\s*[-•*]?\s*base(?:\s*notes?)?\s*(?::|[-–](?=\s))\s*([^\n.]+)/i,
 };
 
 // Notes of one layer from a description's "Top Notes: …, Heart: …, Base: …"
@@ -112,16 +129,14 @@ function layerNotesFromDescription(description: string, layer: RegExp): string[]
   const match = description.replace(/[​ ]/g, " ").match(layer);
   if (!match) return [];
   const notes = match[1]
+    .split(/\b(?:top|head|heart|middle|base)(?:\s*notes?)?\s*[:\-–]/i)[0]
+    .replace(/\s*\([^)]*(?:\)|$)/g, "")
+    // Remove the prose before splitting "and", so "Musk for a gentle and
+    // lasting finish" cannot create a fictitious "lasting finish" ingredient.
+    .replace(NOTE_DESCRIPTION_TAIL, "")
     .split(/,|\band\b|&|\//i)
-    .map((part) => part
-      .replace(/\s*\([^)]*(?:\)|$)/g, "")
-      .replace(/[.:;|]+$/, "")
-      // "Spicy opening of Saffron" -> "Saffron"
-      .replace(/^.*\bof\s+/i, "")
-      .replace(/^(?:rich|premium|refreshing|ripe)\s+/i, "")
-      .replace(/\s+(?:notes?|accords?)$/i, "")
-      .trim())
-    .filter((part) => part && part.length < 30 && !NOT_A_NOTE.test(part) && !/^(?:juicy|sophisticated|transparent\b)/i.test(part));
+    .map(cleanNote)
+    .filter(isNote);
   return [...new Set(notes)];
 }
 
@@ -141,7 +156,7 @@ export function productNotePyramid(product: PerfumeProduct): { title: string; no
   const description = product.description ?? "";
   const fromAdmin = notesTop.length + notesHeart.length + notesBase.length > 0;
   const layer = (admin: string[], pattern: RegExp) =>
-    (fromAdmin ? admin.filter(Boolean) : layerNotesFromDescription(description, pattern)).slice(0, 4);
+    (fromAdmin ? [...new Set(admin.filter(Boolean).map(cleanNote).filter(isNote))] : layerNotesFromDescription(description, pattern)).slice(0, 4);
   return [
     { title: "Head notes", notes: layer(notesTop, LAYERS.top) },
     { title: "Heart notes", notes: layer(notesHeart, LAYERS.heart) },

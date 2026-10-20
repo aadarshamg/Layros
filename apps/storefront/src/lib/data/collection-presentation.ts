@@ -91,6 +91,19 @@ export function getCollectionPresentation({ handle, category = "", family = "", 
     };
   }
 
+  const categoryName = `${category} ${handle}`.toLowerCase();
+  const categoryTitle = /car[ -]?(perfume|fragrance)/.test(categoryName) ? "Car Perfumes"
+    : /attar/.test(categoryName) ? "Attars"
+    : /gift/.test(categoryName) ? "Luxury Gift Sets"
+    : /candle/.test(categoryName) ? "Scented Candles"
+    : /travel/.test(categoryName) ? "Travel Fragrances" : "";
+  if (categoryTitle) return {
+    eyebrow: "The Leyros collection",
+    title: categoryTitle,
+    description: `Explore the Leyros ${categoryTitle.toLowerCase()} collection.`,
+    highlights: ["Thoughtfully crafted", "Made for every mood"],
+  };
+
   const selectedNote = getNoteKey(category, family);
   if (selectedNote) return { eyebrow: "Explore by fragrance profile", ...NOTE_PRESENTATIONS[selectedNote] };
 
@@ -112,4 +125,14 @@ export function getCollectionPresentation({ handle, category = "", family = "", 
     description: "Explore long-lasting perfumes, concentrated attars, candles, and scent-led gifts, crafted with care for the way you actually live.",
     highlights: ["Thoughtfully crafted", "Premium experience", "Made for every mood"],
   };
+}
+
+/** Decorative category artwork; a fragrance background covers every fallback. */
+export function getCollectionBanner({ handle, category = "" }: PresentationInput): string {
+  const value = `${category} ${handle}`.toLowerCase();
+  if (/car[ -]?(perfume|fragrance)/.test(value)) return "/leyros/collection-banners/car-v1.webp";
+  if (/attar/.test(value)) return "/leyros/collection-banners/attar-v1.webp";
+  if (/gift|travel/.test(value)) return "/leyros/collection-banners/gifts-v1.webp";
+  if (/candle/.test(value)) return "/leyros/candle-collections/soy-v2.webp";
+  return "/leyros/all-perfumes-background.png";
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import styles from "./collection-banner.module.css";
 import { CollectionControls } from "@/components/collection/CollectionControls";
 import { ProductCard } from "@/components/product/ProductCard";
-import { getCollectionPresentation } from "@/lib/data/collection-presentation";
+import { getCollectionBanner, getCollectionPresentation } from "@/lib/data/collection-presentation";
 import { listProducts } from "@/lib/data/products";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -101,7 +102,7 @@ export default async function CollectionPage({ params, searchParams }: {
   return (
     <div className="collection-page">
       <div className="page-shell">
-        <header className={`collection-intro ${presentation.title.toLowerCase() === "all perfumes" ? styles.perfumeBanner : ""}`}>
+        <header className={`collection-intro ${styles.collectionBanner}`} style={{ "--collection-banner-image": `url("${getCollectionBanner({ handle, category: activeCategory })}")` } as CSSProperties}>
           <div className="collection-intro-copy">
             <h1>{searchQuery ? `Results for “${searchQuery}”` : presentation.title}</h1>
             {searchQuery && <p>{visibleProducts.length} {visibleProducts.length === 1 ? "product" : "products"} found</p>}

@@ -15,6 +15,16 @@ function discountPercent(price: number, compareAtPrice?: number) {
   return Math.round((1 - price / compareAtPrice) * 100);
 }
 
+function ReelPrice({ price, compareAtPrice }: { price: number; compareAtPrice?: number }) {
+  const discount = discountPercent(price, compareAtPrice);
+  return (
+    <div className="home-reel-price">
+      <strong aria-label={`Price ${formatInr(price)}`}>{formatInr(price)}</strong>
+      {discount !== null && <><s aria-label={`Original price ${formatInr(compareAtPrice!)}`}>{formatInr(compareAtPrice!)}</s><span className="home-reel-discount">{discount}% off</span></>}
+    </div>
+  );
+}
+
 export function VideoShowcaseCarousel({ videos }: { videos: ShoppableVideo[] }) {
   const [openVideo, setOpenVideo] = useState<ShoppableVideo | null>(null);
 
@@ -66,8 +76,9 @@ function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () =>
         <video ref={previewRef} src={video.videoUrl} preload="none" muted loop playsInline poster={video.product.images[0]} />
       </button>
       <Link href={`/products/${video.product.handle}`} className="home-reel-product">
+        {video.product.images[0] && <span className="home-reel-thumbnail"><Image src={video.product.images[0]} alt="" fill sizes="56px" /></span>}
         <h3>{video.product.title}</h3>
-        {variant && <div className="home-reel-price">{formatInr(variant.price)}</div>}
+        {variant && <ReelPrice price={variant.price} compareAtPrice={variant.compareAtPrice} />}
       </Link>
     </article>
   );
@@ -78,7 +89,6 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
   const [muted, setMuted] = useState(true);
   const [justAdded, setJustAdded] = useState(false);
   const variant = video.product.variants[0];
-  const discount = variant ? discountPercent(variant.price, variant.compareAtPrice) : null;
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -186,13 +196,7 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
           )}
           <h3 className="mt-4 font-serif text-2xl text-charcoal">{video.product.title}</h3>
           {variant && (
-            <p className="mt-1 text-lg text-charcoal">
-              {formatInr(variant.price)}
-              {variant.compareAtPrice && (
-                <span className="ml-2 text-sm text-charcoal-soft/50 line-through">{formatInr(variant.compareAtPrice)}</span>
-              )}
-              {discount && <span className="ml-2 text-sm font-medium text-emerald-700">{discount}% OFF</span>}
-            </p>
+            <ReelPrice price={variant.price} compareAtPrice={variant.compareAtPrice} />
           )}
 
           <div className="video-modal-actions mt-auto flex gap-3 pt-6">

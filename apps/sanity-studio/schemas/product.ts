@@ -28,6 +28,23 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "faqs",
+      title: "Product FAQs",
+      description: "Optional custom FAQs for this product. Add complete questions and answers in display order. Leave empty to use FAQs based on this product's notes, sizes and highlights.",
+      type: "array",
+      of: [{
+        type: "object",
+        name: "productFaq",
+        title: "Question & answer",
+        fields: [
+          defineField({ name: "question", title: "Question", type: "string", validation: (Rule) => Rule.required().min(5).max(200) }),
+          defineField({ name: "answer", title: "Answer", type: "text", rows: 3, validation: (Rule) => Rule.required().min(5).max(2000) }),
+        ],
+        preview: { select: { title: "question", subtitle: "answer" } },
+      }],
+      validation: (Rule) => Rule.max(12),
+    }),
+    defineField({
       name: "images",
       title: "Images & video",
       description:

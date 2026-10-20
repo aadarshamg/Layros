@@ -8,6 +8,7 @@ import { isSoldOut } from "@/lib/stock";
 
 /** Raw shape returned by the GROQ projection below — mirrors the `product` schema. */
 export interface RawSanityProduct {
+  faqs?: ({ question?: string | null; answer?: string | null } | null)[] | null;
   id: string;
   handle: string | null;
   title: string;
@@ -60,6 +61,7 @@ export const PRODUCT_PROJECTION = `{
   title,
   brand,
   description,
+  faqs[]{question, answer},
   "createdAt": _createdAt,
   "images": images[_type == "image"],
   // Admin can drop one video in among the gallery photos (any position) —
@@ -144,6 +146,11 @@ export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
     title: raw.title,
     brand: raw.brand ?? "Leyros",
     description: raw.description ?? "",
+    faqs: (raw.faqs ?? []).flatMap((faq) => {
+      const question = faq?.question?.trim();
+      const answer = faq?.answer?.trim();
+      return question && answer ? [{ question, answer }] : [];
+    }),
     images,
     // Priority: a video dropped into the image gallery itself (the current,
     // recommended way to add one) > the legacy dedicated upload field > the

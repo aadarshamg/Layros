@@ -48,6 +48,8 @@ export interface ShoppableVideo {
 }
 
 export interface PerfumeProduct {
+  /** Optional product-specific questions and answers, in display order. */
+  faqs?: { question: string; answer: string }[];
   id: string;
   handle: string;
   title: string;

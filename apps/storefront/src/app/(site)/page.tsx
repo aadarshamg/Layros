@@ -14,6 +14,7 @@ import { InstagramSection } from "@/components/home/InstagramSection";
 import { PrivateBlendSection } from "@/components/home/PrivateBlendSection";
 import { ShopByBudget } from "@/components/home/ShopByBudget";
 import { HeroOfferProgress } from "@/components/home/HeroOfferProgress";
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { getBestSellers, getCategoryShowcase, getNewArrivals } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 import { DEFAULT_HERO_VIDEO_URL } from "@/lib/site-defaults";
@@ -46,6 +47,9 @@ export default async function Home() {
     <div className="storefront-home">
       <CinematicHero videoUrl={DEFAULT_HERO_VIDEO_URL} />
       <HeroOfferProgress products={offerProducts} />
+      <div className="home-announcement">
+        <AnnouncementBar messages={storeSettings.announcementMessages} />
+      </div>
 
       <CinematicProductGrid
         heading="New Arrivals"

@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
 import { DEFAULT_ANNOUNCEMENT_MESSAGES } from "@/lib/site-defaults";
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 
 interface NavLink {
   href: string;
@@ -192,18 +193,8 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
   // links, icons.
   return (
     <header className={`site-header${isHome && !isPastHero ? " is-hero-overlay" : ""}${isPastHero ? " is-past-hero" : ""}`} ref={headerRef}>
-      {(
-        <div className="announcement" aria-label="Store announcements">
-          <div className="announcement-track">
-            <div className="announcement-group">
-              {announcements.map((message) => <span key={message}>{message}</span>)}
-            </div>
-            <div className="announcement-group" aria-hidden="true">
-              {announcements.map((message) => <span key={`repeat-${message}`}>{message}</span>)}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* The homepage shows the strip above New Arrivals instead (see app/(site)/page.tsx). */}
+      {!isHome && <AnnouncementBar messages={announcements} />}
       <div className="nav-shell">
         <details className="home-menu">
           <summary aria-label="Open menu"><span aria-hidden="true">☰</span> Menu</summary>

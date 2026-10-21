@@ -14349,3 +14349,19 @@ html body header.site-header.site-header .desktop-nav:hover > :is(a, .nav-dropdo
   html body header.site-header.site-header .desktop-nav > a,
   html body header.site-header.site-header .desktop-nav .nav-dropdown > summary { transition: none; }
 }
+
+/* Mobile menu panel: translucent green glass over the page, so the hero
+   shows through softly while the links stay readable. The blur sits in its
+   own rule: paired with -webkit-backdrop-filter, the CSS build keeps only
+   the prefixed one (see the header rule above). */
+html body header.site-header.site-header .mobile-menu > nav {
+  border-color: rgba(242, 242, 242, .28) !important;
+  background: rgba(26, 66, 47, .72) !important;
+}
+html body header.site-header.site-header .mobile-menu > nav {
+  backdrop-filter: blur(14px) saturate(1.2) !important;
+}
+html body header.site-header.site-header .mobile-menu .nav-family-menu > summary,
+html body header.site-header.site-header .mobile-menu .nav-family-children {
+  background: rgba(255, 255, 255, .08) !important;
+}

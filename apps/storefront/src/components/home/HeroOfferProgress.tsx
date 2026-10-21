@@ -2,53 +2,86 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Fragment } from "react";
 import { useCart } from "@/lib/cart-context";
+import { formatInr } from "@/lib/format";
 import { calculateBuyTwoGetOne } from "@/lib/promotions";
 import styles from "./HeroOfferProgress.module.css";
 
-const STEPS = ["1 perfume bottle", "1 perfume bottle", "1 free perfume bottle"];
 const SHOP = "/collections/all?category=collections";
 
-export function HeroOfferProgress({ products }: { products: { image: string; title: string; handle: string }[] }) {
+export interface OfferProduct {
+  image: string;
+  title: string;
+  /** Short display name, e.g. "OMBRÉE LEATHER". */
+  name: string;
+  handle: string;
+  /** Lowest price across sizes. */
+  price: number;
+}
+
+/**
+ * Buy 2, Get 1 Free shown as three offer cards: two paid bottles and a free
+ * one. The products arrive sorted by price with the cheapest last, because
+ * the lowest-priced bottle of every three is the free one at checkout.
+ */
+export function HeroOfferProgress({ products }: { products: OfferProduct[] }) {
   const { items, isReady, openDrawer } = useCart();
   const { eligibleItemCount, freeItemCount } = calculateBuyTwoGetOne(isReady ? items : []);
   // Keep the first trio visibly complete once unlocked, rather than resetting
-  // its bottle markers when the shopper adds a fourth or fifth item.
+  // its markers when the shopper adds a fourth or fifth bottle.
   const progress = Math.min(eligibleItemCount, 3);
   const remaining = 3 - progress;
   const unlocked = freeItemCount > 0;
   const message = unlocked
-    ? `${eligibleItemCount} bottles in your bag · ${freeItemCount} free · Pay for ${eligibleItemCount - freeItemCount}`
-    : eligibleItemCount === 2 ? "Add your third bottle to the bag — it’s free."
-      : eligibleItemCount ? `Add ${remaining} more bottles to receive 3 and pay for 2.` : "Choose all 3 bottles. The lowest-priced bottle is free at checkout.";
+    ? `${eligibleItemCount} bottles in your bag · ${freeItemCount} free · you pay for ${eligibleItemCount - freeItemCount}`
+    : eligibleItemCount === 2 ? "Add your third bottle. It's free."
+      : eligibleItemCount ? `${eligibleItemCount} of 3 in your bag · add ${remaining} more to get one free`
+        : "Mix and match any 3 perfumes. The lowest-priced one is free at checkout.";
+  const cards = [0, 1, 2].map((index) => products[index]);
 
   return (
     <section className={styles.section} aria-labelledby="hero-offer-title">
       <div className={styles.inner}>
         <h2 id="hero-offer-title" className={styles.title}>Buy 2, get 1 free</h2>
-        <div className={styles.steps}>
-          <div className={styles.track} aria-hidden="true"><span style={{ width: `${Math.max(0, progress - 1) / 2 * 100}%` }} /></div>
-          <ol>
-            {STEPS.map((label, index) => {
-              const done = progress > index;
-              const product = products[index];
-              return (
-                <li key={index} className={done ? styles.complete : undefined}>
-                  <Link href={product ? `/products/${product.handle}` : SHOP} className={styles.image} aria-label={product ? `View ${product.title}` : `${label} — shop eligible fragrances`}>
-                    {product ? <Image src={product.image} alt={product.title} fill sizes="(max-width: 600px) 34vw, 300px" /> : <svg viewBox="0 0 48 64" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M17 5h14v10H17z" fill="currentColor" /><path d="M20 15h8v6h-8zM10 21h28v37H10z" /><path d="M11 42h26v15H11z" fill="currentColor" opacity=".12" /><path d="M17 30h14v12H17z" /><path d="M21 34h6m-6 4h6" /></svg>}
-                    {index === 2 && <span className={styles.free}>Free</span>}
+        <p className={styles.subtitle}>Pick any 3 bottles · pay for only 2</p>
+
+        <ol className={styles.cards}>
+          {cards.map((product, index) => {
+            const isFree = index === 2;
+            const done = progress > index;
+            return (
+              <Fragment key={index}>
+                {index > 0 && <li className={styles.operator} aria-hidden="true">+</li>}
+                <li className={`${styles.card}${isFree ? ` ${styles.freeCard}` : ""}${done ? ` ${styles.done}` : ""}`}>
+                  {isFree && <span className={styles.ribbon}>Free</span>}
+                  {done && <span className={styles.check} aria-label="In your bag">✓</span>}
+                  <Link href={product ? `/products/${product.handle}` : SHOP} className={styles.cardLink}>
+                    <span className={styles.photo}>
+                      {product
+                        ? <Image src={product.image} alt={product.title} fill sizes="(max-width: 600px) 30vw, 260px" />
+                        : <span className={styles.placeholder} aria-hidden="true">?</span>}
+                    </span>
+                    <span className={styles.name}>{product?.name ?? (isFree ? "Your free bottle" : "Any perfume")}</span>
+                    {product && (
+                      <span className={styles.price}>
+                        {isFree ? <><s>{formatInr(product.price)}</s> <b>{formatInr(0)}</b></> : formatInr(product.price)}
+                      </span>
+                    )}
                   </Link>
-                  <span className={styles.label}>{label}</span>
-                  <span className={styles.dot} aria-hidden="true">{done ? "✓" : ""}</span>
                 </li>
-              );
-            })}
-          </ol>
+              </Fragment>
+            );
+          })}
+        </ol>
+
+        <div className={styles.progress} aria-hidden="true">
+          {[0, 1, 2].map((index) => <span key={index} className={progress > index ? styles.filled : undefined} />)}
         </div>
-        {!unlocked && eligibleItemCount !== 1 && <p className={styles.message} aria-live="polite" aria-atomic="true">{message}</p>}
+        <p className={styles.message} aria-live="polite" aria-atomic="true">{message}</p>
         {unlocked && progress === 3
-          ? <button type="button" onClick={openDrawer} className={styles.cta}>View your bag →</button>
-          : <Link href={SHOP} className={styles.cta}>Choose your fragrances →</Link>}
+          ? <button type="button" onClick={openDrawer} className={styles.cta}>View your bag</button>
+          : <Link href={SHOP} className={styles.cta}>Choose your 3 bottles</Link>}
       </div>
     </section>
   );

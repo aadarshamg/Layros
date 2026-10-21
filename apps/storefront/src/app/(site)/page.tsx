@@ -19,6 +19,7 @@ import { getBestSellers, getCategoryShowcase, getNewArrivals } from "@/lib/data/
 import { getStoreSettings } from "@/lib/data/store-settings";
 import { DEFAULT_HERO_VIDEO_URL } from "@/lib/site-defaults";
 import { isBuyTwoGetOneEligible } from "@/lib/promotions";
+import { productCardName } from "@/lib/product-labels";
 
 export const metadata: Metadata = buildMetadata({
   title: "LEYROS | Best Indian Long Lasting Perfume for Men & Women",
@@ -41,7 +42,9 @@ export default async function Home() {
       && !/\b(gift|pack|set|kit|combo|duo|trio|hamper|discovery|sample|trial|miniature)\b|\d\s*[x×*]\s*\d/i.test(product.title)
       && !product.variants.some((variant) => /\d\s*[x×*]\s*\d|pack|set/i.test(variant.sizeLabel ?? "")))
     .slice(0, 3)
-    .map((product) => ({ image: product.images[0], title: product.title, handle: product.handle }));
+    .map((product) => ({ image: product.images[0], title: product.title, name: productCardName(product), handle: product.handle, price: Math.min(...product.variants.map((variant) => variant.price)) }))
+    // The lowest-priced bottle is the free one, so it goes in the FREE slot.
+    .sort((a, b) => b.price - a.price);
 
   return (
     <div className="storefront-home">

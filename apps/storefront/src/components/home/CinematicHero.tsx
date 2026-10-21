@@ -1,5 +1,7 @@
 ﻿import { DEFAULT_HERO_VIDEO_URL } from "@/lib/site-defaults";
 
+import { FestiveCrackers } from "./FestiveCrackers";
+
 export function CinematicHero({ videoUrl, posterUrl }: { tagline?: string; videoUrl?: string; posterUrl?: string }) {
   const source = videoUrl || DEFAULT_HERO_VIDEO_URL;
   return (
@@ -16,8 +18,10 @@ export function CinematicHero({ videoUrl, posterUrl }: { tagline?: string; video
         preload="metadata"
         aria-label="Leyros hero film"
       >
+        <source src="/leyros/homepage-hero-mobile-v1.mp4" media="(max-width: 600px)" type="video/mp4" />
         <source src={source} type="video/mp4" />
       </video>
+      <FestiveCrackers />
     </section>
   );
 }

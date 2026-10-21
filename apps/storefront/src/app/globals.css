@@ -14215,6 +14215,11 @@ html body .signature-video-hero .signature-hero-video {
   height: 100%;
   object-fit: contain;
 }
+@media (max-width: 600px) {
+  html body .storefront-home .signature-hero.signature-video-hero {
+    aspect-ratio: 9 / 16;
+  }
+}
 
 html body header.site-header.site-header { transition: background-color .3s ease, box-shadow .3s ease; }
 /* Keep the film crisp through the header in both scroll states. */
@@ -14323,6 +14328,7 @@ html body header.site-header.site-header,
 html body header.site-header.site-header :is(.nav-shell, .desktop-nav, .nav-actions, .wordmark) {
   backdrop-filter: none !important;
 }
+
 
 /* Menu hover: a cream underline grows from the centre under the item, the
    text brightens, and the other items dim slightly. Drawn as a background so

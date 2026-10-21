@@ -17,7 +17,8 @@ export function buildMetadata({
 }): Metadata {
   const url = `${siteUrl}${path}`;
   const socialImage = image || "/og.png";
-  const fullTitle = path === "/" ? "LEYROS" : `${title} | LEYROS`;
+  // The homepage title is used as written (it already carries the brand).
+  const fullTitle = path === "/" ? title : `${title} | LEYROS`;
   return {
     title: { absolute: fullTitle },
     description,

@@ -18,9 +18,10 @@ import { getBestSellers, getCategoryShowcase, getNewArrivals } from "@/lib/data/
 import { getStoreSettings } from "@/lib/data/store-settings";
 
 export const metadata: Metadata = buildMetadata({
-  title: "LEYROS",
-  description: "Discover LEYROS luxury fragrances, rare extraits, and personalized perfume crafted with Indian botanicals and Parisian precision.",
+  title: "LEYROS | Best Indian Long Lasting Perfume for Men & Women",
+  description: "Shop LEYROS, the best Indian long lasting perfume brand: luxury eau de parfums, attars and gift sets crafted with Indian botanicals. Free shipping over ₹999.",
   path: "/",
+  keywords: ["Best Indian Long Lasting Perfume", "long lasting perfume India", "Indian perfume brand", "luxury perfume for men and women", "LEYROS"],
 });
 
 export default async function Home() {

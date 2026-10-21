@@ -159,19 +159,19 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
             <div className="product-offer-band-copy">
               <span>Buy any 2</span>
               <strong>Get 1 free</strong>
-              <small>Three scents. Endless possibilities.</small>
+              <small>Receive 3 perfume bottles. Pay for only 2.</small>
               <Link href="/collections/all?category=collections">Shop now</Link>
             </div>
             <div className="product-offer-band-image">
               <Image src="/leyros/hero-products-green-v3.png" alt="Leyros Aventra, Aqualis and Veloria fragrances" fill sizes="(max-width: 650px) 100vw, 45vw" />
             </div>
             <div className="product-offer-band-reward">
-              <span className="offer-reward-eyebrow">Your third fragrance</span>
-              <strong>On us.</strong>
+              <span className="offer-reward-eyebrow">3 perfume bottles in total</span>
+              <strong>Pay for 2.</strong>
               <div className="offer-reward-gift" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M8 23h32v19H8zM5 15h38v8H5zM24 15v27M24 15C8 15 9 2 17 6c5 2 7 9 7 9Zm0 0C40 15 39 2 31 6c-5 2-7 9-7 9Z" /></svg>
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M18 4h12v8H18zM21 12h6v6h-6zM10 18h28v26H10zM17 27h14v9H17z" /></svg>
               </div>
-              <p>Add any 3 perfumes or attars.<br />The lowest-priced one is free.</p>
+              <p>1 bottle + 1 bottle + 1 free bottle.<br />Choose all 3; the lowest-priced bottle is free.</p>
               <small>Applied automatically in your bag.</small>
             </div>
           </div>

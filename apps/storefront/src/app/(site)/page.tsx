@@ -14,7 +14,6 @@ import { InstagramSection } from "@/components/home/InstagramSection";
 import { PrivateBlendSection } from "@/components/home/PrivateBlendSection";
 import { ShopByBudget } from "@/components/home/ShopByBudget";
 import { HeroOfferProgress } from "@/components/home/HeroOfferProgress";
-import { isBuyTwoGetOneEligible } from "@/lib/promotions";
 import { getBestSellers, getCategoryShowcase, getNewArrivals } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 
@@ -35,7 +34,7 @@ export default async function Home() {
   return (
     <div className="storefront-home">
       <CinematicHero tagline={storeSettings.tagline} videoUrl={storeSettings.heroVideoUrl} posterUrl={storeSettings.heroPosterUrl} />
-      <HeroOfferProgress images={[...bestSellers, ...newArrivals].filter(isBuyTwoGetOneEligible).map((product) => product.images[0]).filter(Boolean).slice(0, 3)} />
+      <HeroOfferProgress />
 
       <CinematicProductGrid
         heading="New Arrivals"

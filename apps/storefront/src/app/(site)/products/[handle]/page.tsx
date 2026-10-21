@@ -1,14 +1,14 @@
 import "./product-page.css";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { productJsonLd } from "@/lib/seo/jsonld/product";
 import { productBreadcrumbJsonLd } from "@/lib/seo/jsonld/breadcrumb";
 import { getProductSeo } from "@/lib/seo/product-seo";
-import { getProductByHandle, getSimilarProducts } from "@/lib/data/products";
+import { getProductByHandle, getRenamedProductHandle, getSimilarProducts } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 import { AddToCartForm, type PurchasePerk } from "@/components/product/AddToCartForm";
 import { NoteIcon } from "@/components/product/NoteIcon";
@@ -45,7 +45,12 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
 export default async function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
   const [product, rewardSettings] = await Promise.all([getProductByHandle(handle), getStoreSettings()]);
-  if (!product) notFound();
+  if (!product) {
+    // An old (longer) product URL: send it, and its search ranking, to the current one.
+    const renamed = await getRenamedProductHandle(handle);
+    if (renamed) permanentRedirect(`/products/${renamed}`);
+    notFound();
+  }
 
   const relatedProducts = await getSimilarProducts([product.id], 4);
 

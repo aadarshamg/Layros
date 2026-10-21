@@ -519,6 +519,20 @@ export async function getProductByHandle(handle: string): Promise<PerfumeProduct
   }
 }
 
+/** The current URL handle of a product that used to live at `handle`, if any. */
+export async function getRenamedProductHandle(handle: string): Promise<string | null> {
+  if (!sanityConfigured) return null;
+  try {
+    return await sanityClient.fetch<string | null>(
+      `*[_type == "product" && $handle in previousSlugs][0].slug.current`,
+      { handle },
+      SANITY_FETCH_OPTIONS,
+    );
+  } catch {
+    return null;
+  }
+}
+
 export async function listProducts(params: {
   family?: string;
   gender?: string;

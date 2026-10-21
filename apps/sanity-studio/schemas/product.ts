@@ -15,9 +15,17 @@ export default defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
-      description: "Used in the product URL, e.g. /products/nuit-doree",
+      description: "The product URL: keep it to the product's name, e.g. angel-nikki for /products/angel-nikki. If you ever change it, add the old one to Previous URLs below so old links still work.",
       options: { source: "title", maxLength: 96 },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "previousSlugs",
+      title: "Previous URLs",
+      description: "Old slugs this product used to have. Visiting /products/<old-slug> redirects permanently to the current URL, so shared links and Google results keep working.",
+      type: "array",
+      of: [{ type: "string" }],
+      options: { layout: "tags" },
     }),
     defineField({ name: "brand", title: "Brand", type: "string", initialValue: "Leyros" }),
     defineField({

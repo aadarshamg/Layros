@@ -14324,3 +14324,28 @@ html body header.site-header.site-header :is(.nav-shell, .desktop-nav, .nav-acti
   backdrop-filter: none !important;
 }
 
+/* Menu hover: a cream underline grows from the centre under the item, the
+   text brightens, and the other items dim slightly. Drawn as a background so
+   it doesn't touch the ::before/::after the dropdown arrow and older
+   (dark, invisible on the green bar) underline use. */
+html body header.site-header.site-header .desktop-nav > a,
+html body header.site-header.site-header .desktop-nav .nav-dropdown > summary {
+  padding-block: 4px;
+  background-image: linear-gradient(currentColor, currentColor) !important;
+  background-repeat: no-repeat !important;
+  background-position: 50% 100% !important;
+  background-size: 0% 2px !important;
+  transition: background-size .25s ease, color .2s ease, opacity .2s ease;
+}
+html body header.site-header.site-header .desktop-nav > a::after { display: none; }
+html body header.site-header.site-header .desktop-nav > a:is(:hover, :focus-visible),
+html body header.site-header.site-header .desktop-nav .nav-dropdown > summary:is(:hover, :focus-visible),
+html body header.site-header.site-header .desktop-nav .nav-dropdown[open] > summary {
+  color: #fff !important;
+  background-size: 100% 2px !important;
+}
+html body header.site-header.site-header .desktop-nav:hover > :is(a, .nav-dropdown):not(:hover) { opacity: .65; }
+@media (prefers-reduced-motion: reduce) {
+  html body header.site-header.site-header .desktop-nav > a,
+  html body header.site-header.site-header .desktop-nav .nav-dropdown > summary { transition: none; }
+}

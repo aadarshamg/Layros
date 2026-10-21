@@ -202,7 +202,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
         </details>
         <Link href="/" className="wordmark" aria-label="LEYROS home">
           <Image
-            src="/leyros/leyros-logo-white.png"
+            src="/leyros/leyros-logo-white-v2.webp"
             alt=""
             width={1280}
             height={1280}

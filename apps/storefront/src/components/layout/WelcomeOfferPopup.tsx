@@ -70,7 +70,7 @@ export function WelcomeOfferPopup() {
         <div className={styles.garland} aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /></div>
         <button type="button" className="welcome-offer-close" onClick={close} aria-label="Close">×</button>
         <div className="welcome-offer-brand">
-          <Image src="/leyros/leyros-logo-white.png" alt="Leyros" width={110} height={72} />
+          <Image src="/leyros/leyros-logo-white-v2.webp" alt="Leyros" width={110} height={72} />
         </div>
         <div className={styles.celebration}>
           <svg className={styles.diya} viewBox="0 0 180 90" fill="none" aria-hidden="true">

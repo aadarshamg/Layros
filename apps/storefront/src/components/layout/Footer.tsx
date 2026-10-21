@@ -78,7 +78,7 @@ export function Footer({
         <div className="footer-intro">
           <Link href="/" className="footer-brand" aria-label="LEYROS home">
             <Image
-              src="/leyros/leyros-logo-white.png"
+              src="/leyros/leyros-logo-white-v2.webp"
               alt=""
               width={1280}
               height={1280}

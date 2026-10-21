@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 const folder = process.argv[2];
 if (!folder) throw new Error('Provide the image folder.');
 const apply = process.argv.includes('--apply');
+const square = process.argv.includes('--square');
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_STUDIO_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || 'production',
@@ -17,6 +18,10 @@ const mappings = [
   { match: /dark.*cherry/i, files: ['hf_20261020_154521_a0938d3e-be6b-41ed-bd17-b3b788b5062f.png'] },
   { match: /maracuja.*wood/i, files: ['hf_20261020_154802_2b5fb7f4-b77a-44fc-a21b-af25193c2bc4.png'] },
 ];
+const originalFiles = mappings.flatMap(mapping => mapping.files);
+const replacedRefs = new Set(process.argv.includes('--replace-import')
+  ? await client.fetch('*[_type == "sanity.imageAsset" && originalFilename in $files]._id', { files: originalFiles }) : []);
+if (square) for (const mapping of mappings) mapping.files = mapping.files.map(file => file.replace(/\.png$/i, '.webp'));
 const products = await client.fetch('*[_type == "product" && !(_id in path("drafts.**"))]{_id,_rev,title,images}');
 const plans = mappings.map(mapping => {
   const matches = products.filter(p => mapping.match.test(p.title) && !/gift|combo|pack|discovery|set/i.test(p.title));
@@ -37,7 +42,7 @@ if (apply) {
     }
     // Keep the previous gallery available after the new photos.
     const refs = new Set(images.map(i => i.asset._ref));
-    const retained = (plan.product.images || []).filter(i => !refs.has(i.asset?._ref));
+    const retained = (plan.product.images || []).filter(i => !refs.has(i.asset?._ref) && !replacedRefs.has(i.asset?._ref));
     await client.patch(plan.product._id).ifRevisionId(plan.product._rev).set({ images: [...images, ...retained] }).commit();
     const saved = await client.getDocument(plan.product._id);
     if (!images.every((image, i) => saved.images[i].asset._ref === image.asset._ref)) throw new Error(`Verification failed: ${plan.product.title}`);

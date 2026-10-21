@@ -256,7 +256,7 @@ export default function StoryPage() {
       <section className="legacy-about-signoff">
         <div className="legacy-about-container">
           <Image
-            src="/leyros/leyros-logo-white.png"
+            src="/leyros/leyros-logo-white-v2.webp"
             alt="Leyros Essence"
             width={1280}
             height={1280}

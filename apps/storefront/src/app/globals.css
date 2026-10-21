@@ -14187,6 +14187,16 @@ html body .video-modal-details .home-reel-price .home-reel-discount {
   font-size: 12px;
   font-weight: 400;
 }
+/* Keep reel pricing in the original storefront display face. */
+html body .storefront-home .home-reel-price,
+html body .storefront-home .home-reel-price :is(strong, s, span),
+html body .video-modal-details .home-reel-price,
+html body .video-modal-details .home-reel-price :is(strong, s, span) {
+  font-family: var(--font-display) !important;
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: .02em;
+}
 
 /* The display font has one real weight; avoid synthesized bold and tight
    legacy serif tracking that makes these hero titles run together. */

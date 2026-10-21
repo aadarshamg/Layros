@@ -191,7 +191,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
   // One header on every page, homepage included: announcement strip, logo,
   // links, icons.
   return (
-    <header className={`site-header${isPastHero ? " is-past-hero" : ""}`} ref={headerRef}>
+    <header className={`site-header${isHome && !isPastHero ? " is-hero-overlay" : ""}${isPastHero ? " is-past-hero" : ""}`} ref={headerRef}>
       {(
         <div className="announcement" aria-label="Store announcements">
           <div className="announcement-track">

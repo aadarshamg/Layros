@@ -11,7 +11,7 @@ export const DEFAULT_CONTACT_PHONE = "+91 99150 83150";
 export const DEFAULT_WHATSAPP_NUMBER = "919915083150";
 export const DEFAULT_WHATSAPP_SUGGESTED_MESSAGE = "Which fragrance is best for me?";
 export const DEFAULT_TAGLINE = "L’Art du Flacon · Édition 2026";
-export const DEFAULT_HERO_VIDEO_URL = "/leyros/perfume-aroma-hero.mp4";
+export const DEFAULT_HERO_VIDEO_URL = "/leyros/homepage-hero-v1.mp4";
 export const DEFAULT_HERO_POSTER_URL = "/leyros/nuit-doree-hero.jpg";
 // For now the homepage opens on this static campaign banner and the hero
 // video is switched off. Set to null to bring the video hero back.

@@ -14200,7 +14200,29 @@ html body .candles-page-hero-copy h1 {
   font-synthesis: none;
 }
 
+/* Uploaded film fills the hero at its native 16:9 ratio without cropping. */
+html body .storefront-home .signature-hero.signature-video-hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+}
+html body .signature-video-hero .signature-hero-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 html body header.site-header.site-header { transition: background-color .3s ease, box-shadow .3s ease; }
+/* Keep the film crisp through the header in both scroll states. */
+html body header.site-header.site-header,
+html body header.site-header.site-header .nav-shell {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
 html body:has(.storefront-home .signature-hero) header.site-header.site-header:not(.is-past-hero) {
   background: transparent !important;
   background-color: transparent !important;
@@ -14220,7 +14242,53 @@ html body:has(.storefront-home .signature-hero) header.site-header.site-header:n
   content: none !important;
 }
 
+/* Category names have their own high-contrast strip below the photograph. */
+html body .storefront-home .home-gender-card {
+  display: flex;
+  flex-direction: column;
+}
+html body .storefront-home .home-gender-card > img {
+  position: relative !important;
+  inset: auto !important;
+  height: auto !important;
+  width: 100% !important;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #fff;
+}
+html body .storefront-home .home-gender-card .home-gender-card-copy {
+  position: relative;
+  padding: 18px 20px;
+  background: #fffcf7;
+}
+html body .storefront-home .home-gender-card .home-gender-card-copy h3 {
+  color: #1a422f;
+  font-family: var(--font-display) !important;
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: clamp(22px, 2.4vw, 36px);
+}
+@media (max-width: 650px) {
+  html body .storefront-home .home-gender-card { aspect-ratio: auto; }
+  html body .storefront-home .home-gender-card .home-gender-card-copy { padding: 12px 6px; }
+  html body .storefront-home .home-gender-card .home-gender-card-copy h3 { font-size: 18px; }
+}
+
 /* Sold-out sizes (tracked stock at 0): still visible, clearly unavailable. */
+/* The homepage navigation floats directly over the film, without glass layers. */
+html body header.site-header.site-header.is-hero-overlay,
+html body header.site-header.site-header.is-hero-overlay :is(.nav-shell, .desktop-nav, .nav-actions, .wordmark) {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html body header.site-header.site-header.is-hero-overlay :is(.nav-shell, .desktop-nav, .nav-actions, .wordmark)::before,
+html body header.site-header.site-header.is-hero-overlay :is(.nav-shell, .desktop-nav, .nav-actions, .wordmark)::after {
+  content: none !important;
+}
+
 html body :is(.size-option, .product-card-size).is-sold-out { opacity: .5; }
 html body :is(.size-option, .product-card-size).is-sold-out b,
 html body .product-card-size.is-sold-out { text-decoration: line-through; }
@@ -14246,3 +14314,13 @@ html body header.site-header.site-header .nav-search-form input::placeholder { c
 html body header.site-header.site-header .nav-search-submit .header-simple-icon { width: 19px; height: 19px; stroke-width: 1.8; }
 /* Product reviews imported from Google (the reviewer named this product). */
 html body .product-review-source { padding: 1px 7px; border: 1px solid rgba(26, 66, 47, .25); color: #4f6354; font-size: .65rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+
+/* No frosted glass behind the header. On its own on purpose: when a rule
+   pairs backdrop-filter with -webkit-backdrop-filter, the CSS build
+   (Lightning CSS) keeps only the -webkit- one, which Chrome ignores, so the
+   old blur(18px) on .site-header survived every earlier override. */
+html body header.site-header.site-header,
+html body header.site-header.site-header :is(.nav-shell, .desktop-nav, .nav-actions, .wordmark) {
+  backdrop-filter: none !important;
+}
+

@@ -86,7 +86,8 @@ const NOTE_COLLECTIONS = [
 const TILE_IMAGE_RULES: Record<string, (product: PerfumeProduct) => boolean> = Object.fromEntries([
   ...GENDER_COLLECTIONS.map((collection) => [
     `gender:${collection.gender}`,
-    (product: PerfumeProduct) => isPerfume(product) && product.details.gender === collection.gender,
+    (product: PerfumeProduct) => isPerfume(product) && product.details.gender === collection.gender
+      && !/sauvagee|angel nikki|ombr[eé]e leather/i.test(product.title),
   ]),
 ]);
 

@@ -16,6 +16,8 @@ import { ShopByBudget } from "@/components/home/ShopByBudget";
 import { HeroOfferProgress } from "@/components/home/HeroOfferProgress";
 import { getBestSellers, getCategoryShowcase, getNewArrivals } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
+import { DEFAULT_HERO_VIDEO_URL } from "@/lib/site-defaults";
+import { isBuyTwoGetOneEligible } from "@/lib/promotions";
 
 export const metadata: Metadata = buildMetadata({
   title: "LEYROS | Best Indian Long Lasting Perfume for Men & Women",
@@ -32,10 +34,18 @@ export default async function Home() {
     getStoreSettings(),
   ]);
 
+  const offerProducts = [...new Map([...bestSellers, ...newArrivals].map((product) => [product.id, product])).values()]
+    .filter((product) => isBuyTwoGetOneEligible(product) && product.images[0]
+      && !/attar/i.test(`${product.category ?? ""} ${product.title}`)
+      && !/\b(gift|pack|set|kit|combo|duo|trio|hamper|discovery|sample|trial|miniature)\b|\d\s*[x×*]\s*\d/i.test(product.title)
+      && !product.variants.some((variant) => /\d\s*[x×*]\s*\d|pack|set/i.test(variant.sizeLabel ?? "")))
+    .slice(0, 3)
+    .map((product) => ({ image: product.images[0], title: product.title, handle: product.handle }));
+
   return (
     <div className="storefront-home">
-      <CinematicHero tagline={storeSettings.tagline} videoUrl={storeSettings.heroVideoUrl} posterUrl={storeSettings.heroPosterUrl} />
-      <HeroOfferProgress />
+      <CinematicHero videoUrl={DEFAULT_HERO_VIDEO_URL} />
+      <HeroOfferProgress products={offerProducts} />
 
       <CinematicProductGrid
         heading="New Arrivals"

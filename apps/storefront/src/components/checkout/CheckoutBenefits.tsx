@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { formatInr } from "@/lib/format";
 import { FREE_SHIPPING_THRESHOLD } from "@/lib/shipping";
 import { CATEGORY_COUPON_OFFERS, COUPON_CATEGORY_LABELS, calculateBuyTwoGetOne, getCouponOfferCategory } from "@/lib/promotions";
 
 export function CheckoutBenefits({ compact = false }: { compact?: boolean }) {
-  const { items, subtotal, amountUntilFreeShipping, hasFreeShipping } = useCart();
+  const { items, subtotal, amountUntilFreeShipping, hasFreeShipping, closeDrawer } = useCart();
   const progress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
   const categories = Array.from(new Set(items.map((item) => getCouponOfferCategory(item.category, item.title)).filter(Boolean)));
   const fragranceProgress = calculateBuyTwoGetOne(items);
@@ -29,6 +30,7 @@ export function CheckoutBenefits({ compact = false }: { compact?: boolean }) {
           <div><b>Buy 2 Get 1 Free</b><span>{fragranceProgress.freeItemCount ? `${fragranceProgress.freeItemCount} free item unlocked` : `${3 - (fragranceProgress.eligibleItemCount % 3)} more eligible fragrance${3 - (fragranceProgress.eligibleItemCount % 3) === 1 ? "" : "s"}`}</span></div>
         )}
       </div>
+      <Link href="/offers" onClick={closeDrawer} className="checkout-benefits-all">See all offers and how they work</Link>
     </section>
   );
 }

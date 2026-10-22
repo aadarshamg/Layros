@@ -11,6 +11,7 @@ const STATIC_PAGES: { path: string; priority: number; changeFrequency: "daily" |
   { path: "/candles", priority: 0.8, changeFrequency: "weekly" },
   { path: "/private-blends", priority: 0.7, changeFrequency: "weekly" },
   { path: "/samples", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/offers", priority: 0.7, changeFrequency: "weekly" },
   { path: "/gifting", priority: 0.6, changeFrequency: "monthly" },
   { path: "/fragrance-finder", priority: 0.6, changeFrequency: "monthly" },
   { path: "/story", priority: 0.5, changeFrequency: "monthly" },

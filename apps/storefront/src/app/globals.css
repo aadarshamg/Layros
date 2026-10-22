@@ -14381,3 +14381,21 @@ html body header.site-header.site-header .mobile-menu .nav-family-menu > summary
 html body header.site-header.site-header .mobile-menu .nav-family-children {
   background: rgba(255, 255, 255, .08) !important;
 }
+
+/* Cart: the "You save" badge sits in the totals panel as its own row, not
+   half outside it, where it covered the last product (and the "You might
+   also like" row when scrolled). */
+html body .cart-overlay > aside.cart-drawer .cart-savings {
+  position: static;
+  justify-self: center;
+  transform: none;
+}
+html body .cart-overlay > aside.cart-drawer .cart-offer-note {
+  margin: 4px 16px 0;
+  padding: 8px 12px;
+  border: 1px dashed rgba(26, 66, 47, .35);
+  color: #1a422f;
+  font-size: 12px;
+  line-height: 1.45;
+}
+html body .product-card-price-size { margin-right: 6px; color: #4f6354; font-size: .75rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }

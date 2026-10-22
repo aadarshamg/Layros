@@ -7,6 +7,7 @@ import { formatSize } from "@/lib/format";
 import { DiyaIcon } from "@/components/product/DiyaIcon";
 import { calculateBuyTwoGetOne } from "@/lib/promotions";
 import { availableQuantity, isSoldOut } from "@/lib/stock";
+import { defaultVariant } from "@/lib/variants";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
@@ -60,7 +61,7 @@ const PERK_ICONS: Record<PurchasePerk["icon"], React.ReactNode> = {
 
 export function AddToCartForm({ productId, handle, title, category, image, variants, tagline, perks = [] }: AddToCartFormProps) {
   const { addItem, items, subtotal } = useCart();
-  const [selectedVariantId, setSelectedVariantId] = useState((variants.find((variant) => !isSoldOut(variant)) ?? variants[0])?.id ?? "");
+  const [selectedVariantId, setSelectedVariantId] = useState(defaultVariant(variants)?.id ?? "");
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
   const selected = variants.find((variant) => variant.id === selectedVariantId);

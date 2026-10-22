@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSimilarProducts } from "@/lib/data/products";
+import { defaultVariant } from "@/lib/variants";
 
 // Backs the cart drawer's "You might also like" row. POST with the cart's
 // product IDs for real similarity-based suggestions (same category/family/
@@ -8,21 +9,14 @@ import { getSimilarProducts } from "@/lib/data/products";
 async function respondWith(cartProductIds: string[], interestProductIds: string[] = []) {
   const products = await getSimilarProducts(cartProductIds, 10, interestProductIds);
   return NextResponse.json({
-    products: products.map((product) => ({
+    products: products.map((product) => ({ product, variant: defaultVariant(product.variants) })).map(({ product, variant }) => ({
       id: product.id,
       handle: product.handle,
       title: product.title,
       category: product.category,
       image: product.images[0],
-      variant: product.variants[0]
-        ? {
-            id: product.variants[0].id,
-            sku: product.variants[0].sku,
-            sizeMl: product.variants[0].sizeMl,
-            sizeLabel: product.variants[0].sizeLabel,
-            price: product.variants[0].price,
-            compareAtPrice: product.variants[0].compareAtPrice,
-          }
+      variant: variant
+        ? { id: variant.id, sku: variant.sku, sizeMl: variant.sizeMl, sizeLabel: variant.sizeLabel, price: variant.price, compareAtPrice: variant.compareAtPrice }
         : null,
     })),
   });

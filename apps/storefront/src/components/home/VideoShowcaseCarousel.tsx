@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ShoppableVideo } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
+import { defaultVariant } from "@/lib/variants";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
@@ -41,7 +42,7 @@ export function VideoShowcaseCarousel({ videos }: { videos: ShoppableVideo[] }) 
 }
 
 function VideoTile({ video, onExpand }: { video: ShoppableVideo; onExpand: () => void }) {
-  const variant = video.product.variants[0];
+  const variant = defaultVariant(video.product.variants);
   const previewRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -88,7 +89,7 @@ function VideoShowcaseModal({ video, onClose }: { video: ShoppableVideo; onClose
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [justAdded, setJustAdded] = useState(false);
-  const variant = video.product.variants[0];
+  const variant = defaultVariant(video.product.variants);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

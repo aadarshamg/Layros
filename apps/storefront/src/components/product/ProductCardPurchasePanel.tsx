@@ -7,13 +7,14 @@ import { formatInr, formatSize } from "@/lib/format";
 import { genderLabel, productScentLine } from "@/lib/product-labels";
 import { DiyaIcon } from "@/components/product/DiyaIcon";
 import { isSoldOut } from "@/lib/stock";
+import { defaultVariant } from "@/lib/variants";
 
 export function ProductCardPurchasePanel({ product, homepage = false }: { product: PerfumeProduct; homepage?: boolean }) {
   const { addItem, openDrawer } = useCart();
   const sortedVariants = product.variants
     .filter((item) => !homepage || (item.sizeMl !== 100 && item.sizeMl !== 200))
     .sort((a, b) => a.price - b.price);
-  const [selectedId, setSelectedId] = useState((sortedVariants.find((item) => !isSoldOut(item)) ?? sortedVariants[0])?.id);
+  const [selectedId, setSelectedId] = useState(defaultVariant(sortedVariants)?.id);
   const [justAdded, setJustAdded] = useState(false);
   const variant = sortedVariants.find((item) => item.id === selectedId) ?? sortedVariants[0];
 
@@ -90,6 +91,8 @@ export function ProductCardPurchasePanel({ product, homepage = false }: { produc
         {/* Price and MRP on the left; the % off pill on the right. */}
         <div className="product-card-price-main">
           <p className="product-card-price-line">
+            {/* Sizes are hidden on homepage cards, so say which size the price is for. */}
+            {homepage && product.variants.length > 1 && <span className="product-card-price-size">{formatSize(variant.sizeMl, variant.sizeLabel)}</span>}
             <span className="product-card-price-now">{formatInr(variant.price)}</span>
             {discount > 0 && <span className="product-card-price-mrp">MRP <s>{formatInr(compareAt)}</s></span>}
           </p>

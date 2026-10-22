@@ -16,6 +16,8 @@ import { RECENT_PRODUCT_STORAGE_KEY } from "@/components/product/ProductInterest
 import { DEFAULT_TRUST_BADGE_TEXT } from "@/lib/site-defaults";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 import { CheckoutBenefits } from "@/components/checkout/CheckoutBenefits";
+import { productNameFromTitle } from "@/lib/product-labels";
+import { isBuyTwoGetOneEligibleText } from "@/lib/promotions";
 
 interface SuggestedVariant {
   id: string;
@@ -121,6 +123,8 @@ export function CartDrawer() {
   if (!isDrawerOpen) return null;
 
   const cartProductIds = new Set(items.map((item) => item.productId));
+  // Gift packs never count toward Buy 2 Get 1 Free (see lib/promotions.ts).
+  const hasGiftPack = items.some((item) => /gift ?(pack|set|box)|hamper/i.test(`${item.category ?? ""} ${item.title}`) && !isBuyTwoGetOneEligibleText(item.category, item.title));
   const crossSell = suggestions.filter((product) => !cartProductIds.has(product.id)).slice(0, 10);
   const totalItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const rewardTarget = storeSettings.rewardThreshold ?? 0;
@@ -261,7 +265,7 @@ export function CartDrawer() {
                       <div className="cart-line-content">
                         <div className="cart-line-heading">
                           <div>
-                            <Link href={`/products/${item.handle}`} onClick={closeDrawer}>{item.title}</Link>
+                            <Link href={`/products/${item.handle}`} onClick={closeDrawer} title={item.title}>{productNameFromTitle(item.title)}</Link>
                             <p>{formatSize(item.sizeMl, item.sizeLabel)}</p>
                           </div>
                           <button type="button" onClick={() => removeItem(item.id)} aria-label={`Remove ${item.title}`}>Remove</button>
@@ -284,6 +288,8 @@ export function CartDrawer() {
                   );
                 })}
               </ul>
+
+              {hasGiftPack && <p className="cart-offer-note">Gift packs are not eligible for the Buy 2 Get 1 Free offer.</p>}
 
               <CouponWidget />
 

@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { PerfumeProduct } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatInr, formatSize } from "@/lib/format";
+import { defaultVariant } from "@/lib/variants";
 
 export function ProductOfMonth({
   product,
@@ -17,7 +18,7 @@ export function ProductOfMonth({
   isSalesBased: boolean;
 }) {
   const { addItem, openDrawer } = useCart();
-  const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id ?? "");
+  const [selectedVariantId, setSelectedVariantId] = useState(defaultVariant(product.variants)?.id ?? "");
   const selected = product.variants.find((variant) => variant.id === selectedVariantId);
   const secondaryImage = product.images[1] ?? product.images[0];
   const discount = selected?.compareAtPrice && selected.compareAtPrice > selected.price

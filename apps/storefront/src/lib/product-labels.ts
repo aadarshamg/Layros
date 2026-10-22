@@ -45,7 +45,12 @@ function stripDescriptorTail(text: string): string {
 
 /** Just the fragrance's name, e.g. "OMBRÉE LEATHER" — no size, gender, or "Inspired by…" tail. */
 export function productCardName(product: PerfumeProduct): string {
-  const head = product.title
+  return productNameFromTitle(product.title, product.brand);
+}
+
+/** The same short name from a title alone, e.g. for cart lines that only store the title. */
+export function productNameFromTitle(title: string, brand?: string): string {
+  const head = title
     .split("|")[0]
     .split(/\s+[–—-]\s+/)[0]
     .replace(/\([^)]*(?:ml|gm|grams?|set of)[^)]*\)/gi, "")
@@ -60,7 +65,7 @@ export function productCardName(product: PerfumeProduct): string {
     .trim()
     .replace(/\s+(?:luxury|premium)$/i, "");
 
-  if (!name) name = product.brand || "Leyros";
+  if (!name) name = brand || "Leyros";
   return name.toLocaleUpperCase("en-IN");
 }
 

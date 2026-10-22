@@ -165,6 +165,13 @@ export default defineType({
               validation: (Rule) => Rule.min(0),
             }),
             defineField({
+              name: "image",
+              title: "Photo of this size",
+              description: "Optional. Shown in the product gallery when a shopper picks this size (e.g. the 50ml bottle). Square, white background, like the main photos.",
+              type: "image",
+              options: { hotspot: true },
+            }),
+            defineField({
               name: "inventoryQuantity",
               title: "Stock on hand",
               description: "Leave blank to not track stock for this size. Once a number is set, each order counts it down (cancelled orders put it back), it shows Sold out at 0, and you're alerted at 5 or fewer.",

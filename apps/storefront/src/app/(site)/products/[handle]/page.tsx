@@ -23,6 +23,7 @@ import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { CategoryCouponOffers } from "@/components/product/CategoryCouponOffers";
 import { getProductCouponCategory, isBuyTwoGetOneEligible } from "@/lib/promotions";
 import { concentrationLabel, genderLabel, productNotePyramid } from "@/lib/product-labels";
+import { defaultVariant } from "@/lib/variants";
 import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr, formatSize } from "@/lib/format";
@@ -55,7 +56,10 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const relatedProducts = await getSimilarProducts([product.id], 4);
 
   const { details } = product;
-  const images = product.images.length ? product.images : ["/leyros/nuit-doree-hero.jpg"];
+  const mainImages = product.images.length ? product.images : ["/leyros/nuit-doree-hero.jpg"];
+  // Open on the default size's own photo when it has one (Perfume details > sizes in admin).
+  const defaultSizeImage = defaultVariant(product.variants)?.image;
+  const images = defaultSizeImage ? [defaultSizeImage, ...mainImages.filter((src) => src !== defaultSizeImage)] : mainImages;
 
   const isFragrance = isBuyTwoGetOneEligible(product);
   const isPerfume = isFragrance && !/attar/i.test(product.category ?? "");

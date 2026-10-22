@@ -8,6 +8,7 @@ import { DiyaIcon } from "@/components/product/DiyaIcon";
 import { calculateBuyTwoGetOne } from "@/lib/promotions";
 import { availableQuantity, isSoldOut } from "@/lib/stock";
 import { defaultVariant } from "@/lib/variants";
+import { announceVariantImage } from "@/lib/variant-image";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
@@ -86,7 +87,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
       variantId: selected.id,
       title,
       category,
-      image,
+      image: selected.image ?? image,
       sizeMl: selected.sizeMl,
       sizeLabel: selected.sizeLabel,
       sku: selected.sku,
@@ -121,7 +122,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
       </div>
       <div className="size-grid">
         {variants.map((variant) => (
-          <button key={variant.id} type="button" aria-pressed={selectedVariantId === variant.id} onClick={() => { setSelectedVariantId(variant.id); setQuantity(1); }} className={`size-option ${selectedVariantId === variant.id ? "selected" : ""}${isSoldOut(variant) ? " is-sold-out" : ""}`}>
+          <button key={variant.id} type="button" aria-pressed={selectedVariantId === variant.id} onClick={() => { setSelectedVariantId(variant.id); setQuantity(1); announceVariantImage(variant.image); }} className={`size-option ${selectedVariantId === variant.id ? "selected" : ""}${isSoldOut(variant) ? " is-sold-out" : ""}`}>
             <span className="variant-copy"><b>{formatSize(variant.sizeMl, variant.sizeLabel)}</b>{isSoldOut(variant) && <small> Sold out</small>}</span>
           </button>
         ))}

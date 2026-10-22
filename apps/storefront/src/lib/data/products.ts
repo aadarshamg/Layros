@@ -36,6 +36,7 @@ export interface RawSanityProduct {
         price?: number | null;
         compareAtPrice?: number | null;
         inventoryQuantity?: number | null;
+        image?: SanityImageSource | null;
       }[]
     | null;
   details?: {
@@ -84,7 +85,8 @@ export const PRODUCT_PROJECTION = `{
     sku,
     price,
     compareAtPrice,
-    inventoryQuantity
+    inventoryQuantity,
+    image
   },
   details{
     concentration,
@@ -119,6 +121,14 @@ function resolvedGender(raw: RawSanityProduct): "feminine" | "masculine" | "unis
   return "unisex";
 }
 
+function imageUrl(image: SanityImageSource): string | null {
+  try {
+    return urlForImage(image).width(1600).fit("max").url();
+  } catch {
+    return null;
+  }
+}
+
 export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
   const variants: PerfumeVariant[] = (raw.variants ?? []).map((variant) => ({
     id: variant.id,
@@ -128,17 +138,10 @@ export function toPerfumeProduct(raw: RawSanityProduct): PerfumeProduct {
     price: variant.price ?? 0,
     compareAtPrice: variant.compareAtPrice ?? undefined,
     inventoryQuantity: variant.inventoryQuantity ?? undefined,
+    image: variant.image ? imageUrl(variant.image) ?? undefined : undefined,
   }));
 
-  const images = (raw.images ?? [])
-    .map((image) => {
-      try {
-        return urlForImage(image).width(1600).fit("max").url();
-      } catch {
-        return null;
-      }
-    })
-    .filter((url): url is string => !!url);
+  const images = (raw.images ?? []).map(imageUrl).filter((url): url is string => !!url);
 
   return {
     id: raw.id,

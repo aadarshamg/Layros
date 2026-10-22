@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState, type TouchEvent } from "react";
+import { VARIANT_IMAGE_EVENT } from "@/lib/variant-image";
 
 type GallerySlide =
   | { type: "image"; src: string }
@@ -23,7 +24,10 @@ function Slide({ slide, title, number, expanded = false, priority = false, onOpe
   );
 }
 
-export function ProductGallery({ title, images, videoUrl }: { title: string; images: string[]; videoUrl?: string }) {
+export function ProductGallery({ title, images: baseImages, videoUrl }: { title: string; images: string[]; videoUrl?: string }) {
+  // The photo of the size picked in the buy box, shown first when it isn't one of the main photos.
+  const [sizeImage, setSizeImage] = useState<string | undefined>();
+  const images = useMemo(() => (sizeImage && !baseImages.includes(sizeImage) ? [sizeImage, ...baseImages] : baseImages), [sizeImage, baseImages]);
   const slides = useMemo<GallerySlide[]>(() => [
     ...images.map((src) => ({ type: "image" as const, src })),
     ...(videoUrl ? [{ type: "video" as const, src: videoUrl, poster: images[0] }] : []),
@@ -31,6 +35,16 @@ export function ProductGallery({ title, images, videoUrl }: { title: string; ima
   const [activeIndex, setActiveIndex] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
+
+  useEffect(() => {
+    const onSizeImage = (event: Event) => {
+      const image = (event as CustomEvent<string | undefined>).detail;
+      setSizeImage(image);
+      setActiveIndex(image ? Math.max(0, baseImages.indexOf(image)) : 0);
+    };
+    window.addEventListener(VARIANT_IMAGE_EVENT, onSizeImage);
+    return () => window.removeEventListener(VARIANT_IMAGE_EVENT, onSizeImage);
+  }, [baseImages]);
 
   const previous = () => setActiveIndex((index) => (index - 1 + slides.length) % slides.length);
   const next = () => setActiveIndex((index) => (index + 1) % slides.length);

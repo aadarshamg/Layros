@@ -23,7 +23,8 @@ function write(key: string, value: string) {
 
 /** WhatsApp updates opt-in; defaults to on until the shopper unticks it. */
 export function getWhatsAppConsent() {
-  return read(CONSENT_KEY) !== "0";
+  // Opt-in: only an explicit tick counts as consent to WhatsApp messages.
+  return read(CONSENT_KEY) === "1";
 }
 
 export function setWhatsAppConsent(value: boolean) {

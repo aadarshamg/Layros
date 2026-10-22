@@ -38,11 +38,11 @@ export function CartAddressStep({
   const [addressLine1, setAddressLine1] = useState(seed?.addressLine1 ?? savedAddress?.addressLine1 ?? "");
   const [addressLine2, setAddressLine2] = useState(seed?.addressLine2 ?? savedAddress?.addressLine2 ?? "");
   const [city, setCity] = useState(seed?.city ?? savedAddress?.city ?? "");
-  const [state, setState] = useState(seed?.state ?? savedAddress?.state ?? INDIAN_STATES[0]);
+  const [state, setState] = useState(seed?.state ?? savedAddress?.state ?? "");
   const [postalCode, setPostalCode] = useState(seed?.postalCode ?? savedAddress?.postalCode ?? "");
   const [giftWrapEnabled, setGiftWrapEnabled] = useState(initialDetails?.giftWrap?.enabled ?? false);
   const [giftMessage, setGiftMessage] = useState(initialDetails?.giftWrap?.message ?? "");
-  const [newsletterOptIn, setNewsletterOptIn] = useState(initialDetails?.newsletterOptIn ?? true);
+  const [newsletterOptIn, setNewsletterOptIn] = useState(initialDetails?.newsletterOptIn ?? false);
   const [isLookingUpPin, setIsLookingUpPin] = useState(false);
   const [pinLookupFailed, setPinLookupFailed] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
@@ -92,12 +92,8 @@ export function CartAddressStep({
 
   async function handleUseSavedAddress() {
     if (!savedAddress || !customer) return;
+    // Email is optional; phone (the login) carries delivery updates.
     const emailValue = customer.email ?? "";
-    if (!emailValue) {
-      // No email on file yet — the summary card can't collect it, so fall through to the form once.
-      setIsEditing(true);
-      return;
-    }
     onContinue(buildDetails(savedAddress, emailValue, customer.phone));
   }
 
@@ -157,24 +153,16 @@ export function CartAddressStep({
       <CouponWidget />
       <form onSubmit={handleSubmit} className="cart-step-form">
         <label className="cart-step-field">
-          <span>Email</span>
-          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-        </label>
-        <label className="cart-step-field">
           <span>Phone</span>
           <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="For delivery updates" />
         </label>
         <label className="cart-step-field">
+          <span>Email (optional)</span>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="For your invoice and order emails" />
+        </label>
+        <label className="cart-step-field">
           <span>Full name</span>
           <input required value={fullName} onChange={(e) => setFullName(e.target.value)} />
-        </label>
-        <label className="cart-step-field">
-          <span>Address line 1</span>
-          <input required value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} />
-        </label>
-        <label className="cart-step-field">
-          <span>Address line 2 (optional)</span>
-          <input value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} />
         </label>
         <label className="cart-step-field">
           <span>PIN code</span>
@@ -190,6 +178,14 @@ export function CartAddressStep({
           {isLookingUpPin && <small>Looking up your city and state…</small>}
           {pinLookupFailed && <small>Couldn&apos;t find that PIN. Enter city/state below.</small>}
         </label>
+        <label className="cart-step-field">
+          <span>Address line 1</span>
+          <input required value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} />
+        </label>
+        <label className="cart-step-field">
+          <span>Address line 2 (optional)</span>
+          <input value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} />
+        </label>
         <div className="cart-step-field-row">
           <label className="cart-step-field">
             <span>City</span>
@@ -198,6 +194,7 @@ export function CartAddressStep({
           <label className="cart-step-field">
             <span>State</span>
             <select required value={state} onChange={(e) => setState(e.target.value)}>
+              <option value="" disabled>Select State</option>
               {INDIAN_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
           </label>

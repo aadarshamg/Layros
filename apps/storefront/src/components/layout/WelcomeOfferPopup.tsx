@@ -16,7 +16,7 @@ export function WelcomeOfferPopup() {
   const [step, setStep] = useState<"phone" | "code">("phone");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
-  const [marketingOptIn, setMarketingOptIn] = useState(true);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   const excluded = pathname.startsWith("/account") || pathname.startsWith("/checkout") || pathname.startsWith("/products/");

@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "next-sanity";
 import { restoreStockForOrder } from "@/lib/checkout/stock";
+import { DEFAULT_CONTACT_EMAIL } from "@/lib/site-defaults";
 
 // Sends saved website orders to Shiprocket as "New" orders. Courier choice,
 // AWB and pickup are then done by hand in the Shiprocket panel; tracking
@@ -113,7 +114,7 @@ function tenDigitPhone(...candidates: Array<string | undefined>) {
   return "";
 }
 
-function buildPayload(order: OrderDoc) {
+function buildPayload(order: OrderDoc, fallbackEmail: string) {
   const address = order.shippingAddress ?? {};
   const [firstName, ...rest] = (address.fullName ?? "Customer").trim().split(/\s+/);
   const items = (order.items ?? []).filter((item) => (item.quantity ?? 0) > 0);
@@ -136,7 +137,8 @@ function buildPayload(order: OrderDoc) {
     billing_pincode: address.postalCode ?? "",
     billing_state: address.state ?? "",
     billing_country: "India",
-    billing_email: order.customerEmail ?? "",
+    // Email is optional at checkout, but Shiprocket needs one: use the shop's.
+    billing_email: order.customerEmail || fallbackEmail,
     billing_phone: tenDigitPhone(order.customerPhone, order.customer?._ref),
     shipping_is_billing: true,
     order_items: items.map((item, index) => ({
@@ -189,7 +191,7 @@ export async function sendOrderToShiprocket(orderDocId: string) {
   try {
     const result = await shiprocketRequest<{ order_id?: number; shipment_id?: number; status?: string }>(
       "/orders/create/adhoc",
-      buildPayload(order),
+      buildPayload(order, (await writeClient.fetch<string | null>(`*[_id == "storeSettings"][0].contactEmail`)) || DEFAULT_CONTACT_EMAIL),
     );
     await writeClient
       .patch(order._id)

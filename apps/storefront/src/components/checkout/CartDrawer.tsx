@@ -170,14 +170,15 @@ export function CartDrawer() {
       setView(loginAvailable ? "login" : "address");
       return;
     }
-    if (customer?.defaultShippingAddress && customer.email) {
+    if (customer?.defaultShippingAddress) {
       setCheckoutDetails({
-        email: customer.email,
+        email: customer.email ?? "",
         phone: customer.phone,
         createAccount: false,
         shippingAddress: customer.defaultShippingAddress,
         shippingMethodId: "standard",
-        newsletterOptIn: true,
+        // Marketing consent is never assumed; it can only be ticked in the form.
+        newsletterOptIn: false,
       });
       setView("payment");
       return;

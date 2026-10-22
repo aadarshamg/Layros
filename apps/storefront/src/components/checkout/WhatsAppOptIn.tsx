@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getWhatsAppConsent, setWhatsAppConsent } from "@/lib/cart-recovery/client";
 
 export function WhatsAppOptIn() {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => setChecked(getWhatsAppConsent()), []);
 

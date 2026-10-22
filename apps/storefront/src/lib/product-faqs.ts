@@ -1,5 +1,5 @@
 import type { PerfumeProduct } from "@leyros/types";
-import { genderLabel, productCardTitle, productNotePyramid, productShortDescription } from "@/lib/product-labels";
+import { concentrationLabel, genderLabel, productCardTitle, productNotePyramid, productShortDescription } from "@/lib/product-labels";
 import { formatSize } from "@/lib/format";
 import { getProductCouponCategory, isBuyTwoGetOneEligible } from "@/lib/promotions";
 
@@ -52,7 +52,7 @@ export function getProductFaqs(product: PerfumeProduct): ProductFaq[] {
   const sizes = [...new Set(product.variants.map((v) => formatSize(v.sizeMl, v.sizeLabel)).filter(Boolean))];
   if (sizes.length) faqs.push({ question: `Which sizes can I choose for ${name}?`, answer: `${name} is listed in ${list(sizes)}. Select your preferred option above to see its current price and availability.` });
   if (perfume) {
-    faqs.push({ question: `What is the perfume concentration of ${name}?`, answer: `${name} has 30% perfume concentration. You can compare this with other fragrance types in the concentration guide above.` });
+    faqs.push({ question: `What is the perfume concentration of ${name}?`, answer: `${name}'s concentration is ${concentrationLabel(product.details.concentration)}. You can compare this with other fragrance types in the concentration guide above.` });
     faqs.push({ question: `How long does ${name} last?`, answer: `Leyros perfumes are designed for up to 12 hours of wear. Actual longevity depends on your skin, the weather, and how much you apply.` });
   }
   if (eligible) faqs.push({ question: `Does ${name} qualify for Buy 2, Get 1 Free?`, answer: `Yes. Add ${name} with other eligible perfumes or attars to make a group of three. The lowest-priced item in each group of three is free, and the discount is applied automatically in your bag.` });

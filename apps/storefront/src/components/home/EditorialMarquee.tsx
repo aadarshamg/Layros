@@ -1,8 +1,8 @@
 const marks = [
   "LEYROS",
   "HAUTE PARFUMERIE",
-  "PARIS · KANNAUJ",
-  "EXTRAIT DE PARFUM",
+  "KANNAUJ · INDIA",
+  "EAU DE PARFUM",
   "THE ATELIER",
   "LEYROS JOURNAL",
 ];
@@ -10,7 +10,7 @@ const marks = [
 export function EditorialMarquee() {
   return (
     <section className="editorial-strip" aria-label="The world of Leyros">
-      <span className="sr-only">Leyros haute parfumerie, Paris and Kannauj, extrait de parfum.</span>
+      <span className="sr-only">Leyros haute parfumerie, Kannauj, India, eau de parfum.</span>
       <div className="editorial-marquee" aria-hidden="true">
         {[0, 1].map((group) => (
           <div className="editorial-track" key={group}>

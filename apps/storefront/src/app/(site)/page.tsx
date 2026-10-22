@@ -24,7 +24,7 @@ import { defaultVariant } from "@/lib/variants";
 
 export const metadata: Metadata = buildMetadata({
   title: "LEYROS | Best Indian Long Lasting Perfume for Men & Women",
-  description: "Shop LEYROS, the best Indian long lasting perfume brand: luxury eau de parfums, attars and gift sets crafted with Indian botanicals. Free shipping over ₹999.",
+  description: "Shop LEYROS, the best Indian long lasting perfume brand: luxury eau de parfums, attars and gift sets crafted with French perfume oils. Free shipping over ₹999.",
   path: "/",
   keywords: ["Best Indian Long Lasting Perfume", "long lasting perfume India", "Indian perfume brand", "luxury perfume for men and women", "LEYROS"],
 });

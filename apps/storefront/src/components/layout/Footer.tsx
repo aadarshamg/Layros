@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_PHONE, DEFAULT_BRAND_ADDRESS } from "@/lib/site-defaults";
 import { PinIcon, PhoneIcon, StarIcon, GoogleGIcon, FacebookIcon, InstagramIcon, YoutubeIcon } from "@/components/layout/FooterIcons";
+import type { BusinessDetails } from "@/lib/data/store-settings";
 
 const SOCIAL_LINKS = [
   { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61560384553176", Icon: FacebookIcon },
@@ -58,6 +59,7 @@ export function Footer({
   googleRating,
   googleReviewCount,
   googleReviewsUrl,
+  business,
 }: {
   contactEmail?: string;
   contactPhone?: string;
@@ -65,6 +67,7 @@ export function Footer({
   googleRating?: number;
   googleReviewCount?: number;
   googleReviewsUrl?: string;
+  business?: BusinessDetails;
 } = {}) {
   const email = contactEmail || DEFAULT_CONTACT_EMAIL;
   const phone = contactPhone || DEFAULT_CONTACT_PHONE;
@@ -137,10 +140,6 @@ export function Footer({
         </nav>
       </div>
 
-      <div className="footer-wordmark-wrap">
-        <Link href="/" className="footer-wordmark footer-tagline" aria-label="LEYROS home — The Chosen One">The Chosen One</Link>
-      </div>
-
       <div className="footer-bottom">
         <div className="page-shell footer-bottom-inner">
           <div className="footer-payment-methods">
@@ -157,6 +156,19 @@ export function Footer({
               </span>
             ))}
           </div>
+          {(business?.legalName || business?.gstin || business?.grievanceOfficer?.name) && (
+            <div className="footer-business">
+              {business.legalName && <p><b>{business.legalName}</b>{business.address && <> · {business.address}</>}</p>}
+              {business.gstin && <p>GSTIN: {business.gstin}</p>}
+              {business.grievanceOfficer?.name && (
+                <p>
+                  Grievance Officer: {business.grievanceOfficer.name}
+                  {business.grievanceOfficer.email && <> · <a href={`mailto:${business.grievanceOfficer.email}`}>{business.grievanceOfficer.email}</a></>}
+                  {business.grievanceOfficer.phone && <> · <a href={`tel:${business.grievanceOfficer.phone.replace(/[^\d+]/g, "")}`}>{business.grievanceOfficer.phone}</a></>}
+                </p>
+              )}
+            </div>
+          )}
           <span className="footer-copyright">
             © {new Date().getFullYear()} LEYROS · <Link href="/legal/privacy">Privacy</Link> · <Link href="/legal/terms">Terms</Link> · <Link href="/legal/shipping-returns">Shipping &amp; Returns</Link>
           </span>

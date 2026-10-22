@@ -34,6 +34,15 @@ export interface StoreSettings {
   deliveryDaysMax?: number;
   rewardThreshold?: number;
   rewardDescription?: string;
+  /** Legal details for the footer (Store Settings > Invoice / GST). */
+  business?: BusinessDetails;
+}
+
+export interface BusinessDetails {
+  legalName?: string;
+  gstin?: string;
+  address?: string;
+  grievanceOfficer?: { name?: string; email?: string; phone?: string };
 }
 
 interface RawStoreSettings {
@@ -46,6 +55,12 @@ interface RawStoreSettings {
   contactEmail?: string | null;
   contactPhone?: string | null;
   brandAddress?: string | null;
+  invoiceLegalName?: string | null;
+  invoiceGstin?: string | null;
+  invoiceAddress?: string | null;
+  grievanceOfficerName?: string | null;
+  grievanceOfficerEmail?: string | null;
+  grievanceOfficerPhone?: string | null;
   whatsappNumber?: string | null;
   whatsappSuggestedMessage?: string | null;
   googleRating?: number | null;
@@ -112,6 +127,12 @@ export async function getStoreSettings(): Promise<StoreSettings> {
         contactEmail,
         contactPhone,
         brandAddress,
+        invoiceLegalName,
+        invoiceGstin,
+        invoiceAddress,
+        grievanceOfficerName,
+        grievanceOfficerEmail,
+        grievanceOfficerPhone,
         whatsappNumber,
         whatsappSuggestedMessage,
         googleRating,
@@ -149,6 +170,12 @@ export async function getStoreSettings(): Promise<StoreSettings> {
       contactEmail: settings.contactEmail ?? undefined,
       contactPhone: settings.contactPhone ?? undefined,
       brandAddress: settings.brandAddress ?? undefined,
+      business: {
+        legalName: settings.invoiceLegalName ?? undefined,
+        gstin: settings.invoiceGstin ?? undefined,
+        address: settings.invoiceAddress?.replace(/\s*\n\s*/g, ", ") ?? undefined,
+        grievanceOfficer: { name: settings.grievanceOfficerName ?? undefined, email: settings.grievanceOfficerEmail ?? undefined, phone: settings.grievanceOfficerPhone ?? undefined },
+      },
       whatsappNumber: settings.whatsappNumber ?? undefined,
       whatsappSuggestedMessage: settings.whatsappSuggestedMessage ?? undefined,
       googleRating: settings.googleRating ?? undefined,

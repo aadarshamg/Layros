@@ -294,6 +294,15 @@ export default defineType({
       rows: 2,
       group: "invoice",
     }),
+    defineField({
+      name: "grievanceOfficerName",
+      title: "Grievance Officer name",
+      description: "Shown in the website footer, as the e-commerce rules require. The footer also shows the legal name, GSTIN and registered address above.",
+      type: "string",
+      group: "invoice",
+    }),
+    defineField({ name: "grievanceOfficerEmail", title: "Grievance Officer email", type: "string", group: "invoice" }),
+    defineField({ name: "grievanceOfficerPhone", title: "Grievance Officer phone", type: "string", group: "invoice" }),
   ],
   preview: {
     select: { enabled: "rewardEnabled", threshold: "rewardThreshold" },

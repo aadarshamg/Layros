@@ -31,6 +31,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
             contactEmail={storeSettings.contactEmail}
             contactPhone={storeSettings.contactPhone}
             brandAddress={storeSettings.brandAddress}
+            business={storeSettings.business}
             googleRating={storeSettings.googleRating}
             googleReviewCount={storeSettings.googleReviewCount}
             googleReviewsUrl={storeSettings.googleReviewsUrl}

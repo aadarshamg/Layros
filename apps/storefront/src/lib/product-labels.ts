@@ -10,6 +10,13 @@ export function genderLabel(product: PerfumeProduct): string | null {
   return "Unisex";
 }
 
+const CONCENTRATION_LABELS: Record<string, string> = { EDT: "Eau de Toilette (EDT)", EDP: "Eau de Parfum (EDP)", PARFUM: "Parfum" };
+
+/** The product's own concentration (admin: Perfume details > Concentration), in words. */
+export function concentrationLabel(concentration?: string | null): string {
+  return CONCENTRATION_LABELS[concentration ?? "EDP"] ?? CONCENTRATION_LABELS.EDP;
+}
+
 export function productCardCategoryLabel(product: PerfumeProduct): string {
   const gender = genderLabel(product);
   if (gender) return gender;

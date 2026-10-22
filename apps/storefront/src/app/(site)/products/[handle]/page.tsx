@@ -22,7 +22,7 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { CategoryCouponOffers } from "@/components/product/CategoryCouponOffers";
 import { getProductCouponCategory, isBuyTwoGetOneEligible } from "@/lib/promotions";
-import { genderLabel, productNotePyramid } from "@/lib/product-labels";
+import { concentrationLabel, genderLabel, productNotePyramid } from "@/lib/product-labels";
 import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
 import { formatInr, formatSize } from "@/lib/format";
@@ -192,7 +192,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
             <div className="product-key-features">
               <h2>Key features &amp; benefits</h2>
               <ul>
-                <li><strong>30% perfume concentration</strong><span>A concentrated composition with a lasting scent trail.</span></li>
+                <li><strong>{concentrationLabel(product.details.concentration)}</strong><span>A concentrated composition with a lasting scent trail.</span></li>
                 <li><strong>Up to 12 hours of wear</strong><span>Wear time varies with skin, weather, and application.</span></li>
                 {noteGroups.length > 0 && <li><strong>A fragrance that unfolds</strong><span>{noteGroups.map((group) => `${group.title}: ${group.notes.join(", ")}`).join(". ")}.</span></li>}
                 {product.highlights?.some((highlight) => highlight.title) && <li><strong>Made for your moments</strong><span>{product.highlights.map((highlight) => highlight.title).filter(Boolean).join(" · ")}</span></li>}

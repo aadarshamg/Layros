@@ -25,7 +25,7 @@ export const HERO_BANNER: { src: string; width: number; height: number; alt: str
 export const DEFAULT_BRAND_ADDRESS = "Ludhiana, Punjab, 141116";
 export const DEFAULT_ANNOUNCEMENT_MESSAGES = [
   "Free discovery sample on orders over ₹3,500",
-  "Freshly blended in small batches",
+  "Ships in 24–48 hours · delivered in 3–5 business days",
   "Free shipping across India on orders over ₹999",
 ];
 export const DEFAULT_TRUST_BADGE_TEXT = "Loved by over 10,000+ Customers";

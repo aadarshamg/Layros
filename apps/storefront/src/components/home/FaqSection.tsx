@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { faqPageJsonLd, type FaqItem } from "@/lib/seo/jsonld/faq";
 
-const faqs: FaqItem[] = [
+const faqs: (FaqItem & { link?: { href: string; label: string } })[] = [
   {
     question: "What's the difference between EDT, EDP, and Parfum?",
     answer:
@@ -10,22 +11,23 @@ const faqs: FaqItem[] = [
   {
     question: "Do you ship internationally?",
     answer:
-      "Not yet. We currently ship within India only. Standard delivery arrives in 3–5 business days, and orders of ₹999 or more qualify for free standard shipping.",
+      "Not yet. We currently ship within India only. Orders ship within 24–48 hours and arrive in 3–5 business days, and orders of ₹999 or more qualify for free standard shipping.",
   },
   {
     question: "Can I try a fragrance before buying a full bottle?",
     answer:
-      "Yes. Email our concierge team and we'll assemble a discovery coffret of two or three extraits suited to your preferences, so you can live with a scent for a few days before committing.",
+      "Yes. Our Discovery Sets bring five 10ml perfumes for ₹399, so you can wear each for a few days before choosing a full bottle.",
+    link: { href: "/collections/all?category=tester", label: "Shop Discovery Sets" },
   },
   {
     question: "What's your returns policy?",
     answer:
-      "Because each bottle is hand-finished to order, we accept returns only for items that arrive damaged, incorrect, or faulty. Contact us within 7 days of delivery. For hygiene reasons, opened fragrance bottles can't otherwise be returned.",
+      "Because fragrance is a personal-care product, we accept returns only for items that arrive damaged, incorrect, or faulty. Contact us within 7 days of delivery. For hygiene reasons, opened fragrance bottles can't otherwise be returned.",
   },
   {
     question: "Can I add gift wrap to my order?",
     answer:
-      "Yes. Every bottle can be finished with our signature wax-sealed box wrap and a handwritten card. Add it from any product page, or ask our concierge team for gifting advice.",
+      "Yes, and it's free. Tick “Add complimentary gift wrap” at checkout and add a gift message if you like.",
   },
   {
     question: "How should I store my fragrance?",
@@ -50,7 +52,7 @@ export function FaqSection() {
           {faqs.map((faq) => (
             <details key={faq.question} className="faq-item">
               <summary>{faq.question}</summary>
-              <p>{faq.answer}</p>
+              <p>{faq.answer}{faq.link && <> <Link href={faq.link.href}>{faq.link.label}</Link></>}</p>
             </details>
           ))}
         </div>

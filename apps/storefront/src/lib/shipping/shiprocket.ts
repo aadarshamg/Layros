@@ -285,6 +285,8 @@ async function applyShipmentStatus(id: string, current: Record<string, unknown>,
     .set({
       ...changed,
       lastShiprocketCheckAt: new Date().toISOString(),
+      // When it was delivered, for the review request a few days later.
+      ...(changed.fulfillmentStatus === "Delivered" && { deliveredAt: new Date().toISOString() }),
       ...(Object.keys(changed).length && { lastTrackingUpdateAt: new Date().toISOString() }),
     })
     .commit();

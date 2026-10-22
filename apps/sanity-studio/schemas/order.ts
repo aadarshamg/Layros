@@ -116,6 +116,8 @@ export default defineType({
     defineField({ name: "trackingUrl", title: "Tracking link", type: "url", readOnly: true }),
     defineField({ name: "estimatedDelivery", title: "Estimated delivery", type: "string", readOnly: true }),
     defineField({ name: "lastTrackingUpdateAt", title: "Last tracking update", type: "datetime", readOnly: true }),
+    defineField({ name: "deliveredAt", title: "Delivered", type: "datetime", readOnly: true }),
+    defineField({ name: "reviewRequestSentAt", title: "Review request sent", type: "datetime", readOnly: true, description: "WhatsApp review request, sent a few days after delivery." }),
     defineField({ name: "lastShiprocketCheckAt", title: "Last checked with Shiprocket", type: "datetime", readOnly: true, hidden: true }),
     defineField({
       name: "confirmedBy",

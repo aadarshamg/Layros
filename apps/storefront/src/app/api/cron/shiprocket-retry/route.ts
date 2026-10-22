@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { timingSafeStringEqual } from "@/lib/auth/crypto";
 import { isShiprocketConfigured, retryUnsentOrders, syncOpenOrders } from "@/lib/shipping/shiprocket";
 import { restoreCancelledOrders } from "@/lib/checkout/stock";
+import { sendDueReviewRequests } from "@/lib/review-requests";
 
 export const dynamic = "force-dynamic";
 
@@ -27,5 +28,7 @@ export async function GET(request: NextRequest) {
   await syncOpenOrders({ limit: 100 });
   // Orders cancelled by hand in admin get their stock back here.
   const restocked = await restoreCancelledOrders(50);
-  return NextResponse.json({ retried, restocked });
+  // Ask for a review a few days after delivery (lib/review-requests.ts).
+  const reviewRequests = await sendDueReviewRequests(50);
+  return NextResponse.json({ retried, restocked, reviewRequests });
 }

@@ -29,7 +29,7 @@ const links: NavLink[] = [
       { href: "/collections/all?category=collections", label: "All Fragrances" },
       { href: "/private-blends", label: "Private Blends" },
       { href: `/collections/all?category=${encodeURIComponent("fresh, citrus & marine")}`, label: "Fresh, Citrus & Marine" },
-      { href: `/collections/all?category=${encodeURIComponent("ambry")}`, label: "Ambry" },
+      { href: `/collections/all?category=${encodeURIComponent("amber")}`, label: "Amber" },
       { href: `/collections/all?category=${encodeURIComponent("floral & fruity")}`, label: "Floral & Fruity" },
       { href: `/collections/all?category=${encodeURIComponent("woody & aromatic")}`, label: "Woody & Aromatic" },
       { href: `/collections/all?category=${encodeURIComponent("oud")}`, label: "Oud" },

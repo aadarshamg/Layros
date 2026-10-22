@@ -25,7 +25,7 @@ const NOTE_PRESENTATIONS: Record<string, Omit<CollectionPresentation, "eyebrow">
     highlights: ["Warm & refined", "Work to evening", "Long-lasting character"],
   },
   ambry: {
-    title: "Ambery Perfumes",
+    title: "Amber Perfumes",
     description: "Warm amber, soft resins, spice, and musk create an enveloping fragrance with rich presence. French-imported perfume oils and quality fixatives give every Leyros blend lasting performance at an accessible price.",
     highlights: ["Warm & enveloping", "Evening ready", "Accessible luxury"],
   },

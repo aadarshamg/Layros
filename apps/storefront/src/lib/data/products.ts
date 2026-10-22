@@ -520,6 +520,16 @@ export async function getProductByHandle(handle: string): Promise<PerfumeProduct
 }
 
 /** The current URL handle of a product that used to live at `handle`, if any. */
+// "Amber" was once spelled "Ambry" in the catalog and in links; either finds it.
+const CATEGORY_ALIASES: Record<string, RegExp> = { amber: /amb(?:er|ry)/, ambry: /amb(?:er|ry)/ };
+
+/** Free-text category keyword match (the migrated catalog has no fixed taxonomy). */
+export function categoryMatches(category: string | undefined, keyword: string): boolean {
+  const value = (category ?? "").toLowerCase();
+  const key = keyword.trim().toLowerCase();
+  return CATEGORY_ALIASES[key]?.test(value) ?? value.includes(key);
+}
+
 export async function getRenamedProductHandle(handle: string): Promise<string | null> {
   if (!sanityConfigured) return null;
   try {
@@ -569,8 +579,7 @@ export async function listProducts(params: {
       // Real categories are free text from the migrated catalog (e.g.
       // "Fragrance Candles / Home and Kitchen") — a keyword match, not an
       // exact one, since there's no fixed taxonomy behind them.
-      const keyword = params.category.toLowerCase();
-      products = products.filter((product) => (product.category ?? "").toLowerCase().includes(keyword));
+      products = products.filter((product) => categoryMatches(product.category, params.category as string));
     }
     if (params.inStock) {
       products = products.filter((product) => product.variants.some((variant) => !isSoldOut(variant)));
@@ -606,8 +615,7 @@ export async function listProducts(params: {
       products = products.filter((product) => product.details.gender === params.gender);
     }
     if (params.category) {
-      const keyword = params.category.toLowerCase();
-      products = products.filter((product) => (product.category ?? "").toLowerCase().includes(keyword));
+      products = products.filter((product) => categoryMatches(product.category, params.category as string));
     }
     if (params.inStock) {
       products = products.filter((product) => product.variants.some((variant) => !isSoldOut(variant)));

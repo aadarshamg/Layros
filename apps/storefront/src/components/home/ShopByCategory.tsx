@@ -48,31 +48,31 @@ const NOTE_COLLECTIONS = [
   {
     label: "Woody",
     description: "Sandalwood, cedar, vetiver, and warm forest tones.",
-    href: "/collections/all?category=woody",
+    href: `/collections/all?category=${encodeURIComponent("woody & aromatic")}`,
     image: "/leyros/notes/woody.jpeg",
   },
   {
     label: "Amber",
     description: "Golden resins, soft spice, musk, and enveloping warmth.",
-    href: "/collections/all?category=ambry",
+    href: `/collections/all?category=${encodeURIComponent("amber")}`,
     image: "/leyros/notes/amber.jpeg",
   },
   {
     label: "Floral",
     description: "Rose, jasmine, iris, and luminous petal-led bouquets.",
-    href: "/collections/all?category=floral",
+    href: `/collections/all?category=${encodeURIComponent("floral & fruity")}`,
     image: "/leyros/notes/floral.jpeg",
   },
   {
     label: "Fresh Citrus",
     description: "Bright citrus, clean aromatics, and airy freshness.",
-    href: "/collections/all?category=citrus",
+    href: `/collections/all?category=${encodeURIComponent("fresh, citrus & marine")}`,
     image: "/leyros/notes/fresh-citrus.jpeg",
   },
   {
     label: "Gourmand",
     description: "Vanilla, sweetness, spice, and deliciously rich notes.",
-    href: "/collections/all?category=gourmand",
+    href: `/collections/all?category=${encodeURIComponent("gourmand & sweet")}`,
     image: "/leyros/notes/gourmand.jpeg",
   },
   {

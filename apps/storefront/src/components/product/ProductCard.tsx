@@ -5,6 +5,7 @@ import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurcha
 import { genderLabel, productCardTitle } from "@/lib/product-labels";
 import { getProductBadge } from "@/lib/product-badge";
 import { RotatingHighlights } from "@/components/product/RotatingHighlights";
+import { WishlistButton } from "@/components/product/WishlistButton";
 
 
 // The % off is shown once, in the price box (ProductCardPurchasePanel), not
@@ -23,12 +24,9 @@ export function ProductCard({ product }: { product: PerfumeProduct }) {
             {badge.label}
           </span>
         )}
-        {product.amazonRating && product.amazonRatingCount ? (
-          <span className="product-card-rating" aria-label={`Rated ${product.amazonRating.toFixed(1)} out of 5 from ${product.amazonRatingCount} ratings on Amazon`}>
-            <span aria-hidden="true">★</span> {product.amazonRating.toFixed(1)} ({product.amazonRatingCount.toLocaleString("en-IN")})
-          </span>
-        ) : null}
         {gender && <span className="product-gender-badge">{gender}</span>}
+        {/* Ratings, Amazon or site reviews, are shown once in the purchase panel below. */}
+        <WishlistButton productId={product.id} productName={displayTitle} className="product-card-wishlist" />
       </Link>
       <div className="product-card-body">
         <h3><Link href={`/products/${product.handle}`} className="product-name" aria-label={product.title} title={product.title}>{displayTitle}</Link></h3>

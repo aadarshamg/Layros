@@ -533,6 +533,18 @@ export function categoryMatches(category: string | undefined, keyword: string): 
   return CATEGORY_ALIASES[key]?.test(value) ?? value.includes(key);
 }
 
+/** Products by id, in the order given (unknown ids are skipped). */
+export async function getProductsByIds(ids: string[]): Promise<PerfumeProduct[]> {
+  if (!sanityConfigured || ids.length === 0) return [];
+  try {
+    const raw = await sanityClient.fetch<RawSanityProduct[]>(`*[_type == "product" && _id in $ids] ${PRODUCT_PROJECTION}`, { ids }, SANITY_FETCH_OPTIONS);
+    const byId = new Map(raw.map((product) => [product.id, toPerfumeProduct(product)]));
+    return ids.flatMap((id) => byId.get(id) ?? []);
+  } catch {
+    return [];
+  }
+}
+
 export async function getRenamedProductHandle(handle: string): Promise<string | null> {
   if (!sanityConfigured) return null;
   try {

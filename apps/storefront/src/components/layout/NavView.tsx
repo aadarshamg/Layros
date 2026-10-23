@@ -8,6 +8,7 @@ import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
 import { DEFAULT_ANNOUNCEMENT_MESSAGES } from "@/lib/site-defaults";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
+import { useWishlist } from "@/lib/wishlist";
 
 interface NavLink {
   href: string;
@@ -74,6 +75,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
   // Reads 0 until the cart hydrates from localStorage on mount — same as
   // the old server-computed count showing 0 before Medusa responded.
   const { itemCount: bagCount, openDrawer } = useCart();
+  const wishlistCount = useWishlist().length;
   const { isLoggedIn, openAccountDrawer } = useAuth();
   const accountHref = isLoggedIn ? "/account/orders" : "/account/login";
   const accountLabel = isLoggedIn ? "My account" : "Log in";
@@ -185,6 +187,7 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
         ),
       )}
       <Link href={accountHref} onClick={openAccount}>{accountLabel}</Link>
+      <Link href="/wishlist" onClick={(event) => closeCompactMenu(event.currentTarget)}>Wishlist{wishlistCount > 0 ? ` (${wishlistCount})` : ""}</Link>
       <button type="button" onClick={(event) => { closeCompactMenu(event.currentTarget); openDrawer(); }} className="cursor-pointer text-left">Shopping bag ({bagCount})</button>
     </>
   );
@@ -238,6 +241,10 @@ export function NavView({ announcementMessages }: { announcementMessages?: strin
               <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg>
             </button>
           )}
+          <Link href="/wishlist" aria-label={`Wishlist, ${wishlistCount} saved`} className="nav-wishlist-link">
+            <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.5 7.8 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.5 3.3 4.3 6.6-1.8 4.8-9.3 9.4-9.3 9.4Z" /></svg>
+            {wishlistCount > 0 && <span className="bag-count">{wishlistCount}</span>}
+          </Link>
           <Link href={accountHref} onClick={openAccount} aria-label={accountLabel} className="nav-account-link" aria-haspopup="dialog">
             <svg className="header-simple-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M5 21v-2a7 7 0 0 1 14 0v2" /></svg>
           </Link>

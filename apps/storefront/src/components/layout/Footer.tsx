@@ -26,6 +26,7 @@ const SHOP_LINKS = [
 
 const HELP_LINKS = [
   { label: "Offers", href: "/offers" },
+  { label: "Wishlist", href: "/wishlist" },
   { label: "Track your order", href: "/account/orders" },
   { label: "Shipping & returns", href: "/legal/shipping-returns" },
   { label: "Contact us", href: "/contact" },

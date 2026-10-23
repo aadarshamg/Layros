@@ -15,6 +15,7 @@ import { NoteIcon } from "@/components/product/NoteIcon";
 import { ProductQualityHighlights } from "@/components/product/ProductQualityHighlights";
 import { PerfumeConcentrationGuide } from "@/components/product/PerfumeConcentrationGuide";
 import { ProductFaqs } from "@/components/product/ProductFaqs";
+import { WishlistButton } from "@/components/product/WishlistButton";
 import { ProductInterestTracker } from "@/components/product/ProductInterestTracker";
 import { ProductRatingLine } from "@/components/product/ProductRatingLine";
 import { ProductReviews } from "@/components/product/ProductReviews";
@@ -106,7 +107,10 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
           <aside className="product-info">
             <header className="product-identity">
               <p className="product-kicker">{kicker}</p>
-              <h1>{shortProductName}</h1>
+              <div className="product-title-row">
+                <h1>{shortProductName}</h1>
+                <WishlistButton productId={product.id} productName={shortProductName} className="product-page-wishlist" />
+              </div>
               <ProductRatingLine
                 handle={product.handle}
                 count={product.reviewCount}

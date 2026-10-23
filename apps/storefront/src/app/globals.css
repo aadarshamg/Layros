@@ -14450,3 +14450,20 @@ html body .sticky-buy-bar { display: none; }
 html body .product-try-first { display: grid; gap: 4px; margin: 14px 0 0; padding: 12px 14px; border: 1px dashed rgba(26, 66, 47, .35); background: #fbfaf6; color: #1a422f; font-size: 13px; line-height: 1.5; }
 html body .product-try-first b { font-size: 14px; }
 html body .product-try-first a { justify-self: start; color: #1a422f; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+/* Wishlist hearts (H11). */
+html body .wishlist-button { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50% !important; background: rgba(255, 255, 255, .92); color: #1a422f; cursor: pointer; }
+html body .wishlist-button svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+html body .wishlist-button.is-saved svg { fill: #b8342e; stroke: #b8342e; }
+html body .wishlist-button:focus-visible { outline: 2px solid #1a422f; outline-offset: 2px; }
+html body .product-card-wishlist { position: absolute; top: 10px; right: 10px; z-index: 3; }
+html body .product-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+html body .product-page-wishlist { flex: none; margin-top: 4px; background: #f2f5f0; }
+html body .nav-wishlist-link { position: relative; display: grid; place-items: center; }
+html body .nav-wishlist-link .bag-count { position: absolute; top: -4px; right: -6px; }
+html body .wishlist-status { margin: 0 0 18px; color: #4f6354; font-size: 14px; }
+html body .wishlist-empty { display: grid; justify-items: start; gap: 14px; color: #3d4f43; }
+/* Phones: the header has room for search and bag only; Wishlist lives in the menu. */
+@media (max-width: 820px) {
+  html body header.site-header .nav-actions > .nav-wishlist-link { display: none; }
+}
+html body header.site-header.site-header .nav-actions > .nav-wishlist-link .bag-count { position: absolute !important; top: -7px !important; right: -11px !important; left: auto !important; transform: none !important; }

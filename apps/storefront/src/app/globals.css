@@ -14518,3 +14518,12 @@ html body .collection-occasions > span { margin-right: 4px; color: #4f6354; font
 html body .collection-occasions button { padding: 7px 14px; border: 1px solid #c9d2c8; background: #fff; color: #1a422f; font-size: 13px; cursor: pointer; }
 html body .collection-occasions button.is-selected { border-color: #1a422f; background: #1a422f; color: #fff; }
 html body .collection-occasions button:focus-visible { outline: 2px solid #1a422f; outline-offset: 2px; }
+/* Review photos and videos (H6). */
+html body .review-form-media input[type="file"] { font-size: 13px; }
+html body .review-form-media small { color: #4f6354; font-size: 12px; }
+html body .review-form-media ul { display: grid; gap: 4px; margin: 4px 0 0; padding: 0; list-style: none; font-size: 13px; color: #1a422f; }
+html body .review-form-media li { display: flex; justify-content: space-between; gap: 10px; }
+html body .review-form-media li button { border: 0; background: none; color: #9a3a2a; font-size: 12px; text-decoration: underline; cursor: pointer; }
+html body .product-review-media { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+html body .product-review-media img, html body .product-review-media video { width: 96px; height: 96px; object-fit: cover; border: 1px solid #e3e6df; background: #f2f5f0; }
+html body .product-review-media video { width: 150px; }

@@ -31,6 +31,13 @@ export default defineType({
     defineField({ name: "comment", title: "Review", type: "text", rows: 4, validation: (Rule) => Rule.max(1000) }),
     defineField({ name: "submittedAt", title: "Submitted", type: "datetime", readOnly: true }),
     defineField({
+      name: "media",
+      title: "Photos & video",
+      description: "Attached by the reviewer. Shown with the review once it's approved; remove any you don't want shown.",
+      type: "array",
+      of: [{ type: "image" }, { type: "file", title: "Video", options: { accept: "video/*" } }],
+    }),
+    defineField({
       name: "source",
       title: "Source",
       description: "Where the review was written. Google reviews are shown with a \"via Google\" label; only add one here when the reviewer named this product.",

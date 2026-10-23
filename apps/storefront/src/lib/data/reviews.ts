@@ -11,6 +11,16 @@ export interface ProductReview {
   submittedAt?: string;
   /** "google" when imported from a Google review that names this product. */
   source?: "website" | "google";
+  /** Photos and videos the reviewer attached. */
+  media?: { kind: "image" | "video"; url: string }[];
+}
+
+/** A file attached to a submitted review, already checked by the API route. */
+export interface ReviewUpload {
+  kind: "image" | "video";
+  filename: string;
+  contentType: string;
+  data: Buffer;
 }
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -25,7 +35,8 @@ export async function getApprovedReviews(productId: string): Promise<ProductRevi
   try {
     return await sanityClient.fetch<ProductReview[]>(
       `*[_type == "productReview" && approved == true && product._ref == $productId] | order(submittedAt desc) [0...30] {
-        "id": _id, name, rating, comment, submittedAt, source
+        "id": _id, name, rating, comment, submittedAt, source,
+        "media": media[]{ "kind": select(_type == "file" => "video", "image"), "url": asset->url }
       }`,
       { productId },
       SANITY_FETCH_OPTIONS,
@@ -49,6 +60,7 @@ export async function submitReview(input: {
   rating: number;
   comment: string;
   ipHash: string;
+  uploads?: ReviewUpload[];
 }): Promise<SubmitReviewResult> {
   if (!writeClient) return { ok: false, reason: "unavailable" };
 
@@ -59,9 +71,17 @@ export async function submitReview(input: {
   const existing = await writeClient.fetch<string | null>(`*[_id == $id][0]._id`, { id: docId });
   if (existing) return { ok: false, reason: "duplicate" };
 
+  // Upload attachments only once the review is known to be new and valid.
+  const media = [];
+  for (const [index, upload] of (input.uploads ?? []).entries()) {
+    const asset = await writeClient.assets.upload(upload.kind === "video" ? "file" : "image", upload.data, { filename: upload.filename, contentType: upload.contentType });
+    media.push({ _type: upload.kind === "video" ? "file" : "image", _key: `m${index}`, asset: { _type: "reference", _ref: asset._id } });
+  }
+
   await writeClient.createIfNotExists({
     _id: docId,
     _type: "productReview",
+    ...(media.length && { media }),
     approved: false,
     product: { _type: "reference", _ref: input.productId, _weak: true },
     name: input.name,

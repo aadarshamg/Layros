@@ -48,6 +48,13 @@ export async function ProductReviews({ productId, productName, count, average }:
                   {review.source === "google" && <span className="product-review-source">via Google</span>}
                 </p>
                 {review.comment && <p className="product-review-comment">{review.comment}</p>}
+                {review.media && review.media.length > 0 && (
+                  <div className="product-review-media">
+                    {review.media.map((item) => item.kind === "video"
+                      ? <video key={item.url} src={item.url} controls preload="metadata" playsInline aria-label={`Video from ${review.name}`} />
+                      : <a key={item.url} href={item.url} target="_blank" rel="noopener noreferrer"><img src={`${item.url}?w=320&h=320&fit=crop&auto=format`} alt={`Photo from ${review.name}`} loading="lazy" /></a>)}
+                  </div>
+                )}
               </li>
             ))}
           </ul>

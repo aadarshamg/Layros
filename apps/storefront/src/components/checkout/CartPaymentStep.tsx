@@ -9,6 +9,7 @@ import { formatInr } from "@/lib/format";
 import { CartOrderSummaryMini } from "@/components/checkout/CartOrderSummaryMini";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 import { CheckoutBenefits } from "@/components/checkout/CheckoutBenefits";
+import { prepaidDiscountFor } from "@/lib/promotions";
 
 declare global {
   interface Window {
@@ -33,6 +34,8 @@ export function CartPaymentStep({
   const { isLoggedIn, loginAvailable } = useAuth();
   const { items, appliedCoupon, total, clearCart } = useCart();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("razorpay");
+  // Shown here; the server applies the same discount to the Razorpay amount.
+  const prepaidSaving = prepaidDiscountFor(total);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -162,7 +165,7 @@ export function CartPaymentStep({
         <b>Payment method</b>
         <label className={`cart-payment-option ${paymentMethod === "razorpay" ? "is-selected" : ""}`}>
           <input type="radio" name="paymentMethod" checked={paymentMethod === "razorpay"} onChange={() => setPaymentMethod("razorpay")} />
-          <span><b>Pay Online</b><small>Cards, UPI, netbanking via Razorpay</small></span>
+          <span><b>Pay Online · save {formatInr(prepaidSaving)}</b><small>Cards, UPI, netbanking via Razorpay</small></span>
         </label>
         {isLoggedIn ? (
           <label className={`cart-payment-option ${paymentMethod === "cod" ? "is-selected" : ""}`}>
@@ -195,7 +198,7 @@ export function CartPaymentStep({
           disabled={!acceptedTerms || !razorpayReady || isSubmitting}
           className="cart-step-primary-button"
         >
-          {isSubmitting ? "Processing…" : `Pay ${formatInr(total)}`}
+          {isSubmitting ? "Processing…" : `Pay ${formatInr(total - prepaidSaving)}`}
         </button>
       ) : (
         <button

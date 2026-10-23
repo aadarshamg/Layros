@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { getStoreSettings } from "@/lib/data/store-settings";
-import { CATEGORY_COUPON_OFFERS, COUPON_CATEGORY_LABELS } from "@/lib/promotions";
+import { CATEGORY_COUPON_OFFERS, COUPON_CATEGORY_LABELS, PREPAID_DISCOUNT } from "@/lib/promotions";
 import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/shipping";
 import { formatInr } from "@/lib/format";
 
@@ -70,6 +70,11 @@ export default async function OffersPage() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      <section className="offers-block" aria-labelledby="offer-prepaid">
+        <h2 id="offer-prepaid">{formatInr(PREPAID_DISCOUNT)} off when you pay online</h2>
+        <p>Pay by card, UPI or netbanking at checkout and {formatInr(PREPAID_DISCOUNT)} comes off your order, on top of every other offer. Cash on Delivery orders pay the full amount.</p>
       </section>
 
       <section className="offers-block" aria-labelledby="offer-shipping">

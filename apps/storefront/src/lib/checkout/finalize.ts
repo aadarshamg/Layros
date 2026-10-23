@@ -4,7 +4,7 @@ import { priceItems, type IncomingItem } from "@/lib/checkout/pricing";
 import { validateCoupon, calculateDiscount } from "@/lib/checkout/coupons";
 import { saveOrder } from "@/lib/checkout/orders";
 import { patchDefaultAddress } from "@/lib/auth/customers";
-import { calculateBuyTwoGetOne } from "@/lib/promotions";
+import { calculateBuyTwoGetOne, prepaidDiscountFor } from "@/lib/promotions";
 import { shippingFeeFor } from "@/lib/shipping";
 import type { CheckoutDetailsFormData } from "@leyros/types";
 
@@ -80,6 +80,9 @@ export async function finalizeRazorpayOrder(input: {
   }
   const offerDiscount = calculateBuyTwoGetOne(pricedItems).discountAmount;
   const shippingFee = shippingFeeFor(amountInr);
+  // Same prepaid rule as create-order, so the saved total equals what Razorpay charged.
+  const beforePrepaid = Math.max(0, amountInr - offerDiscount - discountAmount + shippingFee);
+  const prepaidDiscount = prepaidDiscountFor(beforePrepaid);
 
   const saved = await saveOrder({
     orderNumber,
@@ -93,8 +96,9 @@ export async function finalizeRazorpayOrder(input: {
     items: pricedItems,
     subtotalAmount: amountInr,
     couponCode: couponCode || undefined,
-    discountAmount: discountAmount + offerDiscount || undefined,
-    totalAmount: Math.max(0, amountInr - offerDiscount - discountAmount + shippingFee),
+    discountAmount: discountAmount + offerDiscount + prepaidDiscount || undefined,
+    prepaidDiscount: prepaidDiscount || undefined,
+    totalAmount: beforePrepaid - prepaidDiscount,
     customerId,
   });
   if (saved && customerId) await patchDefaultAddress(customerId, details.shippingAddress);

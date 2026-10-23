@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { priceItems, type IncomingItem } from "@/lib/checkout/pricing";
 import { validateCoupon, calculateDiscount } from "@/lib/checkout/coupons";
-import { calculateBuyTwoGetOne } from "@/lib/promotions";
+import { calculateBuyTwoGetOne, prepaidDiscountFor } from "@/lib/promotions";
 import { shippingFeeFor } from "@/lib/shipping";
 import { saveCheckoutSession } from "@/lib/checkout/finalize";
 import { getSessionCustomerId } from "@/lib/auth/session";
@@ -37,7 +37,10 @@ export async function POST(request: NextRequest) {
   }
   const offerDiscount = calculateBuyTwoGetOne(pricing.items).discountAmount;
   const shippingFee = shippingFeeFor(pricing.amountInr);
-  const chargeAmount = Math.max(0, pricing.amountInr - offerDiscount - discountAmount + shippingFee);
+  const beforePrepaid = Math.max(0, pricing.amountInr - offerDiscount - discountAmount + shippingFee);
+  // Paying online earns the prepaid discount; finalize.ts applies the same rule to the saved order.
+  const prepaidDiscount = prepaidDiscountFor(beforePrepaid);
+  const chargeAmount = beforePrepaid - prepaidDiscount;
 
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -64,6 +67,7 @@ export async function POST(request: NextRequest) {
           couponCode: body.couponCode ?? "",
           buyTwoGetOneDiscount: String(offerDiscount),
           shippingFee: String(shippingFee),
+          prepaidDiscount: String(prepaidDiscount),
         },
       }),
     });

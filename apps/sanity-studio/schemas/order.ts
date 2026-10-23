@@ -85,6 +85,7 @@ export default defineType({
     defineField({ name: "subtotalAmount", title: "Subtotal before discount (INR)", type: "number" }),
     defineField({ name: "couponCode", title: "Coupon code used", type: "string" }),
     defineField({ name: "discountAmount", title: "Discount applied (INR)", type: "number" }),
+    defineField({ name: "prepaidDiscount", title: "Prepaid discount (INR)", description: "Included in Discount applied: the saving for paying online.", type: "number", readOnly: true }),
     defineField({ name: "totalAmount", title: "Total (INR)", type: "number", validation: (Rule) => Rule.required().min(0) }),
     defineField({ name: "giftWrap", title: "Gift wrap requested", type: "boolean", description: "The shopper ticked complimentary gift wrap at checkout." }),
     defineField({ name: "giftWrapMessage", title: "Gift wrap message", type: "text", rows: 2 }),

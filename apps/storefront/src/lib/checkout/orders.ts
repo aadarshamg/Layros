@@ -34,6 +34,8 @@ export interface SaveOrderInput {
   subtotalAmount: number;
   couponCode?: string;
   discountAmount?: number;
+  /** Part of discountAmount: the online-payment saving. */
+  prepaidDiscount?: number;
   totalAmount: number;
   /** Set only when the order was placed while logged in — derived server-side from the session cookie, never trust a client-submitted id. */
   customerId?: string;
@@ -86,6 +88,7 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
       subtotalAmount: input.subtotalAmount,
       couponCode: input.couponCode,
       discountAmount: input.discountAmount,
+      prepaidDiscount: input.prepaidDiscount,
       totalAmount: input.totalAmount,
     };
     const saved = input.documentId

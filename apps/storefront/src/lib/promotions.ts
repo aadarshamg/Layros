@@ -90,3 +90,11 @@ const BUY_TWO_GET_ONE_EXCLUSIONS = [
 export function isBuyTwoGetOneEligible(product: PerfumeProduct) {
   return isBuyTwoGetOneEligibleText(product.category, product.title, ...product.tags);
 }
+
+/** Rs off every order paid online (Razorpay) rather than Cash on Delivery. */
+export const PREPAID_DISCOUNT = 50;
+
+/** The prepaid saving on an order of `payable` rupees (never more than the order). */
+export function prepaidDiscountFor(payable: number) {
+  return Math.max(0, Math.min(PREPAID_DISCOUNT, payable));
+}

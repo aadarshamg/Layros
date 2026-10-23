@@ -165,6 +165,14 @@ export default defineType({
               validation: (Rule) => Rule.min(0),
             }),
             defineField({
+              name: "previousCompareAtPrice",
+              title: "Old MRP (removed, over 40% off)",
+              description: "An inflated MRP taken off the site until the real MRP is confirmed. Copy the real MRP into Compare-at price to show a discount again.",
+              type: "number",
+              readOnly: true,
+              hidden: ({ parent }) => !parent?.previousCompareAtPrice,
+            }),
+            defineField({
               name: "image",
               title: "Photo of this size",
               description: "Optional. Shown in the product gallery when a shopper picks this size (e.g. the 50ml bottle). Square, white background, like the main photos.",

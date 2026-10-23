@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { productJsonLd } from "@/lib/seo/jsonld/product";
 import { productBreadcrumbJsonLd } from "@/lib/seo/jsonld/breadcrumb";
 import { getProductSeo } from "@/lib/seo/product-seo";
-import { getProductByHandle, getRenamedProductHandle, getSimilarProducts } from "@/lib/data/products";
+import { getProductByHandle, getRenamedProductHandle, getSimilarProducts, listProducts } from "@/lib/data/products";
 import { getStoreSettings } from "@/lib/data/store-settings";
 import { AddToCartForm, type PurchasePerk } from "@/components/product/AddToCartForm";
 import { NoteIcon } from "@/components/product/NoteIcon";
@@ -22,7 +22,7 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { CategoryCouponOffers } from "@/components/product/CategoryCouponOffers";
 import { getProductCouponCategory, isBuyTwoGetOneEligible } from "@/lib/promotions";
-import { concentrationLabel, genderLabel, productNotePyramid } from "@/lib/product-labels";
+import { concentrationLabel, genderLabel, productCardName, productNotePyramid } from "@/lib/product-labels";
 import { defaultVariant } from "@/lib/variants";
 import { DeliveryTimeline } from "@/components/product/DeliveryTimeline";
 import { DEFAULT_DELIVERY_DAYS_MAX, DEFAULT_DELIVERY_DAYS_MIN, DEFAULT_DISPATCH_DAYS } from "@/lib/site-defaults";
@@ -53,7 +53,10 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
     notFound();
   }
 
-  const relatedProducts = await getSimilarProducts([product.id], 4);
+  const [relatedProducts, { products: discoverySets }] = await Promise.all([
+    getSimilarProducts([product.id], 4),
+    listProducts({ category: "tester", limit: 12 }),
+  ]);
 
   const { details } = product;
   const mainImages = product.images.length ? product.images : ["/leyros/nuit-doree-hero.jpg"];
@@ -63,6 +66,13 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
 
   const isFragrance = isBuyTwoGetOneEligible(product);
   const isPerfume = isFragrance && !/attar/i.test(product.category ?? "");
+  const isDiscoverySet = /tester|discovery|set of 5|\b5 x 10ml/i.test(`${product.category ?? ""} ${product.title}`);
+  // Try first (H2): the ₹399 discovery set that contains this perfume, if any.
+  // Capitalise each word's first letter; "é" inside "Ombrée" isn't a word start.
+  const titleCase = (text: string) => text.toLowerCase().replace(/(^|[^\p{L}])(\p{L})/gu, (_, before: string, letter: string) => before + letter.toUpperCase());
+  const shortName = titleCase(productCardName(product));
+  const plain = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const trySet = discoverySets.find((set) => set.id !== product.id && plain(set.title).includes(plain(shortName)));
   const seo = getProductSeo(product);
   const shortProductName = seo.name;
   const couponCategory = getProductCouponCategory(product);
@@ -117,6 +127,13 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
               perks={perks}
             />
             {couponCategory && <CategoryCouponOffers category={couponCategory} />}
+            {isPerfume && !isDiscoverySet && (
+              <div className="product-try-first">
+                <b>Not sure yet? Try it first.</b>
+                <span>{trySet ? `The ${titleCase(productCardName(trySet))} set brings five 10ml perfumes, including ${shortName}, for ${formatInr(defaultVariant(trySet.variants)?.price ?? 399)}.` : `Our Discovery Sets bring five 10ml perfumes for ${formatInr(399)}.`}</span>
+                <Link href={trySet ? `/products/${trySet.handle}` : "/collections/all?category=tester"}>{trySet ? "Shop the set" : "Shop Discovery Sets"}</Link>
+              </div>
+            )}
             <div className="product-service-line"><span>Secure checkout</span><span>Order tracking</span></div>
             <div className="product-purchase-details">
               <details>
@@ -128,6 +145,12 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 />
                 <p>Free shipping on orders of {formatInr(FREE_SHIPPING_THRESHOLD)} or more. {formatInr(STANDARD_SHIPPING_FEE)} below that.</p>
               </details>
+              {isPerfume && !isDiscoverySet && (
+                <details>
+                  <summary>Blind Buy promise <span>7-day sealed exchange</span></summary>
+                  <p>Not sure it&apos;s your scent? Contact us within 7 days of delivery and swap the unopened bottle, seal intact, for another Leyros fragrance. <Link href="/legal/shipping-returns">How exchanges work</Link></p>
+                </details>
+              )}
               {rewardSettings.rewardEnabled && rewardSettings.rewardThreshold && (
                 <details>
                   <summary>A little extra, from Leyros <span>Complimentary on orders over {formatInr(rewardSettings.rewardThreshold)}</span></summary>
@@ -217,7 +240,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
             <div className="product-detail-summary" aria-label="Key product details">
               {isFragrance && <article><span>Fragrance profile</span><strong>{details.family}</strong></article>}
               <article><span>For</span><strong>{gender ?? "Everyone"}</strong></article>
-              {isFragrance && <article><span>Concentration</span><strong>{isPerfume ? "30% Pure Parfum" : details.concentration}</strong></article>}
+              {isFragrance && <article><span>Concentration</span><strong>{isPerfume ? concentrationLabel(details.concentration) : details.concentration}</strong></article>}
               <article><span>Available sizes</span><strong>{product.variants.map((variant) => formatSize(variant.sizeMl, variant.sizeLabel)).join(" · ")}</strong></article>
             </div>
             <div className="product-disclosures">

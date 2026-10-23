@@ -14446,3 +14446,7 @@ html body .sticky-buy-bar { display: none; }
 @media (max-width: 700px) {
   html body.has-sticky-buy .whatsapp-widget { bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important; transition: bottom .2s ease; }
 }
+/* Product page: try the discovery set first (H2). */
+html body .product-try-first { display: grid; gap: 4px; margin: 14px 0 0; padding: 12px 14px; border: 1px dashed rgba(26, 66, 47, .35); background: #fbfaf6; color: #1a422f; font-size: 13px; line-height: 1.5; }
+html body .product-try-first b { font-size: 14px; }
+html body .product-try-first a { justify-self: start; color: #1a422f; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }

@@ -15,17 +15,22 @@ export default async function ShippingReturnsPage() {
   const email = settings.contactEmail || DEFAULT_CONTACT_EMAIL;
   const phone = settings.contactPhone || DEFAULT_CONTACT_PHONE;
   return (
-    <LegalPageLayout title="Shipping & Returns" path="/legal/shipping-returns" updated="20 September 2026">
+    <LegalPageLayout title="Shipping & Returns" path="/legal/shipping-returns" updated="23 October 2026">
       <p>
-        We currently ship within India only. Standard delivery usually arrives in 3&ndash;5 business days.
+        We currently ship within India only. Orders ship within 24&ndash;48 hours and standard delivery usually arrives in 3&ndash;5 business days.
         Standard shipping costs ₹99 for orders below ₹999 and is free when the product subtotal reaches ₹999.
         The applicable shipping charge and final payable amount are shown before payment.
       </p>
       <p>
-        Because each bottle is hand-finished to order, we accept returns only for items that arrive
+        Because fragrance is a personal-care product, we accept returns only for items that arrive
         damaged, incorrect, or faulty. Please contact us within 7 days of delivery with photos of the
         issue and we&rsquo;ll arrange a replacement or refund. For hygiene reasons, opened fragrance
         bottles cannot otherwise be returned.
+      </p>
+      <p>
+        <strong>Blind Buy promise.</strong> Not sure a perfume is your scent? Contact us within 7 days of
+        delivery and you can exchange the unopened bottle, with its seal intact, for another Leyros
+        fragrance. Opened or unsealed bottles can&rsquo;t be exchanged.
       </p>
       <p>
         Questions about a specific order should go to{" "}

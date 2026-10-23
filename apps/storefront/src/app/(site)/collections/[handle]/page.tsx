@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { getCollectionBanner, getCollectionPresentation } from "@/lib/data/collection-presentation";
 import { listProducts } from "@/lib/data/products";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { findOccasion } from "@/lib/occasions";
 
 type CollectionQuery = Record<string, string | string[] | undefined>;
 
@@ -79,12 +80,15 @@ export default async function CollectionPage({ params, searchParams }: {
     description: `Shop the most affordable matching Leyros products priced at ₹${new Intl.NumberFormat("en-IN").format(maxPrice)} or below, sorted from lowest price first.`,
     highlights: ["Within your budget", "Lowest price first", "Ready to shop"],
   } : basePresentation;
+  // Occasion filter (?wear=office), from the products' highlights in admin.
+  const wear = findOccasion(typeof query.wear === "string" ? query.wear : undefined);
   const { products } = await listProducts({
     q: typeof query.q === "string" ? query.q : undefined,
     category: activeCategory || undefined,
     family: activeFamily || undefined,
     gender: activeGender || undefined,
     inStock,
+    wear: typeof query.wear === "string" ? query.wear : undefined,
     sort,
   });
   const visibleProducts = (maxPrice
@@ -104,7 +108,7 @@ export default async function CollectionPage({ params, searchParams }: {
       <div className="page-shell">
         <header className={`collection-intro ${styles.collectionBanner}`} style={{ "--collection-banner-image": `url("${getCollectionBanner({ handle, category: activeCategory })}")` } as CSSProperties}>
           <div className="collection-intro-copy">
-            <h1>{searchQuery ? `Results for “${searchQuery}”` : presentation.title}</h1>
+            <h1>{searchQuery ? `Results for “${searchQuery}”` : wear ? `Perfumes for ${wear.label}` : presentation.title}</h1>
             {searchQuery && <p>{visibleProducts.length} {visibleProducts.length === 1 ? "product" : "products"} found</p>}
           </div>
         </header>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CATEGORY_FILTER_OPTIONS } from "@/lib/data/categories";
+import { OCCASIONS } from "@/lib/occasions";
 import styles from "./CollectionControls.module.css";
 
 const families = ["floral", "woody", "oriental", "fresh", "gourmand"];
@@ -12,6 +13,8 @@ const GENDER_OPTIONS = [
   { value: "feminine", label: "Women" },
   { value: "unisex", label: "Unisex" },
 ];
+
+const showGenderSwitchFor = (category: string) => !/candle|car perfume/i.test(category);
 
 export function CollectionControls() {
   const pathname = usePathname();
@@ -24,9 +27,12 @@ export function CollectionControls() {
   const activeFamily = searchParams.get("family") ?? "";
   const activeGender = searchParams.get("gender") ?? "";
   const activeMaxPrice = searchParams.get("maxPrice") ?? "";
-  const activeFilterCount = Number(inStock) + Number(Boolean(activeCategory)) + Number(Boolean(activeFamily)) + Number(Boolean(activeGender)) + Number(Boolean(activeMaxPrice));
+  const activeWear = searchParams.get("wear") ?? "";
+  const activeFilterCount = Number(inStock) + Number(Boolean(activeCategory)) + Number(Boolean(activeFamily)) + Number(Boolean(activeGender)) + Number(Boolean(activeMaxPrice)) + Number(Boolean(activeWear));
+  // Occasions describe worn fragrance, not candles or car perfumes.
+  const showOccasions = showGenderSwitchFor(activeCategory);
   // Candles and car perfumes aren't worn, so Men/Women/Unisex means nothing there.
-  const showGenderSwitch = !/candle|car perfume/i.test(activeCategory);
+  const showGenderSwitch = showGenderSwitchFor(activeCategory);
 
   function updateParam(key: string, value?: string) {
     const next = new URLSearchParams(searchParams.toString());
@@ -43,6 +49,7 @@ export function CollectionControls() {
     next.delete("maxPrice");
     next.delete("benefit");
     next.delete("occasion");
+    next.delete("wear");
     next.set("inStock", "0");
     router.push(`${pathname}${next.size ? `?${next.toString()}` : ""}`, { scroll: false });
   }
@@ -96,6 +103,17 @@ export function CollectionControls() {
           </div>
         )}
       </div>
+
+      {showOccasions && (
+        <div className="collection-occasions" role="group" aria-label="Wear it for">
+          <span>Wear it for</span>
+          {OCCASIONS.map((occasion) => (
+            <button key={occasion.value} type="button" className={activeWear === occasion.value ? "is-selected" : undefined} aria-pressed={activeWear === occasion.value} onClick={() => updateParam("wear", activeWear === occasion.value ? "" : occasion.value)}>
+              {occasion.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {filtersOpen && (
         <div className="collection-filter-panel" id="collection-filter-panel">

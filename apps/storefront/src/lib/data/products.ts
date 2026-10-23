@@ -5,6 +5,7 @@ import { editorialProducts } from "@/lib/data/editorial-products";
 import { CANDLE_COLLECTIONS, type CandleCollectionSlug } from "@/lib/data/candle-collections";
 import type { SanityImageSource } from "@sanity/image-url";
 import { isSoldOut } from "@/lib/stock";
+import { suitsOccasion } from "@/lib/occasions";
 
 /** Raw shape returned by the GROQ projection below — mirrors the `product` schema. */
 export interface RawSanityProduct {
@@ -564,6 +565,8 @@ export async function listProducts(params: {
   category?: string;
   q?: string;
   inStock?: boolean;
+  /** Occasion from lib/occasions.ts, e.g. "office" (applied before paging). */
+  wear?: string;
   sort?: "recommended" | "new" | "price-asc" | "price-desc";
   limit?: number;
   offset?: number;
@@ -595,6 +598,10 @@ export async function listProducts(params: {
       // "Fragrance Candles / Home and Kitchen") — a keyword match, not an
       // exact one, since there's no fixed taxonomy behind them.
       products = products.filter((product) => categoryMatches(product.category, params.category as string));
+    }
+    if (params.wear) {
+      const wear = params.wear;
+      products = products.filter((product) => suitsOccasion(product, wear));
     }
     if (params.inStock) {
       products = products.filter((product) => product.variants.some((variant) => !isSoldOut(variant)));
@@ -631,6 +638,10 @@ export async function listProducts(params: {
     }
     if (params.category) {
       products = products.filter((product) => categoryMatches(product.category, params.category as string));
+    }
+    if (params.wear) {
+      const wear = params.wear;
+      products = products.filter((product) => suitsOccasion(product, wear));
     }
     if (params.inStock) {
       products = products.filter((product) => product.variants.some((variant) => !isSoldOut(variant)));

@@ -14421,3 +14421,28 @@ html body .offers-table th { font-size: 12px; letter-spacing: .06em; text-transf
 html body .offers-table code { font-weight: 700; letter-spacing: .04em; }
 html body .offers-note { margin: 18px 0 0; color: #4f6354; font-size: 13px; }
 html body .checkout-benefits-all { display: inline-block; margin-top: 8px; color: #1a422f; font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Section H: per-10ml price and Best value on sizes, card ratings, sticky phone buy bar. */
+html body .size-option { position: relative; }
+html body .size-option .size-per10 { display: block; margin-top: 2px; color: #4f6354; font-size: .68rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
+html body .size-best-value { position: absolute; top: -9px; right: 6px; padding: 2px 6px; background: #1a422f; color: #fff; font-size: .6rem; font-weight: 700; letter-spacing: .06em; line-height: 1.2; text-transform: uppercase; }
+html body .product-card-rating { display: flex; align-items: baseline; gap: 4px; margin: 0 0 4px; color: #1a422f; font-size: .78rem; font-weight: 700; }
+html body .product-card-rating span { color: #c9a227; }
+html body .product-card-rating small { color: #4f6354; font-weight: 500; }
+html body .sticky-buy-bar { display: none; }
+@media (max-width: 700px) {
+  html body .sticky-buy-bar:not([hidden]) {
+    position: fixed; right: 0; bottom: 0; left: 0; z-index: 60;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    background: #fffcf7; border-top: 1px solid #dfe4dc; box-shadow: 0 -6px 18px rgba(18, 48, 33, .08) !important;
+  }
+  html body .sticky-buy-bar span { display: grid; line-height: 1.2; color: #1a422f; }
+  html body .sticky-buy-bar span b { font-size: 1.1rem; }
+  html body .sticky-buy-bar span small { color: #4f6354; font-size: .72rem; }
+  html body .sticky-buy-bar button { flex: 1; max-width: 240px; padding: 13px 18px; border: 0; background: #1a422f; color: #fff; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  html body .sticky-buy-bar button:disabled { opacity: .55; }
+}
+@media (max-width: 700px) {
+  html body.has-sticky-buy .whatsapp-widget { bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important; transition: bottom .2s ease; }
+}

@@ -31,6 +31,10 @@ export function ProductCardPurchasePanel({ product, homepage = false }: { produc
   const rotateNotes = /collections|perfume/i.test(product.category ?? "") && !/car|attar/i.test(product.category ?? "");
 
   const soldOut = isSoldOut(variant);
+  // Real ratings only: the Amazon listing when entered in admin, else approved reviews here.
+  const rating = product.amazonRating && product.amazonRatingCount
+    ? { value: product.amazonRating, count: product.amazonRatingCount }
+    : product.reviewCount && product.reviewAverage ? { value: product.reviewAverage, count: product.reviewCount } : null;
 
   function handleQuickAdd() {
     if (soldOut) return;
@@ -55,6 +59,11 @@ export function ProductCardPurchasePanel({ product, homepage = false }: { produc
 
   return (
     <div className="product-card-purchase">
+      {rating && (
+        <p className="product-card-rating" aria-label={`Rated ${rating.value.toFixed(1)} out of 5 from ${rating.count} ${rating.count === 1 ? "review" : "reviews"}`}>
+          <span aria-hidden="true">★</span> {rating.value.toFixed(1)} <small>({rating.count.toLocaleString("en-IN")})</small>
+        </p>
+      )}
       {rotateNotes ? (
         <div className="product-card-scent product-card-rotating-notes">
           <span className="sr-only">Fragrance Family. Daily Use. Eau de Parfum.</span>

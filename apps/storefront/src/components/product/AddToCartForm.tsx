@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import type { PerfumeVariant } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";
 import { formatSize } from "@/lib/format";
 import { DiyaIcon } from "@/components/product/DiyaIcon";
 import { calculateBuyTwoGetOne } from "@/lib/promotions";
 import { availableQuantity, isSoldOut } from "@/lib/stock";
-import { defaultVariant } from "@/lib/variants";
+import { bestValueVariant, defaultVariant, pricePer10ml } from "@/lib/variants";
 import { announceVariantImage } from "@/lib/variant-image";
 
 function formatInr(amount: number) {
@@ -65,6 +66,23 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
   const [selectedVariantId, setSelectedVariantId] = useState(defaultVariant(variants)?.id ?? "");
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
+  const bestValue = bestValueVariant(variants);
+  // Phones: once the main button scrolls away, a bar at the bottom keeps Add to cart in reach.
+  const mainButtonRef = useRef<HTMLButtonElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  useEffect(() => {
+    const button = mainButtonRef.current;
+    if (!button || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(([entry]) => setShowStickyBar(!entry.isIntersecting && entry.boundingClientRect.top < 0));
+    observer.observe(button);
+    return () => observer.disconnect();
+  }, []);
+  // Lift floating buttons (WhatsApp) above the bar while it shows.
+  useEffect(() => {
+    document.body.classList.toggle("has-sticky-buy", showStickyBar);
+    return () => document.body.classList.remove("has-sticky-buy");
+  }, [showStickyBar]);
   const selected = variants.find((variant) => variant.id === selectedVariantId);
   const compareAtPrice = selected?.compareAtPrice && selected.compareAtPrice > selected.price ? selected.compareAtPrice : undefined;
   const discountPercent = compareAtPrice && selected ? Math.round(((compareAtPrice - selected.price) / compareAtPrice) * 100) : 0;
@@ -100,7 +118,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
   }
 
   return (
-    <form onSubmit={handleSubmit} className="purchase-form">
+    <form ref={formRef} onSubmit={handleSubmit} className="purchase-form">
       <div className="purchase-top">
         <div className="purchase-price" aria-live="polite">
           <div>
@@ -123,7 +141,8 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
       <div className="size-grid">
         {variants.map((variant) => (
           <button key={variant.id} type="button" aria-pressed={selectedVariantId === variant.id} onClick={() => { setSelectedVariantId(variant.id); setQuantity(1); announceVariantImage(variant.image); }} className={`size-option ${selectedVariantId === variant.id ? "selected" : ""}${isSoldOut(variant) ? " is-sold-out" : ""}`}>
-            <span className="variant-copy"><b>{formatSize(variant.sizeMl, variant.sizeLabel)}</b>{isSoldOut(variant) && <small> Sold out</small>}</span>
+            <span className="variant-copy"><b>{formatSize(variant.sizeMl, variant.sizeLabel)}</b>{isSoldOut(variant) && <small> Sold out</small>}{!isSoldOut(variant) && pricePer10ml(variant) !== undefined && variants.length > 1 && <small className="size-per10">{formatInr(pricePer10ml(variant) as number)} / 10ml</small>}</span>
+            {bestValue?.id === variant.id && <span className="size-best-value">Best value</span>}
           </button>
         ))}
       </div>
@@ -144,7 +163,7 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
         </ul>
       )}
 
-      <button type="submit" disabled={!selectedVariantId || soldOut} className={`acquire-button${justAdded ? " added" : ""}`}>
+      <button ref={mainButtonRef} type="submit" disabled={!selectedVariantId || soldOut} className={`acquire-button${justAdded ? " added" : ""}`}>
         <DiyaIcon />
         <span className="acquire-button-label">
           {soldOut ? "Sold out" : justAdded ? "Added ✓" : `Add to cart – ${formatInr(amount)}`}
@@ -153,6 +172,14 @@ export function AddToCartForm({ productId, handle, title, category, image, varia
       </button>
       {selected && <p className="purchase-installments">Or 3 payments of {formatInr(Math.round(selected.price / 3))} with <a href="https://snapmint.com/" target="_blank" rel="noopener noreferrer">Snapmint</a></p>}
       {justAdded && <p className="form-message success">Added to your boutique bag.</p>}
+      {/* On the page body: the product panel's reveal animation would trap a fixed bar inside it. */}
+      {showStickyBar && createPortal(
+        <div className="sticky-buy-bar">
+          <span><b>{formatInr(selected?.price ?? 0)}</b>{selected && <small>{formatSize(selected.sizeMl, selected.sizeLabel)}</small>}</span>
+          <button type="button" onClick={() => formRef.current?.requestSubmit()} disabled={!selectedVariantId || soldOut}>{soldOut ? "Sold out" : justAdded ? "Added ✓" : "Add to cart"}</button>
+        </div>,
+        document.body,
+      )}
     </form>
   );
 }

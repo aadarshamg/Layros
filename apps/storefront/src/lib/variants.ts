@@ -17,3 +17,21 @@ export function defaultVariant<T extends SizedVariant>(variants: readonly T[]): 
   const pool = available.length ? available : [...variants];
   return pool.find((variant) => variant.sizeMl === DEFAULT_SIZE_ML) ?? [...pool].sort((a, b) => a.price - b.price)[0];
 }
+
+/** Price per 10ml for plain ml sizes (not sets or grams), for comparing sizes. */
+export function pricePer10ml(variant: Pick<PerfumeVariant, "sizeMl" | "sizeLabel" | "price">): number | undefined {
+  const plainMl = !variant.sizeLabel || /^\s*\d+(\.\d+)?\s*ml\s*$/i.test(variant.sizeLabel);
+  if (!plainMl || !(variant.sizeMl > 0)) return undefined;
+  return Math.round((variant.price / variant.sizeMl) * 10);
+}
+
+/** The available ml size that costs least per 10ml, when there's a real choice of sizes. */
+export function bestValueVariant<T extends Pick<PerfumeVariant, "sizeMl" | "sizeLabel" | "price" | "inventoryQuantity">>(variants: readonly T[]): T | undefined {
+  const priced = variants
+    .filter((variant) => !isSoldOut(variant))
+    .map((variant) => ({ variant, per10: pricePer10ml(variant) }))
+    .filter((entry): entry is { variant: T; per10: number } => entry.per10 !== undefined)
+    .sort((a, b) => a.per10 - b.per10);
+  // Only call it out when it genuinely beats the next size.
+  return priced.length > 1 && priced[0].per10 < priced[1].per10 ? priced[0].variant : undefined;
+}

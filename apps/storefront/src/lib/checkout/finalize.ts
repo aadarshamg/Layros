@@ -75,7 +75,7 @@ export async function finalizeRazorpayOrder(input: {
   const { items: pricedItems, amountInr } = await priceItems(items);
   let discountAmount = 0;
   if (couponCode) {
-    const couponResult = await validateCoupon(couponCode, amountInr, pricedItems);
+    const couponResult = await validateCoupon(couponCode, amountInr, pricedItems, { customerId });
     if (couponResult.valid && couponResult.coupon) discountAmount = calculateDiscount(couponResult.coupon, amountInr, pricedItems);
   }
   const offerDiscount = calculateBuyTwoGetOne(pricedItems).discountAmount;

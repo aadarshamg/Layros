@@ -14527,3 +14527,14 @@ html body .review-form-media li button { border: 0; background: none; color: #9a
 html body .product-review-media { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 html body .product-review-media img, html body .product-review-media video { width: 96px; height: 96px; object-fit: cover; border: 1px solid #e3e6df; background: #f2f5f0; }
 html body .product-review-media video { width: 150px; }
+/* Account: refer a friend and personal coupons (H16, H17). */
+html body .account-rewards { display: grid; gap: 28px; color: #1a422f; }
+html body .account-rewards h2 { margin: 0 0 6px; font-family: var(--font-display); font-size: 26px; font-weight: 400; text-transform: uppercase; }
+html body .account-rewards p { margin: 0 0 12px; max-width: 60ch; color: #3d4f43; font-size: 14px; line-height: 1.6; }
+html body .account-referral { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+html body .copy-code { display: inline-flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; border: 1px dashed #1a422f; background: #fbfaf6; }
+html body .copy-code code { font-size: 15px; font-weight: 700; letter-spacing: .08em; }
+html body .copy-code button { padding: 6px 10px; border: 0; background: #1a422f; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+html body .account-referral-share { padding: 10px 16px; background: #1f8f4e; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; }
+html body .account-reward-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+html body .account-reward-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 14px; color: #3d4f43; }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateCoupon, calculateDiscount } from "@/lib/checkout/coupons";
+import { getSessionCustomerId } from "@/lib/auth/session";
 import { priceItems, type IncomingItem } from "@/lib/checkout/pricing";
 
 export async function POST(request: NextRequest) {
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json({ valid: false, message: error instanceof Error ? error.message : "Invalid cart." }, { status: 200 });
   }
-  const result = await validateCoupon(body.code ?? "", pricing.amountInr, pricing.items);
+  const result = await validateCoupon(body.code ?? "", pricing.amountInr, pricing.items, { customerId: (await getSessionCustomerId()) ?? undefined });
   if (!result.valid || !result.coupon) {
     return NextResponse.json(result, { status: 200 });
   }

@@ -3,6 +3,7 @@ import { timingSafeStringEqual } from "@/lib/auth/crypto";
 import { isShiprocketConfigured, retryUnsentOrders, syncOpenOrders } from "@/lib/shipping/shiprocket";
 import { restoreCancelledOrders } from "@/lib/checkout/stock";
 import { sendDueReviewRequests } from "@/lib/review-requests";
+import { issueReferralRewards } from "@/lib/rewards";
 
 export const dynamic = "force-dynamic";
 
@@ -30,5 +31,7 @@ export async function GET(request: NextRequest) {
   const restocked = await restoreCancelledOrders(50);
   // Ask for a review a few days after delivery (lib/review-requests.ts).
   const reviewRequests = await sendDueReviewRequests(50);
-  return NextResponse.json({ retried, restocked, reviewRequests });
+  // Referrers get their Rs 100 coupon once the friend's order is delivered.
+  const referralRewards = await issueReferralRewards(50);
+  return NextResponse.json({ retried, restocked, reviewRequests, referralRewards });
 }

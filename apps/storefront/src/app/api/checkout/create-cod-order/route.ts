@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
   let discountAmount = 0;
   if (body.couponCode) {
-    const couponResult = await validateCoupon(body.couponCode, pricing.amountInr, pricing.items);
+    const couponResult = await validateCoupon(body.couponCode, pricing.amountInr, pricing.items, { customerId: sessionCustomerId });
     if (couponResult.valid && couponResult.coupon) {
       discountAmount = calculateDiscount(couponResult.coupon, pricing.amountInr, pricing.items);
     }

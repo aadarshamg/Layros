@@ -6,6 +6,7 @@ import { after } from "next/server";
 import { markCartConverted } from "@/lib/cart-recovery/store";
 import { retryUnsentOrders, sendOrderToShiprocket } from "@/lib/shipping/shiprocket";
 import { deductStockForOrder } from "@/lib/checkout/stock";
+import { recordCouponUse } from "@/lib/rewards";
 import { invoiceLinkFor, isInvoiceLinkConfigured } from "@/lib/invoices/link";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -101,6 +102,8 @@ export async function saveOrder(input: SaveOrderInput): Promise<boolean> {
     after(async () => {
       // Once per order as well, however many paths save it.
       await deductStockForOrder(saved._id);
+      // Use up a single-use code; note who referred a first-time buyer.
+      await recordCouponUse(saved._id).catch((error) => console.error("recordCouponUse failed:", input.orderNumber, error));
       // The signed invoice link, so admin can open the PDF from the order.
       if (isInvoiceLinkConfigured()) {
         await writeClient?.patch(saved._id).setIfMissing({ invoiceUrl: invoiceLinkFor(saved._id) }).commit().catch(() => undefined);

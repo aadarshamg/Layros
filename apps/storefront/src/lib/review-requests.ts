@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "next-sanity";
 import { productNameFromTitle } from "@/lib/product-labels";
+import { issuePersonalCoupon } from "@/lib/rewards";
 
 /**
  * Asks customers for a product review a few days after delivery, once per
@@ -8,11 +9,12 @@ import { productNameFromTitle } from "@/lib/product-labels";
  * login OTP. In the panel, get a Utility template approved, e.g.
  *
  *   "Hi {{1}}, how are you finding {{2}}? It takes a minute to review it
- *    here: {{3}}"
+ *    here: {{3}}. As a thank-you, {{4}} gives you 10% off your next order."
  *
  * then API Developer → Generate API End-point → "Send Template Message (GET)"
  * and paste the URL into WHATSAPP_REVIEW_REQUEST_ENDPOINT. Its template
- * variables are filled in order: first name, product name, review link; the
+ * variables are filled in order: first name, product name, review link,
+ * personal 10% coupon code (H16: single use, 30 days, min Rs 699); the
  * recipient is set to the order's phone. Without the endpoint nothing is
  * sent or marked, so orders are asked once it is configured.
  */
@@ -34,6 +36,8 @@ interface DueOrder {
   customerPhone?: string;
   name?: string;
   product?: { title?: string; handle?: string };
+  customerId?: string;
+  reviewCouponCode?: string;
 }
 
 function tenDigits(phone?: string) {
@@ -41,7 +45,7 @@ function tenDigits(phone?: string) {
   return digits && digits.length === 10 ? digits : "";
 }
 
-async function send(order: DueOrder): Promise<boolean> {
+async function send(order: DueOrder, couponCode: string): Promise<boolean> {
   const endpoint = process.env.WHATSAPP_REVIEW_REQUEST_ENDPOINT?.trim();
   const phone = tenDigits(order.customerPhone);
   if (!endpoint || !phone || !order.product?.handle) return false;
@@ -51,6 +55,7 @@ async function send(order: DueOrder): Promise<boolean> {
     (order.name ?? "").trim().split(/\s+/)[0] || "there",
     productNameFromTitle(order.product.title ?? "your Leyros fragrance"),
     `${siteUrl}/products/${order.product.handle}#reviews`,
+    couponCode,
   ];
   // Variables are named like templateVariable-name-1; fill them in their numbered order.
   [...url.searchParams.keys()]
@@ -82,7 +87,7 @@ export async function sendDueReviewRequests(limit = 50): Promise<number> {
     `*[_type == "order" && fulfillmentStatus == "Delivered" && !defined(reviewRequestSentAt)
       && defined(deliveredAt) && deliveredAt < $dueBefore && deliveredAt > $notBefore]
       | order(deliveredAt asc)[0...$limit]{
-        _id, orderNumber, customerPhone, "name": shippingAddress.fullName,
+        _id, orderNumber, customerPhone, "name": shippingAddress.fullName, "customerId": customer._ref, reviewCouponCode,
         "product": *[_type == "product" && _id == ^.items[0].productId][0]{title, "handle": slug.current}
       }`,
     {
@@ -94,7 +99,10 @@ export async function sendDueReviewRequests(limit = 50): Promise<number> {
   let sent = 0;
   for (const order of orders) {
     try {
-      if (await send(order)) {
+      // One coupon per order, kept on the order so a retry reuses it.
+      const couponCode = order.reviewCouponCode ?? await issuePersonalCoupon({ prefix: "THANKS", kind: "review-thanks", discountType: "percent", discountValue: 10, minOrderAmount: 699, validDays: 30, forCustomer: order.customerId });
+      if (!order.reviewCouponCode) await writeClient.patch(order._id).setIfMissing({ reviewCouponCode: couponCode }).commit();
+      if (await send(order, couponCode)) {
         await writeClient.patch(order._id).set({ reviewRequestSentAt: new Date().toISOString() }).commit();
         sent++;
       }

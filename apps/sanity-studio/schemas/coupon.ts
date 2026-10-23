@@ -35,6 +35,11 @@ export default defineType({
       validation: (Rule) => Rule.min(0),
     }),
     defineField({ name: "active", title: "Active", type: "boolean", initialValue: true }),
+    defineField({ name: "kind", title: "Kind", type: "string", readOnly: true, hidden: ({ document }) => !document?.kind, options: { list: [{ title: "Review thank-you", value: "review-thanks" }, { title: "Referral reward", value: "referral-reward" }] } }),
+    defineField({ name: "singleUse", title: "Single use", description: "Works for one order only.", type: "boolean" }),
+    defineField({ name: "forCustomer", title: "Only for customer (id)", description: "Personal code: only this logged-in customer can use it.", type: "string" }),
+    defineField({ name: "redeemedOrderNumber", title: "Used on order", type: "string", readOnly: true }),
+    defineField({ name: "redeemedAt", title: "Used at", type: "datetime", readOnly: true, hidden: ({ document }) => !document?.redeemedAt }),
     defineField({
       name: "expiresAt",
       title: "Expires at",

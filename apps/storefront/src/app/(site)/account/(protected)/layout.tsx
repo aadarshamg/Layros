@@ -5,6 +5,7 @@ import { getCurrentCustomer } from "@/lib/auth/session";
 const tabs = [
   { href: "/account/orders", label: "Orders" },
   { href: "/account/addresses", label: "Address" },
+  { href: "/account/rewards", label: "Refer & rewards" },
   { href: "/account/preferences", label: "Preferences" },
 ];
 

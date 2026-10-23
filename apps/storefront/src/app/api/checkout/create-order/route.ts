@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   // never trust a discount amount the client computed itself.
   let discountAmount = 0;
   if (body.couponCode) {
-    const result = await validateCoupon(body.couponCode, pricing.amountInr, pricing.items);
+    const result = await validateCoupon(body.couponCode, pricing.amountInr, pricing.items, { customerId: (await getSessionCustomerId()) ?? undefined });
     if (result.valid && result.coupon) {
       discountAmount = calculateDiscount(result.coupon, pricing.amountInr, pricing.items);
     }

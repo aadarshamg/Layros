@@ -21,6 +21,7 @@ export default defineType({
     }),
     defineField({ name: "name", title: "Name", type: "string" }),
     defineField({ name: "email", title: "Email", type: "string" }),
+    defineField({ name: "referralCode", title: "Referral code", description: "Friends get Rs 100 off their first order of Rs 699+ with it.", type: "string", readOnly: true }),
     defineField({
       name: "defaultShippingAddress",
       title: "Default shipping address",

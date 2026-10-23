@@ -367,3 +367,36 @@ export async function syncOpenOrders({ customerId, limit }: { customerId?: strin
   ).catch(() => []);
   await Promise.all(orders.map(checkOrder));
 }
+
+// ── Delivery estimates by PIN code (product page) ───────────────────────
+
+export interface DeliveryEstimate {
+  serviceable: boolean;
+  /** Courier's own estimate from pickup, e.g. "Oct 26, 2026". */
+  courierEtd?: string;
+  cod?: boolean;
+}
+
+const PICKUP_PINCODE = process.env.SHIPROCKET_PICKUP_PINCODE || "141116";
+const estimateCache = new Map<string, { value: DeliveryEstimate; expires: number }>();
+
+/** Whether Shiprocket can deliver to `pin`, and its recommended courier's estimate. Cached 6 hours per PIN. */
+export async function deliveryEstimate(pin: string): Promise<DeliveryEstimate> {
+  const cached = estimateCache.get(pin);
+  if (cached && cached.expires > Date.now()) return cached.value;
+  if (!email || !password) return { serviceable: true };
+  type Courier = { courier_company_id: number; etd?: string; estimated_delivery_days?: string; cod?: number };
+  let data: { available_courier_companies?: Courier[]; recommended_courier_company_id?: number } | undefined;
+  try {
+    data = (await shiprocketRequest<{ data?: typeof data }>(`/courier/serviceability/?pickup_postcode=${PICKUP_PINCODE}&delivery_postcode=${pin}&weight=${FIRST_ITEM_KG}&cod=1`)).data;
+  } catch (error) {
+    // Shiprocket answers an unserviceable PIN with an error status; anything else is a lookup failure.
+    if (!/serviceab|no courier/i.test(String(error))) throw error;
+  }
+  const couriers = data?.available_courier_companies ?? [];
+  const pick = couriers.find((courier) => courier.courier_company_id === data?.recommended_courier_company_id)
+    ?? [...couriers].sort((a, b) => Number(a.estimated_delivery_days ?? 99) - Number(b.estimated_delivery_days ?? 99))[0];
+  const value: DeliveryEstimate = pick ? { serviceable: true, courierEtd: pick.etd, cod: couriers.some((courier) => courier.cod === 1) } : { serviceable: false };
+  estimateCache.set(pin, { value, expires: Date.now() + 6 * 60 * 60 * 1000 });
+  return value;
+}

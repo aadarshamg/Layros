@@ -14502,3 +14502,13 @@ html body .box-add:disabled { opacity: .45; cursor: not-allowed; }
   html body .box-add { flex: 1; }
 }
 html body:has(.box-summary) .whatsapp-widget { bottom: calc(118px + env(safe-area-inset-bottom, 0px)) !important; }
+/* PIN code delivery check (H10). */
+html body .delivery-pin-check { display: grid; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e3e6df; }
+html body .delivery-pin-check label { color: #1a422f; font-size: 13px; font-weight: 700; }
+html body .delivery-pin-check div { display: flex; gap: 8px; }
+html body .delivery-pin-check input { flex: 1; min-width: 0; padding: 10px 12px; border: 1px solid #c9d2c8; background: #fff; color: #1a422f; font-size: 15px; letter-spacing: .08em; }
+html body .delivery-pin-check button { padding: 10px 18px; border: 0; background: #1a422f; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+html body .delivery-pin-check button:disabled { opacity: .5; cursor: not-allowed; }
+html body .delivery-pin-check p { margin: 0; font-size: 13px; }
+html body .delivery-pin-check p.is-ok { color: #1a6b3c; }
+html body .delivery-pin-check p.is-no { color: #9a3a2a; }

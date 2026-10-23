@@ -70,6 +70,7 @@ export function DeliveryTimeline({ dispatchDays, deliveryDaysMin, deliveryDaysMa
         ))}
       </ol>
       <p className="delivery-timeline-fineprint">Estimated for delivery within India; remote PIN codes can take a little longer.</p>
+      <PinCheck />
     </section>
   );
 }
@@ -100,5 +101,58 @@ function PinIcon() {
       <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
       <path d="m9.2 9.6 2 2 3.6-3.8" />
     </svg>
+  );
+}
+
+type PinResult = { serviceable: boolean; courierEtd?: string; cod?: boolean } | { error: string };
+
+// Shiprocket's courier estimate assumes pickup today; orders ship within
+// 24–48 hours, so the window adds one to two business days.
+function PinCheck() {
+  const [pin, setPin] = useState("");
+  const [checking, setChecking] = useState(false);
+  const [result, setResult] = useState<PinResult | null>(null);
+
+  async function check(event: React.FormEvent) {
+    event.preventDefault();
+    setChecking(true);
+    try {
+      const response = await fetch(`/api/shipping/estimate?pin=${pin}`);
+      setResult(await response.json());
+    } catch {
+      setResult({ error: "Couldn't check that PIN right now. Please try again." });
+    } finally {
+      setChecking(false);
+    }
+  }
+
+  let message: string | null = null;
+  if (result && "error" in result) message = result.error;
+  else if (result && !result.serviceable) message = `Sorry, we can't deliver to ${pin} yet.`;
+  else if (result) {
+    const etd = result.courierEtd ? new Date(`${result.courierEtd} UTC`) : null;
+    const window = etd && !Number.isNaN(etd.getTime()) ? `${formatDay(addBusinessDays(etd, 1))} – ${formatDay(addBusinessDays(etd, 2))}` : null;
+    message = `${window ? `Delivery to ${pin} by ${window}` : `We deliver to ${pin}`}${result.cod ? " · Cash on Delivery available" : ""}.`;
+  }
+  const ok = Boolean(result && "serviceable" in result && result.serviceable);
+
+  return (
+    <form className="delivery-pin-check" onSubmit={check}>
+      <label htmlFor="delivery-pin">Check delivery to your PIN code</label>
+      <div>
+        <input
+          id="delivery-pin"
+          inputMode="numeric"
+          pattern="[1-9][0-9]{5}"
+          maxLength={6}
+          placeholder="6-digit PIN"
+          value={pin}
+          onChange={(event) => { setPin(event.target.value.replace(/[^0-9]/g, "")); setResult(null); }}
+          required
+        />
+        <button type="submit" disabled={checking || pin.length !== 6}>{checking ? "Checking…" : "Check"}</button>
+      </div>
+      {message && <p className={ok ? "is-ok" : "is-no"} aria-live="polite">{message}</p>}
+    </form>
   );
 }

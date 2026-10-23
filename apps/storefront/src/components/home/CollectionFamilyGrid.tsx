@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import type { FamilyShowcaseEntry } from "@/lib/data/products";
 import { FAMILY_LABELS } from "@/lib/data/families";
 import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurchasePanel";

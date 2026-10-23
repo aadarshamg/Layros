@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_PHONE, DEFAULT_BRAND_ADDRESS } from "@/lib/site-defaults";
 import { PinIcon, PhoneIcon, StarIcon, GoogleGIcon, FacebookIcon, InstagramIcon, YoutubeIcon } from "@/components/layout/FooterIcons";

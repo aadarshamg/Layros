@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";

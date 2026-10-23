@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import type { ShoppableVideo } from "@leyros/types";
 import { useCart } from "@/lib/cart-context";

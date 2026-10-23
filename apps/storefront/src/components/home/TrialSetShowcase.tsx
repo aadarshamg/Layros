@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import { getTrialSets } from "@/lib/data/trial-sets";
 import { formatInr, formatSize } from "@/lib/format";

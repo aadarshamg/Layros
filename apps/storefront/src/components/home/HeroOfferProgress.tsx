@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import { useCart } from "@/lib/cart-context";
 import { calculateBuyTwoGetOne } from "@/lib/promotions";
 import styles from "./HeroOfferProgress.module.css";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import type { PerfumeProduct } from "@leyros/types";
 import { ProductCardPurchasePanel } from "@/components/product/ProductCardPurchasePanel";
 import { HorizontalProductShelf } from "@/components/home/HorizontalProductShelf";

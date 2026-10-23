@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import { useEffect, useMemo, useState, type TouchEvent } from "react";
 import { VARIANT_IMAGE_EVENT } from "@/lib/variant-image";
 

@@ -1,5 +1,5 @@
 import "./product-page.css";
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";

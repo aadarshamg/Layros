@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import { getNoteImage } from "@/lib/note-images";
 
 /** An unknown note stays text-only rather than showing an unrelated ingredient. */

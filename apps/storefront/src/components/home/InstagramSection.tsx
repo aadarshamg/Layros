@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import type { PerfumeProduct } from "@leyros/types";
 import { getInstagramPosts } from "@/lib/data/instagram";

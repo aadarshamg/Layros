@@ -49,7 +49,7 @@ export default async function OffersPage() {
           </div>
         </div>
         <p className="offers-example">Example: two perfumes at ₹699 and one at ₹999 come to ₹2,397; the ₹699 bottle is free, so you pay ₹1,698.</p>
-        <Link href="/collections/all?category=collections" className="button button-dark">Choose your 3 bottles</Link>
+        <Link href="/build-your-box" className="button button-dark">Build your box</Link>
       </section>
 
       <section className="offers-block" aria-labelledby="offer-coupons">

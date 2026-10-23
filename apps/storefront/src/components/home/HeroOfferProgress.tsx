@@ -56,7 +56,7 @@ export function HeroOfferProgress({ products }: { products: { image: string; tit
         {!unlocked && eligibleItemCount !== 1 && <p className={styles.message} aria-live="polite" aria-atomic="true">{message}</p>}
         {unlocked && progress === 3
           ? <button type="button" onClick={openDrawer} className={styles.cta}>View your bag →</button>
-          : <Link href={SHOP} className={styles.cta}>Choose your fragrances →</Link>}
+          : <Link href="/build-your-box" className={styles.cta}>Build your box →</Link>}
       </div>
     </section>
   );

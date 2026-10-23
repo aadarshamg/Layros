@@ -14467,3 +14467,38 @@ html body .wishlist-empty { display: grid; justify-items: start; gap: 14px; colo
   html body header.site-header .nav-actions > .nav-wishlist-link { display: none; }
 }
 html body header.site-header.site-header .nav-actions > .nav-wishlist-link .bag-count { position: absolute !important; top: -7px !important; right: -11px !important; left: auto !important; transform: none !important; }
+/* Build Your Box (H13). */
+html body .box-page { padding-bottom: 140px; }
+html body .box-intro { max-width: 60ch; margin: 0 0 24px; color: #3d4f43; font-size: 15px; line-height: 1.6; }
+html body .box-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+html body .box-choice { position: relative; display: grid; border: 1px solid #e3e6df; background: #fff; transition: border-color .2s ease; }
+html body .box-choice.is-picked { border: 2px solid #1a422f; }
+html body .box-choice-button { display: grid; gap: 4px; padding: 12px 12px 10px; border: 0; background: none; color: #1a422f; text-align: center; cursor: pointer; }
+html body .box-choice-button:disabled { cursor: not-allowed; opacity: .55; }
+html body .box-choice-button:focus-visible { outline: 2px solid #1a422f; outline-offset: -4px; }
+html body .box-choice-photo { position: relative; display: block; width: 100%; aspect-ratio: 1; }
+html body .box-choice-photo img { object-fit: contain; }
+html body .box-choice-name { margin-top: 6px; font-family: var(--font-display); font-size: 17px; line-height: 1.1; text-transform: uppercase; }
+html body .box-choice-price { color: #4f6354; font-size: 13px; }
+html body .box-choice-action { margin-top: 6px; padding: 8px; border: 1px solid #1a422f; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+html body .box-choice.is-picked .box-choice-action { background: #1a422f; color: #fff; }
+html body .box-choice-details { justify-self: center; padding: 0 0 10px; color: #4f6354; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+html body .box-summary { position: fixed; right: 0; bottom: 0; left: 0; z-index: 55; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 20px; padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background: #fffcf7; border-top: 1px solid #dfe4dc; box-shadow: 0 -6px 18px rgba(18, 48, 33, .08) !important; color: #1a422f; }
+html body .box-slots { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; }
+html body .box-slots li { position: relative; display: grid; place-items: center; width: 56px; height: 56px; border: 1px dashed #8da18e; background: #fff; }
+html body .box-slots li.is-filled { border: 1px solid #1a422f; }
+html body .box-slot-photo { position: absolute; inset: 4px; }
+html body .box-slot-photo img { object-fit: contain; }
+html body .box-slot-empty { color: #8da18e; font-weight: 700; }
+html body .box-summary-text p { margin: 0; font-size: 14px; }
+html body .box-summary-text s { color: #8da18e; }
+html body .box-summary-text a { color: #1a422f; text-decoration: underline; }
+html body .box-add { padding: 13px 26px; border: 0; background: #1a422f; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+html body .box-add:disabled { opacity: .45; cursor: not-allowed; }
+@media (max-width: 600px) {
+  html body .box-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  html body .box-summary-text { flex: 1 1 100%; text-align: center; order: -1; }
+  html body .box-slots li { width: 46px; height: 46px; }
+  html body .box-add { flex: 1; }
+}
+html body:has(.box-summary) .whatsapp-widget { bottom: calc(118px + env(safe-area-inset-bottom, 0px)) !important; }

@@ -14425,7 +14425,8 @@ html body .checkout-benefits-all { display: inline-block; margin-top: 8px; color
 /* Section H: per-10ml price and Best value on sizes, card ratings, sticky phone buy bar. */
 html body .size-option { position: relative; }
 html body .size-option .size-per10 { display: block; margin-top: 2px; color: #4f6354; font-size: .68rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
-html body .size-best-value { position: absolute; top: -9px; right: 6px; padding: 2px 6px; background: #1a422f; color: #fff; font-size: .6rem; font-weight: 700; letter-spacing: .06em; line-height: 1.2; text-transform: uppercase; }
+html body .size-option:has(.size-best-value) { overflow: visible; }
+html body .size-best-value { position: absolute; z-index: 1; top: -9px; right: 6px; white-space: nowrap; padding: 2px 6px; background: #1a422f; color: #fff; font-size: .6rem; font-weight: 700; letter-spacing: .06em; line-height: 1.2; text-transform: uppercase; }
 html body .product-card-rating { display: flex; align-items: baseline; gap: 4px; margin: 0 0 4px; color: #1a422f; font-size: .78rem; font-weight: 700; }
 html body .product-card-rating span { color: #c9a227; }
 html body .product-card-rating small { color: #4f6354; font-weight: 500; }
@@ -14512,12 +14513,10 @@ html body .delivery-pin-check button:disabled { opacity: .5; cursor: not-allowed
 html body .delivery-pin-check p { margin: 0; font-size: 13px; }
 html body .delivery-pin-check p.is-ok { color: #1a6b3c; }
 html body .delivery-pin-check p.is-no { color: #9a3a2a; }
-/* Occasion filters on collection pages (H9). */
-html body .collection-occasions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 18px; }
-html body .collection-occasions > span { margin-right: 4px; color: #4f6354; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-html body .collection-occasions button { padding: 7px 14px; border: 1px solid #c9d2c8; background: #fff; color: #1a422f; font-size: 13px; cursor: pointer; }
-html body .collection-occasions button.is-selected { border-color: #1a422f; background: #1a422f; color: #fff; }
-html body .collection-occasions button:focus-visible { outline: 2px solid #1a422f; outline-offset: 2px; }
+/* Occasion filters on collection pages (H9): styled as the "Shop for" switch
+   (.collection-gender-switch on the same element), on their own row. */
+.collection-occasions.collection-gender-switch { flex-wrap: wrap; margin: 10px 16px 18px; }
+@media (max-width: 760px) { .collection-occasions.collection-gender-switch { margin-inline: 10px; } }
 /* Review photos and videos (H6). */
 html body .review-form-media input[type="file"] { font-size: 13px; }
 html body .review-form-media small { color: #4f6354; font-size: 12px; }

@@ -105,7 +105,7 @@ export function CollectionControls() {
       </div>
 
       {showOccasions && (
-        <div className="collection-occasions" role="group" aria-label="Wear it for">
+        <div className="collection-gender-switch collection-occasions" role="group" aria-label="Wear it for">
           <span>Wear it for</span>
           {OCCASIONS.map((occasion) => (
             <button key={occasion.value} type="button" className={activeWear === occasion.value ? "is-selected" : undefined} aria-pressed={activeWear === occasion.value} onClick={() => updateParam("wear", activeWear === occasion.value ? "" : occasion.value)}>

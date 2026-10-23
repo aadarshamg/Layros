@@ -28,6 +28,7 @@ const links: NavLink[] = [
     label: "Fragrance",
     children: [
       { href: "/collections/all?category=collections", label: "All Fragrances" },
+      { href: "/fragrance-finder", label: "Find Your Fragrance" },
       { href: "/private-blends", label: "Private Blends" },
       { href: `/collections/all?category=${encodeURIComponent("fresh, citrus & marine")}`, label: "Fresh, Citrus & Marine" },
       { href: `/collections/all?category=${encodeURIComponent("amber")}`, label: "Amber" },

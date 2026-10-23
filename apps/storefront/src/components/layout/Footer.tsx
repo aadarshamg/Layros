@@ -19,6 +19,7 @@ const SHOP_LINKS = [
   { label: "Unisex", href: `${PERFUMES}&gender=unisex` },
   { label: "New Launch", href: `${PERFUMES}&sort=new` },
   { label: "Build Your Box", href: "/build-your-box" },
+  { label: "Find Your Fragrance", href: "/fragrance-finder" },
   { label: "Attars", href: "/collections/all?category=attar" },
   { label: "Candles", href: "/candles" },
   { label: "Gift Packs", href: `/collections/all?category=${encodeURIComponent("gift pack")}` },

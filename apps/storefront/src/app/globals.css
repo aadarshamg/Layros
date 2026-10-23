@@ -14516,7 +14516,27 @@ html body .delivery-pin-check p.is-no { color: #9a3a2a; }
 /* Occasion filters on collection pages (H9): styled as the "Shop for" switch
    (.collection-gender-switch on the same element), on their own row. */
 .collection-occasions.collection-gender-switch { flex-wrap: wrap; margin: 10px 16px 18px; }
-@media (max-width: 760px) { .collection-occasions.collection-gender-switch { margin-inline: 10px; } }
+.collection-occasion-options { display: contents; }
+/* Phones: the label on top, the occasions in one row that scrolls sideways,
+   its right edge faded so the row reads as swipeable. */
+@media (max-width: 760px) {
+  .collection-occasions.collection-gender-switch { display: block; margin-inline: 10px; }
+  .collection-occasions.collection-gender-switch > span { display: block; margin: 0 0 8px 2px; }
+  .collection-occasion-options {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    --fade-left: #000;
+    --fade-right: transparent;
+    -webkit-mask-image: linear-gradient(to right, var(--fade-left), #000 28px, #000 calc(100% - 28px), var(--fade-right));
+    mask-image: linear-gradient(to right, var(--fade-left), #000 28px, #000 calc(100% - 28px), var(--fade-right));
+  }
+  .collection-occasion-options[data-start="false"] { --fade-left: transparent; }
+  .collection-occasion-options[data-end="true"] { --fade-right: #000; }
+  .collection-occasion-options::-webkit-scrollbar { display: none; }
+  .collection-occasions.collection-gender-switch button { flex: none; padding: 0 12px; }
+}
 /* Review photos and videos (H6). */
 html body .review-form-media input[type="file"] { font-size: 13px; }
 html body .review-form-media small { color: #4f6354; font-size: 12px; }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CATEGORY_FILTER_OPTIONS } from "@/lib/data/categories";
 import { OCCASIONS } from "@/lib/occasions";
@@ -28,6 +28,25 @@ export function CollectionControls() {
   const activeGender = searchParams.get("gender") ?? "";
   const activeMaxPrice = searchParams.get("maxPrice") ?? "";
   const activeWear = searchParams.get("wear") ?? "";
+  const occasionRow = useRef<HTMLDivElement>(null);
+
+  // On phones the occasions scroll sideways; keep the chosen one in view
+  // (scrollLeft only, so the page itself never jumps), and mark which ends
+  // have more to scroll so the CSS fades only those.
+  const markOccasionEnds = () => {
+    const row = occasionRow.current;
+    if (!row) return;
+    row.dataset.start = String(row.scrollLeft <= 2);
+    row.dataset.end = String(row.scrollLeft + row.clientWidth >= row.scrollWidth - 2);
+  };
+  useEffect(() => {
+    const row = occasionRow.current;
+    const selected = row?.querySelector<HTMLElement>(".is-selected");
+    if (row && selected && row.scrollWidth > row.clientWidth) {
+      row.scrollLeft = selected.offsetLeft - row.offsetLeft - (row.clientWidth - selected.offsetWidth) / 2;
+    }
+    markOccasionEnds();
+  }, [activeWear]);
   const activeFilterCount = Number(inStock) + Number(Boolean(activeCategory)) + Number(Boolean(activeFamily)) + Number(Boolean(activeGender)) + Number(Boolean(activeMaxPrice)) + Number(Boolean(activeWear));
   // Occasions describe worn fragrance, not candles or car perfumes.
   const showOccasions = showGenderSwitchFor(activeCategory);
@@ -107,11 +126,13 @@ export function CollectionControls() {
       {showOccasions && (
         <div className="collection-gender-switch collection-occasions" role="group" aria-label="Wear it for">
           <span>Wear it for</span>
-          {OCCASIONS.map((occasion) => (
-            <button key={occasion.value} type="button" className={activeWear === occasion.value ? "is-selected" : undefined} aria-pressed={activeWear === occasion.value} onClick={() => updateParam("wear", activeWear === occasion.value ? "" : occasion.value)}>
-              {occasion.label}
-            </button>
-          ))}
+          <div className="collection-occasion-options" ref={occasionRow} onScroll={markOccasionEnds}>
+            {OCCASIONS.map((occasion) => (
+              <button key={occasion.value} type="button" className={activeWear === occasion.value ? "is-selected" : undefined} aria-pressed={activeWear === occasion.value} onClick={() => updateParam("wear", activeWear === occasion.value ? "" : occasion.value)}>
+                {occasion.label}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
